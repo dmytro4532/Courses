@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AFF584C9-A017-42BE-96D0-513E88DC935C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.API", "src\Courses.API\Courses.API.csproj", "{65EBD8D9-02A0-4850-B6CE-5E974253508C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Application", "src\Courses.Application\Courses.Application.csproj", "{79F8B76D-BEF6-4FEF-8072-32CF7F80DA0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Domain", "src\Courses.Domain\Courses.Domain.csproj", "{C6807A5C-758A-4C93-81FF-9294E92AD5D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Courses.Infrastructure", "src\Courses.Infrastructure\Courses.Infrastructure.csproj", "{9F52E0E0-BE50-466C-9E5B-81A9A5757E49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{3666EC13-B145-4266-8F10-4F97EE4935BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7103082E-90F1-4408-B8D5-A0623C2CC43B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{62D1459B-21B3-4F19-9B6D-0C10E588F932}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{65EBD8D9-02A0-4850-B6CE-5E974253508C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65EBD8D9-02A0-4850-B6CE-5E974253508C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65EBD8D9-02A0-4850-B6CE-5E974253508C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65EBD8D9-02A0-4850-B6CE-5E974253508C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F8B76D-BEF6-4FEF-8072-32CF7F80DA0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F8B76D-BEF6-4FEF-8072-32CF7F80DA0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F8B76D-BEF6-4FEF-8072-32CF7F80DA0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F8B76D-BEF6-4FEF-8072-32CF7F80DA0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6807A5C-758A-4C93-81FF-9294E92AD5D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6807A5C-758A-4C93-81FF-9294E92AD5D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6807A5C-758A-4C93-81FF-9294E92AD5D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6807A5C-758A-4C93-81FF-9294E92AD5D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F52E0E0-BE50-466C-9E5B-81A9A5757E49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F52E0E0-BE50-466C-9E5B-81A9A5757E49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F52E0E0-BE50-466C-9E5B-81A9A5757E49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F52E0E0-BE50-466C-9E5B-81A9A5757E49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3666EC13-B145-4266-8F10-4F97EE4935BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3666EC13-B145-4266-8F10-4F97EE4935BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3666EC13-B145-4266-8F10-4F97EE4935BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3666EC13-B145-4266-8F10-4F97EE4935BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62D1459B-21B3-4F19-9B6D-0C10E588F932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62D1459B-21B3-4F19-9B6D-0C10E588F932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62D1459B-21B3-4F19-9B6D-0C10E588F932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62D1459B-21B3-4F19-9B6D-0C10E588F932}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{65EBD8D9-02A0-4850-B6CE-5E974253508C} = {AFF584C9-A017-42BE-96D0-513E88DC935C}
+		{79F8B76D-BEF6-4FEF-8072-32CF7F80DA0D} = {AFF584C9-A017-42BE-96D0-513E88DC935C}
+		{C6807A5C-758A-4C93-81FF-9294E92AD5D7} = {AFF584C9-A017-42BE-96D0-513E88DC935C}
+		{9F52E0E0-BE50-466C-9E5B-81A9A5757E49} = {AFF584C9-A017-42BE-96D0-513E88DC935C}
+		{3666EC13-B145-4266-8F10-4F97EE4935BF} = {AFF584C9-A017-42BE-96D0-513E88DC935C}
+	EndGlobalSection
+EndGlobal

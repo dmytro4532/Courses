@@ -1,0 +1,28 @@
+services:
+  courses.api:
+    image: ${DOCKER_REGISTRY-}coursesapi
+    container_name: courses.api
+    build:
+      context: ..
+      dockerfile: Courses/src/Courses.API/Dockerfile
+    depends_on:
+     - courses.db
+    networks:
+     - courses-net
+  
+  courses.db:
+    image: postgres:latest
+    container_name: courses.db
+    restart: always
+    environment:
+      - POSTGRES_DB=courses
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    networks:
+     - courses-net
+
+networks:
+  courses-net:
+    driver: bridge
