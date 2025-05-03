@@ -1,28 +1,28 @@
 using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Articles.Dto;
-using Courses.Domain.Articles;
+using Courses.Application.Users.Dto;
+using Courses.Domain.Courses;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;
 
-namespace Courses.Application.Articles.Commands.UpdateArticle;
+namespace Courses.Application.Courses.Commands.UpdateArticle;
 
-internal sealed class UpdateArticleCommandHandler : IRequestHandler<UpdateArticleCommand, Result<CourseResponse>>
+internal sealed class UpdateArticleCommandHandler : IRequestHandler<UpdateArticleCommand, Result<UserResponse>>
 {
-    private readonly ICourseRepository _articleRepository;
+    private readonly IUserRepository _articleRepository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly Mapper<Course, CourseResponse> _mapper;
+    private readonly Mapper<Course, UserResponse> _mapper;
 
-    public UpdateArticleCommandHandler(ICourseRepository articleRepository, IUnitOfWork unitOfWork, Mapper<Course, CourseResponse> mapper)
+    public UpdateArticleCommandHandler(IUserRepository articleRepository, IUnitOfWork unitOfWork, Mapper<Course, UserResponse> mapper)
     {
         _articleRepository = articleRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
-    public async Task<Result<CourseResponse>> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
+    public async Task<Result<UserResponse>> Handle(UpdateArticleCommand request, CancellationToken cancellationToken)
     {
         var article = await _articleRepository.GetByIdAsync(request.Id, cancellationToken);
 

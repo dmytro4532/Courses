@@ -1,5 +1,7 @@
 ﻿using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
+using Courses.Application.Abstractions.Services;
+using Courses.Infrastructure.Auth;
 using Courses.Infrastructure.BackgroundJobs;
 using Courses.Infrastructure.Persistance;
 using Courses.Infrastructure.Persistance.Interceptors;
@@ -19,6 +21,8 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
         services.AddOptions<OutboxSettings>()
             .BindConfiguration(OutboxSettings.SectionName);
 
@@ -37,7 +41,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddScoped<ICourseRepository, ArticleRepository>();
+        services.AddScoped<IUserRepository, ArticleRepository>();
 
         services.AddBackGroundJobs();
     }

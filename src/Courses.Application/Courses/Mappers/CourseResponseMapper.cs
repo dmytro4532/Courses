@@ -1,10 +1,10 @@
 ﻿using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Articles.Dto;
-using Courses.Domain.Articles;
+using Courses.Application.Courses.Dto;
+using Courses.Domain.Courses;
 
-namespace Courses.Application.Articles.Mappers;
+namespace Courses.Application.Courses.Mappers;
 
-internal sealed class ArticleResponseMapper : Mapper<Course, CourseResponse>
+internal sealed class CourseResponseMapper : Mapper<Course, CourseResponse>
 {
     public override CourseResponse Map(Course source)
     {

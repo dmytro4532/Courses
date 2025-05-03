@@ -1,12 +1,11 @@
 ﻿using Courses.Application.Abstractions.Messaging;
-using Courses.Application.Articles.Commands.CreateArticle;
-using Courses.Domain.Articles.DomainEvents;
+using Courses.Domain.User.DomainEvents;
 using Microsoft.Extensions.Logging;
 
-namespace Courses.Application.Articles.Commands.UpdateArticle;
+namespace Courses.Application.Courses.Commands.UpdateArticle;
 
 internal sealed class ArticleUpdatedDomainEventHandler
-        : IDomainEventHandler<CourseUpdatedDomainEvent>
+        : IDomainEventHandler<UserEmailChangedDomainEvent>
 {
     private readonly ILogger<ArticleUpdatedDomainEventHandler> _logger;
 
@@ -15,7 +14,7 @@ internal sealed class ArticleUpdatedDomainEventHandler
         _logger = logger;
     }
 
-    public Task Handle(CourseUpdatedDomainEvent notification, CancellationToken cancellationToken)
+    public Task Handle(UserEmailChangedDomainEvent notification, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Course updated: {ArticleId}", notification.ArticleId);
 

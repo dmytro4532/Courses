@@ -1,7 +1,7 @@
 ﻿using Courses.Application.Abstractions.Messaging;
-using Courses.Application.Articles.Dto;
+using Courses.Application.Users.Dto;
 using Shared.Results;
 
-namespace Courses.Application.Articles.Queries.GetArticle;
+namespace Courses.Application.Courses.Queries.GetArticle;
 
-public record GetArticleQuery(Guid ArticleId) : IQuery<Result<CourseResponse>>;
+public record GetArticleQuery(Guid ArticleId) : IQuery<Result<UserResponse>>;

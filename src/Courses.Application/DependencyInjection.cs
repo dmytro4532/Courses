@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Articles.Dto;
-using Courses.Application.Articles.Mappers;
 using Courses.Application.Behaviors;
-using Courses.Domain.Articles;
+using Courses.Application.Users.Dto;
+using Courses.Domain.Courses;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,7 @@ public static class DependencyInjection
 
     public static IServiceCollection AddMappers(this IServiceCollection services)
     {
-        services.AddScoped<Mapper<Course, CourseResponse>, ArticleResponseMapper>();
+        services.AddScoped<Mapper<Course, UserResponse>, UserResponseMapper>();
 
         return services;
     }

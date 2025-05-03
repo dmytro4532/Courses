@@ -1,7 +1,7 @@
-using Courses.Application.Articles.Dto;
+using Courses.Application.Users.Dto;
 using MediatR;
 using Shared.Results;
 
-namespace Courses.Application.Articles.Commands.UpdateArticle;
+namespace Courses.Application.Courses.Commands.UpdateArticle;
 
-public record UpdateArticleCommand(Guid Id, string Title, string Content) : IRequest<Result<CourseResponse>>;
+public record UpdateArticleCommand(Guid Id, string Title, string Content) : IRequest<Result<UserResponse>>;

@@ -9,4 +9,7 @@
     <ProjectReference Include="..\Courses.Domain\Courses.Domain.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Users\Commands\ChangeUserEmail\" />
+  </ItemGroup>
 </Project>

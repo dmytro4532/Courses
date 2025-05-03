@@ -1,12 +1,12 @@
-﻿using Courses.Domain.Articles;
+﻿using Courses.Domain.Courses;
 using FluentValidation;
 
-namespace Courses.Application.Articles.Commands.CreateArticle;
+namespace Courses.Application.Courses.Commands.CreateCourse;
 
-internal sealed class CreateArticleCommandValidator
+internal sealed class CreateCourseCommandValidator
     : AbstractValidator<CreateCourseCommand>
 {
-    public CreateArticleCommandValidator()
+    public CreateCourseCommandValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty()

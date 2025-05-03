@@ -1,16 +1,13 @@
 ﻿using System.Net.Mime;
-using Courses.Application.Articles.Commands.DeleteArticle;
-using Courses.Application.Articles.Queries.GetArticle;
 using Courses.API.Extensions;
 using Courses.API.Services;
-using Courses.Application.Articles.Commands.CreateArticle;
-using Courses.Application.Articles.Commands.UpdateArticle;
-using Courses.Application.Articles.Dto;
-using Courses.Application.Articles.Queries.GetArticles;
 using Courses.Application.Common.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Results;
+using Courses.Application.Courses.Queries.GetArticles;
+using Courses.Application.Courses.Commands.UpdateArticle;
+using Courses.Application.Courses.Commands.CreateCourse;
+using Courses.Application.Users.Dto;
 
 namespace Courses.API.Apis;
 
@@ -30,8 +27,8 @@ public static class ArticleApi
         return api;
     }
 
-    [ProducesResponseType<Ok<PagedList<CourseResponse>>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
-    public static async Task<Results<Ok<PagedList<CourseResponse>>, ProblemHttpResult>> GetArticlesAsync(
+    [ProducesResponseType<Ok<PagedList<UserResponse>>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    public static async Task<Results<Ok<PagedList<UserResponse>>, ProblemHttpResult>> GetArticlesAsync(
         [AsParameters] ArticleServices services,
         [AsParameters] GetArticlesQuery request)
     {
@@ -40,9 +37,9 @@ public static class ArticleApi
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
     }
 
-    [ProducesResponseType<Ok<CourseResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<Ok<UserResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
-    public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> GetArticleAsync(
+    public static async Task<Results<Ok<UserResponse>, ProblemHttpResult>> GetArticleAsync(
         [AsParameters] ArticleServices services,
         Guid articleId)
     {
@@ -51,9 +48,9 @@ public static class ArticleApi
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
     }
 
-    [ProducesResponseType<Ok<CourseResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<Ok<UserResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
-    public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> CreateArticleAsync(
+    public static async Task<Results<Ok<UserResponse>, ProblemHttpResult>> CreateArticleAsync(
         [AsParameters] ArticleServices services,
         CreateCourseCommand request)
     {
@@ -62,10 +59,10 @@ public static class ArticleApi
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
     }
 
-    [ProducesResponseType<Ok<CourseResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<Ok<UserResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
-    public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> UpdateArticleAsync(
+    public static async Task<Results<Ok<UserResponse>, ProblemHttpResult>> UpdateArticleAsync(
         [AsParameters] ArticleServices services,
         UpdateArticleCommand request)
     {

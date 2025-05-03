@@ -1,13 +1,12 @@
 ﻿using System.Linq.Expressions;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Common.Extensions;
-using Courses.Domain.Articles;
-using Courses.Infrastructure.Persistance;
+using Courses.Domain.Courses;
 using Microsoft.EntityFrameworkCore;
 
 namespace Courses.Infrastructure.Persistance.Repositories;
 
-internal sealed class ArticleRepository : ICourseRepository
+internal sealed class ArticleRepository : IUserRepository
 {
     private readonly ApplicationDbContext _context;
 

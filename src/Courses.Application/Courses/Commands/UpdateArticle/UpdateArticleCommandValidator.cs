@@ -1,7 +1,7 @@
-﻿using Courses.Domain.Articles;
+﻿using Courses.Domain.Courses;
 using FluentValidation;
 
-namespace Courses.Application.Articles.Commands.UpdateArticle;
+namespace Courses.Application.Courses.Commands.UpdateArticle;
 
 internal sealed class UpdateArticleCommandValidator
     : AbstractValidator<UpdateArticleCommand>
