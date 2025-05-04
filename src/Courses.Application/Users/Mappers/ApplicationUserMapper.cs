@@ -12,6 +12,7 @@ internal sealed class ApplicationUserMapper : Mapper<User, ApplicationUser>
         {
             Id = source.Id.ToString(),
             Email = source.Email.Value,
+            UserName = source.Email.Value,
         };
     }
 }

@@ -44,7 +44,18 @@ public static class DependencyInjection
                     serviceProvider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>())
         );
 
-        services.AddIdentity<ApplicationUser, IdentityRole>(options => options.Tokens.AuthenticatorTokenProvider = "Default")
+        services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            options.Tokens.AuthenticatorTokenProvider = "Default";
+            options.Password = new PasswordOptions
+            {
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = false,
+                RequiredLength = 8,
+                RequiredUniqueChars = 1
+            };
+        })
         .AddRoleManager<RoleManager<IdentityRole>>()
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
@@ -77,6 +88,8 @@ public static class DependencyInjection
                 ValidAudience = jwtSettings.Audience,
                 IssuerSigningKey = jwtSettings.SigningKey,
             });
+
+        services.AddAuthorization();
     }
 
     private static void AddBackGroundJobs(

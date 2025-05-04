@@ -23,9 +23,9 @@ public static class ArticleApi
         api.MapGet("/", GetArticlesAsync);
         api.MapGet("{articleId:guid}", GetArticleAsync);
 
-        api.MapPost("/", CreateArticleAsync);
-        api.MapPut("/", UpdateArticleAsync);
-        api.MapDelete("/{articleId:guid}", DeleteArticleAsync);
+        api.MapPost("/", CreateArticleAsync).RequireAuthorization();
+        api.MapPut("/", UpdateArticleAsync).RequireAuthorization();
+        api.MapDelete("/{articleId:guid}", DeleteArticleAsync).RequireAuthorization();
 
         return api;
     }
