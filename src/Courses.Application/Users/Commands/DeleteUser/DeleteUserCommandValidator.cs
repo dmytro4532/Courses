@@ -2,10 +2,10 @@
 
 namespace Courses.Application.Users.Commands.DeleteUser;
 
-internal sealed class DeleteArticleCommandValidator
+internal sealed class DeleteUserCommandValidator
     : AbstractValidator<DeleteUserCommand>
 {
-    public DeleteArticleCommandValidator()
+    public DeleteUserCommandValidator()
     {
         RuleFor(x => x.UserId)
             .NotEmpty();

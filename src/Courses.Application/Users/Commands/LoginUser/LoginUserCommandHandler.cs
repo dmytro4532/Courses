@@ -1,45 +1,42 @@
-﻿using Courses.Application.Abstractions.Data.Repositories;
-using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Abstractions.Services;
+﻿using Courses.Application.Abstractions.Services;
 using Courses.Application.Users.Dto;
-using Courses.Domain.User;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;
 
 namespace Courses.Application.Users.Commands.LoginUser;
 
-internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<UserResponse>>
+internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, Result<TokenResponse>>
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IIdentityService _identityService;
     private readonly ITokenService _tokenService;
-    private readonly Mapper<User, UserResponse> _mapper;
 
-    public LoginUserCommandHandler(IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenService tokenService, Mapper<User, UserResponse> mapper)
+    public LoginUserCommandHandler(IIdentityService identityService, ITokenService tokenService)
     {
-        _userRepository = userRepository;
-        _passwordHasher = passwordHasher;
+        _identityService = identityService;
         _tokenService = tokenService;
-        _mapper = mapper;
     }
 
-    public async Task<Result<UserResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<TokenResponse>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
+        var identityUser = await _identityService.GetByEmailAsync(request.Email);
 
-        if (user is null || _passwordHasher.Verify(request.Password, user.PasswordHash))
+        if (identityUser is null)
         {
             return new Error("User.WrongEmailOrPassword", "Wrong email or password.");
         }
 
-        if (!user.EmailConfirmed)
+        var loginResult = await _identityService.LoginAsync(
+            identityUser,
+            password: request.Password);
+
+        if (loginResult.IsFailure)
         {
-            return new Error("User.EmailNotConfirmed", "Confirm your email to log in.");
+            return new Error("User.WrongEmailOrPassword", "Wrong email or password.");
         }
 
-        var token = _tokenService.GenerateAccessToken(user);
+        var token = _tokenService.GenerateAccessToken(identityUser);
 
-        return _mapper.Map(user);
+        return new TokenResponse(token);
     }
 }

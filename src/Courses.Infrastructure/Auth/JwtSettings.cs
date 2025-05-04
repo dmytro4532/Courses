@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Courses.Infrastructure.Auth;
 
@@ -15,4 +16,6 @@ public class JwtSettings
     public int ExpirationTimeInMinutes { get; init; } = 20;
 
     public string SecurityAlgorithm = SecurityAlgorithms.HmacSha256;
+
+    public SymmetricSecurityKey SigningKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
 }

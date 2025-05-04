@@ -1,7 +1,7 @@
-﻿using Courses.Domain.User;
+﻿using Courses.Application.Users.Identity;
 
 namespace Courses.Application.Abstractions.Services;
 public interface ITokenService
 {
-    string GenerateAccessToken(User user);
+    string GenerateAccessToken(ApplicationUser user);
 }

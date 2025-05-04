@@ -1,25 +1,25 @@
 ﻿using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Messaging;
-using Courses.Application.Users.Dto;
+using Courses.Application.Courses.Dto;
 using Courses.Domain.Courses;
 using Shared.Results;
 using Shared.Results.Errors;
 
 namespace Courses.Application.Courses.Queries.GetArticle;
 
-internal sealed class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, Result<UserResponse>>
+internal sealed class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, Result<CourseResponse>>
 {
-    private readonly IUserRepository _articleRepository;
-    private readonly Mapper<Course, UserResponse> _mapper;
+    private readonly ICourseRepository _articleRepository;
+    private readonly Mapper<Course, CourseResponse> _mapper;
 
-    public GetArticleQueryHandler(IUserRepository articleRepository, Mapper<Course, UserResponse> mapper)
+    public GetArticleQueryHandler(ICourseRepository articleRepository, Mapper<Course, CourseResponse> mapper)
     {
         _articleRepository = articleRepository;
         _mapper = mapper;
     }
 
-    public async Task<Result<UserResponse>> Handle(GetArticleQuery request, CancellationToken cancellationToken)
+    public async Task<Result<CourseResponse>> Handle(GetArticleQuery request, CancellationToken cancellationToken)
     {
         var article = await _articleRepository.GetByIdAsync(request.ArticleId, cancellationToken);
 

@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Courses.Infrastructure.Persistance.Repositories;
 
-internal sealed class ArticleRepository : IUserRepository
+internal sealed class CourseRepository : ICourseRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public ArticleRepository(ApplicationDbContext context)
+    public CourseRepository(ApplicationDbContext context)
         => _context = context;
 
     public async Task<Course?> GetByIdAsync(Guid articleId, CancellationToken cancellationToken)

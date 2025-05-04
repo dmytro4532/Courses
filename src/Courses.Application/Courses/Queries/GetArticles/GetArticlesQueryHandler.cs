@@ -2,24 +2,25 @@
 using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Common.Models;
+using Courses.Application.Courses.Dto;
 using Courses.Application.Users.Dto;
 using Courses.Domain.Courses;
 using Shared.Results;
 
 namespace Courses.Application.Courses.Queries.GetArticles;
 
-internal sealed class GetArticlesQueryHandler : IQueryHandler<GetArticlesQuery, Result<PagedList<UserResponse>>>
+internal sealed class GetArticlesQueryHandler : IQueryHandler<GetArticlesQuery, Result<PagedList<CourseResponse>>>
 {
-    private readonly IUserRepository _articleRepository;
-    private readonly Mapper<Course, UserResponse> _mapper;
+    private readonly ICourseRepository _articleRepository;
+    private readonly Mapper<Course, CourseResponse> _mapper;
 
-    public GetArticlesQueryHandler(IUserRepository articleRepository, Mapper<Course, UserResponse> mapper)
+    public GetArticlesQueryHandler(ICourseRepository articleRepository, Mapper<Course, CourseResponse> mapper)
     {
         _articleRepository = articleRepository;
         _mapper = mapper;
     }
 
-    public async Task<Result<PagedList<UserResponse>>> Handle(GetArticlesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PagedList<CourseResponse>>> Handle(GetArticlesQuery request, CancellationToken cancellationToken)
     {
         var articles = _mapper.Map(
             await _articleRepository.Get(
@@ -31,6 +32,6 @@ internal sealed class GetArticlesQueryHandler : IQueryHandler<GetArticlesQuery, 
 
         var totalCount = await _articleRepository.CountAsync(cancellationToken);
 
-        return new PagedList<UserResponse>(articles, request.PageIndex, request.PageSize, totalCount);
+        return new PagedList<CourseResponse>(articles, request.PageIndex, request.PageSize, totalCount);
     }
 }

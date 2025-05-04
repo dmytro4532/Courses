@@ -1,11 +1,11 @@
 ﻿using Courses.Application.Abstractions.Messaging;
-using Courses.Domain.User.DomainEvents;
+using Courses.Domain.Courses.DomainEvents;
 using Microsoft.Extensions.Logging;
 
 namespace Courses.Application.Courses.Commands.CreateCourse;
 
 internal sealed class ArticleCreatedDomainEventHandler
-        : IDomainEventHandler<UserCreatedDomainEvent>
+        : IDomainEventHandler<CourseCreatedDomainEvent>
 {
     private readonly ILogger<ArticleCreatedDomainEventHandler> _logger;
 
@@ -14,7 +14,7 @@ internal sealed class ArticleCreatedDomainEventHandler
         _logger = logger;
     }
 
-    public Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
+    public Task Handle(CourseCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Course created: {ArticleId}", notification.ArticleId);
 

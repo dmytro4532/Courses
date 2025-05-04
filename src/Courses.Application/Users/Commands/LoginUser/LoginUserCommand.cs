@@ -4,4 +4,4 @@ using Shared.Results;
 
 namespace Courses.Application.Users.Commands.LoginUser;
 
-public record LoginUserCommand(string Email, string Password) : IRequest<Result<UserResponse>>;
+public record LoginUserCommand(string Email, string Password) : IRequest<Result<TokenResponse>>;

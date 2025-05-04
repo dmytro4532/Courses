@@ -1,4 +1,5 @@
-﻿using Courses.Domain.User;
+﻿using Courses.Application.Abstractions.Services;
+using Courses.Application.Users.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Courses.Infrastructure.Auth;
 
-public class TokenService
+public class TokenService : ITokenService
 {
     private readonly JwtSettings _jwtSettings;
     private readonly SymmetricSecurityKey _symmetricSecurityKey;
@@ -19,7 +20,7 @@ public class TokenService
         _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
     }
 
-    public string GenerateAccessToken(User user)
+    public string GenerateAccessToken(ApplicationUser user)
     {
         var claims = GenerateClaims(user);
 
@@ -31,6 +32,7 @@ public class TokenService
 
         return GetJwtTokenString(token);
     }
+
     private JwtSecurityToken GenerateJwt(
         Claim[] claims,
         SigningCredentials credentials)
@@ -49,13 +51,13 @@ public class TokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private Claim[] GenerateClaims(User user)
+    private Claim[] GenerateClaims(ApplicationUser user)
     {
         return
         [
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new(JwtRegisteredClaimNames.Email, user.Email.Value.ToString()),
-                new("role", user.Role.ToString())
+            new(JwtRegisteredClaimNames.Email, user.Email!.ToString()),
+            new("role", user.Role.ToString()),
         ];
     }
 }
