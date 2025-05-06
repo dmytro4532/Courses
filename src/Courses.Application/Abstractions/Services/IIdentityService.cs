@@ -14,6 +14,10 @@ public interface IIdentityService
 
     Task CreateAsync(ApplicationUser identityUser, string password);
 
+    Task<Result> ConfirmEmailAsync(
+        ApplicationUser identityUser,
+        string token);
+
     Task DeleteAsync(ApplicationUser identityUser);
 
     Task AddToRoleAsync(ApplicationUser identityUser, string roleName);

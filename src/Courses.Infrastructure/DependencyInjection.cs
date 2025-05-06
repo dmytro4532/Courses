@@ -4,6 +4,7 @@ using Courses.Application.Abstractions.Services;
 using Courses.Application.Users.Identity;
 using Courses.Infrastructure.Auth;
 using Courses.Infrastructure.BackgroundJobs;
+using Courses.Infrastructure.Mail;
 using Courses.Infrastructure.Persistance;
 using Courses.Infrastructure.Persistance.Interceptors;
 using Courses.Infrastructure.Persistance.Outbox;
@@ -30,6 +31,12 @@ public static class DependencyInjection
 
         services.AddOptions<JwtSettings>()
             .BindConfiguration(JwtSettings.SectionName);
+
+        services.AddOptions<EmailSettings>()
+            .BindConfiguration(EmailSettings.SectionName);
+
+        services.AddOptions<LinkSettings>()
+            .BindConfiguration(LinkSettings.SectionName);
 
         services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
@@ -66,6 +73,11 @@ public static class DependencyInjection
 
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddSingleton<LinkFactory>();
+        services.AddScoped<EmailTokenService>();
+
+        services.AddScoped<IEmailService, EmailService>();
 
         services.AddBackGroundJobs();
 

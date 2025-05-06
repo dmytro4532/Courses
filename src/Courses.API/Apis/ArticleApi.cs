@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Courses.Application.Courses.Queries.GetArticles;
 using Courses.Application.Courses.Commands.UpdateArticle;
 using Courses.Application.Courses.Commands.CreateCourse;
-using Courses.Application.Users.Dto;
 using Courses.Application.Courses.Commands.DeleteArticle;
 using Courses.Application.Courses.Queries.GetArticle;
 using Courses.Application.Courses.Dto;

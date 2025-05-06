@@ -1,6 +1,8 @@
-﻿namespace Courses.Application.Abstractions.Services;
+﻿using Courses.Domain.User;
+
+namespace Courses.Application.Abstractions.Services;
 
 public interface IEmailService
 {
-    public Task SendEmailAsync(string to, string subject, string body);
+    public Task SendConfirmaitionEmailAsync(Guid userId, string email);
 }

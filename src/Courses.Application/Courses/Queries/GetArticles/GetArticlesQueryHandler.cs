@@ -3,7 +3,6 @@ using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Common.Models;
 using Courses.Application.Courses.Dto;
-using Courses.Application.Users.Dto;
 using Courses.Domain.Courses;
 using Shared.Results;
 

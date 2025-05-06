@@ -1,28 +1,29 @@
-using Courses.Application.Abstractions.Data;
+﻿using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Services;
 using Courses.Application.Common.Exceptions;
+using Courses.Application.Users.Commands.ConfirmEmail;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;
 
-namespace Courses.Application.Users.Commands.DeleteUser;
+namespace Courses.Application.Users.Commands.CreateUser;
 
-internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result>
+internal sealed class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Result>
 {
     private readonly IUserRepository _userRepository;
     private readonly IIdentityService _identityService;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteUserCommandHandler(IUserRepository userRepository, IIdentityService identityService, IUnitOfWork unitOfWork)
+    public ConfirmEmailHandler(IUserRepository userRepository,
+        IIdentityService identityService)
     {
         _userRepository = userRepository;
         _identityService = identityService;
-        _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
+
         var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
 
         if (user is null)
@@ -33,11 +34,11 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserComma
         var identityUser = await _identityService.GetByEmailAsync(user.Email)
             ?? throw new InconsistentDataException($"Identity with email '{user.Email}' not found");
 
-        user.Delete();
-        _userRepository.Remove(user);
-        await _identityService.DeleteAsync(identityUser);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        if (identityUser.EmailConfirmed)
+        {
+            return new NotFoundError("User.EmailAlreadyConfirmed", "Email already confirmed.");
+        }
 
-        return Result.Success();
+        return await _identityService.ConfirmEmailAsync(identityUser, request.Token);
     }
 }

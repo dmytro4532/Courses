@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using Courses.Application.Users.Commands.ConfirmEmail;
+using Courses.Domain.User;
+using FluentValidation;
 
 namespace Courses.Application.Users.Commands.DeleteUser;
 

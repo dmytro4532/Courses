@@ -26,6 +26,11 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
             return new Error("User.WrongEmailOrPassword", "Wrong email or password.");
         }
 
+        if (!identityUser.EmailConfirmed)
+        {
+            return new Error("User.EmailNotConfirmed", "Confirm your email to log in.");
+        }
+
         var loginResult = await _identityService.LoginAsync(
             identityUser,
             password: request.Password);

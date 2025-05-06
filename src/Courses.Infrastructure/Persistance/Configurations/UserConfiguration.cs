@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Courses.Domain.Courses;
 using Courses.Domain.User;
 
 namespace Courses.Infrastructure.Persistance.Configurations;

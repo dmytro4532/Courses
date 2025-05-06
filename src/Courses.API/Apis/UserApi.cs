@@ -2,22 +2,16 @@
 using Courses.API.Extensions;
 using Courses.API.Services;
 using Courses.Application.Common.Models;
+using Courses.Application.Users.Commands.ConfirmEmail;
+using Courses.Application.Users.Commands.CreateUser;
+using Courses.Application.Users.Commands.DeleteUser;
+using Courses.Application.Users.Commands.LoginUser;
+using Courses.Application.Users.Commands.UpdateUser;
+using Courses.Application.Users.Dto;
+using Courses.Application.Users.Queries.GetArticle;
+using Courses.Application.Users.Queries.GetArticles;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Courses.Application.Courses.Queries.GetArticles;
-using Courses.Application.Courses.Commands.UpdateArticle;
-using Courses.Application.Courses.Commands.CreateCourse;
-using Courses.Application.Users.Dto;
-using Courses.Application.Courses.Commands.DeleteArticle;
-using Courses.Application.Courses.Queries.GetArticle;
-using Courses.Application.Courses.Dto;
-using Courses.Application.Users.Queries.GetArticles;
-using Courses.Application.Users.Queries.GetArticle;
-using Courses.Application.Users.Commands.CreateUser;
-using Courses.Application.Users.Commands.UpdateUser;
-using Courses.Application.Users.Commands.DeleteUser;
-using Microsoft.AspNetCore.Identity.Data;
-using Courses.Application.Users.Commands.LoginUser;
 
 namespace Courses.API.Apis;
 
@@ -30,10 +24,12 @@ public static class UserApi
         api.MapGet("/", GetUsersAsync);
         api.MapGet("{userId:guid}", GetUserAsync);
 
+        api.MapGet("/confirm-email", ConfirmEmailAsync);
         api.MapPost("/register", RegisterUserAsync);
         api.MapPost("/login", LoginUserAsync);
-        api.MapPut("/", UpdateUserAsync);
-        api.MapDelete("/{userId:guid}", DeleteUserAsync);
+
+        api.MapPut("/", UpdateUserAsync).RequireAuthorization();
+        api.MapDelete("/{userId:guid}", DeleteUserAsync).RequireAuthorization();
 
         return api;
     }
@@ -79,6 +75,18 @@ public static class UserApi
         var result = await services.Sender.Send(request);
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
+    }
+
+    [ProducesResponseType<Ok>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
+    public static async Task<Results<Ok, ProblemHttpResult>> ConfirmEmailAsync(
+        [AsParameters] UserServices services,
+        [FromQuery] Guid userId,
+        [FromQuery] string token)
+    {
+        var result = await services.Sender.Send(new ConfirmEmailCommand(userId, token));
+
+        return result.IsSuccess ? TypedResults.Ok() : result.ToProblemHttpResult();
     }
 
     [ProducesResponseType<Ok<UserResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
