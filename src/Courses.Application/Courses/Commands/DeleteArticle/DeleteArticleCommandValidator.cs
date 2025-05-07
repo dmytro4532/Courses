@@ -4,11 +4,11 @@ using FluentValidation;
 namespace Courses.Application.Courses.Commands.DeleteArticle;
 
 internal sealed class DeleteArticleCommandValidator
-    : AbstractValidator<DeleteUserCommand>
+    : AbstractValidator<DeleteArticleCommand>
 {
     public DeleteArticleCommandValidator()
     {
-        RuleFor(x => x.UserId)
+        RuleFor(x => x.ArticleId)
             .NotEmpty();
     }
 }
