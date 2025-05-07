@@ -106,10 +106,9 @@ public static class UserApi
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     public static async Task<Results<Ok, ProblemHttpResult>> DeleteUserAsync(
-        [AsParameters] UserServices services,
-        Guid userId)
+        [AsParameters] UserServices services)
     {
-        var result = await services.Sender.Send(new DeleteUserCommand(userId));
+        var result = await services.Sender.Send(new DeleteUserCommand());
 
         return result.IsSuccess ? TypedResults.Ok() : result.ToProblemHttpResult();
     }

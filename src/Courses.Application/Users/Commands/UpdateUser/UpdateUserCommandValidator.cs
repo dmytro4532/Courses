@@ -8,9 +8,6 @@ internal sealed class UpdateUserCommandValidator
 {
     public UpdateUserCommandValidator()
     {
-        RuleFor(x => x.Id)
-            .NotEmpty();
-
         RuleFor(x => x.Username)
             .NotEmpty()
             .MaximumLength(Username.MaxLength);

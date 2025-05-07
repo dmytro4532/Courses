@@ -10,12 +10,14 @@ namespace Courses.Application.Users.Commands.DeleteUser;
 
 internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Result>
 {
+    private readonly IUserContext _userContext;
     private readonly IUserRepository _userRepository;
     private readonly IIdentityService _identityService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteUserCommandHandler(IUserRepository userRepository, IIdentityService identityService, IUnitOfWork unitOfWork)
+    public DeleteUserCommandHandler(IUserContext userContext, IUserRepository userRepository, IIdentityService identityService, IUnitOfWork unitOfWork)
     {
+        _userContext = userContext;
         _userRepository = userRepository;
         _identityService = identityService;
         _unitOfWork = unitOfWork;
@@ -23,7 +25,7 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserComma
 
     public async Task<Result> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(_userContext.UserId, cancellationToken);
 
         if (user is null)
         {
