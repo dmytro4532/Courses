@@ -1,12 +1,12 @@
 ﻿using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Articles.Dto;
-using Courses.Domain.Articles;
+using Courses.Application.Courses.Dto;
+using Courses.Domain.Courses;
 using MediatR;
 using Shared.Results;
 
-namespace Courses.Application.Articles.Commands.CreateArticle;
+namespace Courses.Application.Courses.Commands.CreateCourse;
 
 internal sealed class CreateArticleCommandHandler : IRequestHandler<CreateCourseCommand, Result<CourseResponse>>
 {

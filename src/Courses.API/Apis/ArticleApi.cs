@@ -1,16 +1,15 @@
 ﻿using System.Net.Mime;
-using Courses.Application.Articles.Commands.DeleteArticle;
-using Courses.Application.Articles.Queries.GetArticle;
 using Courses.API.Extensions;
 using Courses.API.Services;
-using Courses.Application.Articles.Commands.CreateArticle;
-using Courses.Application.Articles.Commands.UpdateArticle;
-using Courses.Application.Articles.Dto;
-using Courses.Application.Articles.Queries.GetArticles;
 using Courses.Application.Common.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Results;
+using Courses.Application.Courses.Queries.GetArticles;
+using Courses.Application.Courses.Commands.UpdateArticle;
+using Courses.Application.Courses.Commands.CreateCourse;
+using Courses.Application.Courses.Commands.DeleteArticle;
+using Courses.Application.Courses.Queries.GetArticle;
+using Courses.Application.Courses.Dto;
 
 namespace Courses.API.Apis;
 
@@ -23,9 +22,9 @@ public static class ArticleApi
         api.MapGet("/", GetArticlesAsync);
         api.MapGet("{articleId:guid}", GetArticleAsync);
 
-        api.MapPost("/", CreateArticleAsync);
-        api.MapPut("/", UpdateArticleAsync);
-        api.MapDelete("/{articleId:guid}", DeleteArticleAsync);
+        api.MapPost("/", CreateArticleAsync).RequireAuthorization();
+        api.MapPut("/", UpdateArticleAsync).RequireAuthorization();
+        api.MapDelete("/{articleId:guid}", DeleteArticleAsync).RequireAuthorization();
 
         return api;
     }

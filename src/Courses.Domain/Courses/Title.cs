@@ -1,7 +1,7 @@
 ﻿using Courses.Domain.Common;
 using Courses.Domain.Common.Guards;
 
-namespace Courses.Domain.Articles;
+namespace Courses.Domain.Courses;
 
 public class Title : ValueObject
 {
@@ -11,7 +11,7 @@ public class Title : ValueObject
 
     public string Value { get; }
 
-    public static implicit operator string(Title name) => name.Value;
+    public static implicit operator string(Title title) => title.Value;
 
     public static Title Create(string title)
     {

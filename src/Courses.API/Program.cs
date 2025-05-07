@@ -28,9 +28,12 @@ if (app.Environment.IsDevelopment())
 app.ApplyMigrations();
 
 app.UseCors();
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
 app.MapArticlesApi();
+app.MapUsersApi();
 
 app.Run();

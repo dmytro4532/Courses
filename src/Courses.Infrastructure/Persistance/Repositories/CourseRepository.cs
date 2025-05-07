@@ -1,17 +1,16 @@
 ﻿using System.Linq.Expressions;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Common.Extensions;
-using Courses.Domain.Articles;
-using Courses.Infrastructure.Persistance;
+using Courses.Domain.Courses;
 using Microsoft.EntityFrameworkCore;
 
 namespace Courses.Infrastructure.Persistance.Repositories;
 
-internal sealed class ArticleRepository : ICourseRepository
+internal sealed class CourseRepository : ICourseRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public ArticleRepository(ApplicationDbContext context)
+    public CourseRepository(ApplicationDbContext context)
         => _context = context;
 
     public async Task<Course?> GetByIdAsync(Guid articleId, CancellationToken cancellationToken)

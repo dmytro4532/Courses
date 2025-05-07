@@ -1,4 +1,4 @@
-﻿using Courses.Domain.Articles;
+﻿using Courses.Domain.Courses;
 
 namespace Courses.Application.Abstractions.Data.Repositories;
 

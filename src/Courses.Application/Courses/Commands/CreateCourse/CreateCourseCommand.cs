@@ -1,7 +1,7 @@
-﻿using Courses.Application.Articles.Dto;
+﻿using Courses.Application.Courses.Dto;
 using MediatR;
 using Shared.Results;
 
-namespace Courses.Application.Articles.Commands.CreateArticle;
+namespace Courses.Application.Courses.Commands.CreateCourse;
 
 public record CreateCourseCommand(string Title, string Description) : IRequest<Result<CourseResponse>>;

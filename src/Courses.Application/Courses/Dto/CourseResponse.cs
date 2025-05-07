@@ -1,4 +1,4 @@
-﻿namespace Courses.Application.Articles.Dto;
+﻿namespace Courses.Application.Courses.Dto;
 
 public record CourseResponse(
     Guid Id,

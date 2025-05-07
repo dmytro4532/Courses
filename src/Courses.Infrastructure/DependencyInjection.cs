@@ -1,14 +1,21 @@
 ﻿using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
+using Courses.Application.Abstractions.Services;
+using Courses.Application.Users.Identity;
+using Courses.Infrastructure.Auth;
 using Courses.Infrastructure.BackgroundJobs;
+using Courses.Infrastructure.Mail;
 using Courses.Infrastructure.Persistance;
 using Courses.Infrastructure.Persistance.Interceptors;
 using Courses.Infrastructure.Persistance.Outbox;
 using Courses.Infrastructure.Persistance.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Quartz;
 
 namespace Courses.Infrastructure;
@@ -21,6 +28,15 @@ public static class DependencyInjection
     {
         services.AddOptions<OutboxSettings>()
             .BindConfiguration(OutboxSettings.SectionName);
+
+        services.AddOptions<JwtSettings>()
+            .BindConfiguration(JwtSettings.SectionName);
+
+        services.AddOptions<EmailSettings>()
+            .BindConfiguration(EmailSettings.SectionName);
+
+        services.AddOptions<LinkSettings>()
+            .BindConfiguration(LinkSettings.SectionName);
 
         services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
@@ -35,11 +51,57 @@ public static class DependencyInjection
                     serviceProvider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>())
         );
 
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            options.Tokens.AuthenticatorTokenProvider = "Default";
+            options.Password = new PasswordOptions
+            {
+                RequireDigit = false,
+                RequireLowercase = false,
+                RequireNonAlphanumeric = false,
+                RequireUppercase = false,
+                RequiredLength = 8,
+                RequiredUniqueChars = 1
+            };
+        })
+        .AddRoleManager<RoleManager<IdentityRole>>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
 
-        services.AddScoped<ICourseRepository, ArticleRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<ITokenService, TokenService>();
+
+        services.AddScoped<ICourseRepository, CourseRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddSingleton<LinkFactory>();
+        services.AddScoped<EmailTokenService>();
+
+        services.AddScoped<IEmailService, EmailService>();
 
         services.AddBackGroundJobs();
+
+        var jwtSettings = services.BuildServiceProvider().GetRequiredService<IOptions<JwtSettings>>().Value;
+
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(
+            options => options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+                IssuerSigningKey = jwtSettings.SigningKey,
+            });
+
+        services.AddAuthorization();
     }
 
     private static void AddBackGroundJobs(

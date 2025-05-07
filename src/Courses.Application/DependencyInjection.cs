@@ -1,9 +1,13 @@
 ﻿using System.Reflection;
 using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Articles.Dto;
-using Courses.Application.Articles.Mappers;
 using Courses.Application.Behaviors;
-using Courses.Domain.Articles;
+using Courses.Application.Courses.Dto;
+using Courses.Application.Courses.Mappers;
+using Courses.Application.Users.Dto;
+using Courses.Application.Users.Identity;
+using Courses.Application.Users.Mappers;
+using Courses.Domain.Courses;
+using Courses.Domain.User;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +31,9 @@ public static class DependencyInjection
 
     public static IServiceCollection AddMappers(this IServiceCollection services)
     {
-        services.AddScoped<Mapper<Course, CourseResponse>, ArticleResponseMapper>();
+        services.AddScoped<Mapper<Course, CourseResponse>, CourseResponseMapper>();
+        services.AddScoped<Mapper<User, UserResponse>, UserResponseMapper>();
+        services.AddScoped<Mapper<User, ApplicationUser>, ApplicationUserMapper>();
 
         return services;
     }

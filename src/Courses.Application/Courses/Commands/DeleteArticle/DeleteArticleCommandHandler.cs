@@ -4,22 +4,22 @@ using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;
 
-namespace Courses.Application.Articles.Commands.DeleteArticle;
+namespace Courses.Application.Courses.Commands.DeleteArticle;
 
 internal sealed class DeleteArticleCommandHandler : IRequestHandler<DeleteArticleCommand, Result>
 {
-    private readonly ICourseRepository _articleRepository;
+    private readonly IUserRepository _courseRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteArticleCommandHandler(ICourseRepository articleRepository, IUnitOfWork unitOfWork)
+    public DeleteArticleCommandHandler(IUserRepository courseRepository, IUnitOfWork unitOfWork)
     {
-        _articleRepository = articleRepository;
+        _courseRepository = courseRepository;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
     {
-        var article = await _articleRepository.GetByIdAsync(request.ArticleId, cancellationToken);
+        var article = await _courseRepository.GetByIdAsync(request.ArticleId, cancellationToken);
 
         if (article is null)
         {
@@ -27,7 +27,7 @@ internal sealed class DeleteArticleCommandHandler : IRequestHandler<DeleteArticl
         }
 
         article.Delete();
-        _articleRepository.Remove(article);
+        _courseRepository.Remove(article);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
