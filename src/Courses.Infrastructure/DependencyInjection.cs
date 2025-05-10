@@ -23,6 +23,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using Courses.Infrastructure.Extensions.DI;
 
 namespace Courses.Infrastructure;
 
@@ -32,130 +33,13 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddOptions<OutboxSettings>()
-            .BindConfiguration(OutboxSettings.SectionName);
-
-        services.AddOptions<JwtSettings>()
-            .BindConfiguration(JwtSettings.SectionName);
-
-        services.AddOptions<EmailSettings>()
-            .BindConfiguration(EmailSettings.SectionName);
-
-        services.AddOptions<LinkSettings>()
-            .BindConfiguration(LinkSettings.SectionName);
-
-        services.AddOptions<S3Settings>()
-            .BindConfiguration(S3Settings.SectionName);
-
-        services.AddOptions<FileSettings>()
-            .BindConfiguration(FileSettings.SectionName);
-
-        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-
-        string connectionString =
-                configuration.GetConnectionString("Database")
-                ?? throw new ArgumentNullException(nameof(configuration));
-
-        services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
-            options
-                .UseNpgsql(connectionString)
-                .AddInterceptors(
-                    serviceProvider.GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>())
-        );
-
-        services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-            options.Tokens.AuthenticatorTokenProvider = "Default";
-            options.Password = new PasswordOptions
-            {
-                RequireDigit = false,
-                RequireLowercase = false,
-                RequireNonAlphanumeric = false,
-                RequireUppercase = false,
-                RequiredLength = 8,
-                RequiredUniqueChars = 1
-            };
-        })
-        .AddRoleManager<RoleManager<IdentityRole>>()
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
-
-        var s3Settings = services.BuildServiceProvider().GetRequiredService<IOptions<S3Settings>>().Value;
-
-        services.AddScoped<IAmazonS3>(
-            sp =>
-            {
-                var config = new AmazonS3Config
-                {
-                    RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region),
-                    DefaultAWSCredentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey),
-
-                };
-
-                return new AmazonS3Client(config);
-            });
-
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IIdentityService, IdentityService>();
-        services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IUserContext, UserContext>();
-
-        services.AddScoped<ICourseRepository, CourseRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
-
-        services.AddSingleton<LinkFactory>();
-        services.AddScoped<EmailTokenService>();
-
-        services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<IFileStorageService, S3FileStorageService>();
-
-        services.AddBackGroundJobs();
-
-        var jwtSettings = services.BuildServiceProvider().GetRequiredService<IOptions<JwtSettings>>().Value;
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(
-            options => options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = jwtSettings.SigningKey,
-            });
-
-        services.AddAuthorization();
-    }
-
-    private static void AddBackGroundJobs(
-        this IServiceCollection services)
-    {
-        services.AddScoped<IJob, ProcessOutboxMessagesJob>();
-
-        OutboxSettings settings = services.BuildServiceProvider()
-            .GetRequiredService<IOptions<OutboxSettings>>().Value;
-
-        services.AddQuartz(configure =>
-        {
-            var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
-
-            configure
-                .AddJob<ProcessOutboxMessagesJob>(jobKey)
-                .AddTrigger(
-                    trigger =>
-                        trigger.ForJob(jobKey)
-                            .WithSimpleSchedule(
-                                schedule =>
-                                    schedule.WithIntervalInSeconds(settings.JobIntervalSeconds)
-                                        .RepeatForever()));
-        });
-
-        services.AddQuartzHostedService();
+        services
+            .AddSettings()
+            .AddDatabase(configuration)
+            .AddIdentity()
+            .AddStorage()
+            .AddRepositories()
+            .AddEmail()
+            .AddBackgroundJobs();
     }
 }
