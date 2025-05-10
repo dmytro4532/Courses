@@ -11,6 +11,7 @@ public static class RepositoryExtensions
     {
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITopicRepository, TopicRepository>();
 
         return services;
     }

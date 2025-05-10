@@ -11,6 +11,8 @@ using Courses.Application.Courses.Commands.DeleteArticle;
 using Courses.Application.Courses.Queries.GetArticle;
 using Courses.Application.Courses.Dto;
 using Courses.Application.Courses.Commands.UpdateImage;
+using Shared.Results;
+using Shared.Results.Errors;
 
 namespace Courses.API.Apis;
 
@@ -18,15 +20,15 @@ public static class CoursesApi
 {
     public static RouteGroupBuilder MapCoursesApi(this IEndpointRouteBuilder app)
     {
-        var api = app.MapGroup("api/Articles").WithTags("Articles").DisableAntiforgery();
+        var api = app.MapGroup("api/Courses").WithTags("Courses").DisableAntiforgery();
         
         api.MapGet("/", GetArticlesAsync);
-        api.MapGet("{articleId:guid}", GetArticleAsync);
+        api.MapGet("{courseId:guid}", GetArticleAsync);
 
         api.MapPost("/", CreateCourseAsync).RequireAuthorization();
+        api.MapPut("/{courseId:guid}/", UpdateArticleAsync).RequireAuthorization();
         api.MapPost("/{courseId:guid}/image", UpdateImageAsync).RequireAuthorization();
-        api.MapPut("/", UpdateArticleAsync).RequireAuthorization();
-        api.MapDelete("/{articleId:guid}", DeleteArticleAsync).RequireAuthorization();
+        api.MapDelete("/{courseId:guid}", DeleteArticleAsync).RequireAuthorization();
 
         return api;
     }
@@ -45,9 +47,9 @@ public static class CoursesApi
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> GetArticleAsync(
         [AsParameters] ArticleServices services,
-        Guid articleId)
+        Guid courseId)
     {
-        var result = await services.Sender.Send(new GetArticleQuery(articleId));
+        var result = await services.Sender.Send(new GetArticleQuery(courseId));
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
     }
@@ -68,8 +70,16 @@ public static class CoursesApi
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> UpdateArticleAsync(
         [AsParameters] ArticleServices services,
+        Guid courseId,
         UpdateArticleCommand request)
     {
+        if (courseId != request.Id)
+        {
+            return Result.Failure<CourseResponse>(new Error(
+                "Course.IdMismatch",
+                "The ID in the route does not match the ID in the request body.")).ToProblemHttpResult();
+        }
+
         var result = await services.Sender.Send(request);
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
@@ -80,10 +90,9 @@ public static class CoursesApi
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     public static async Task<Results<Ok, ProblemHttpResult>> UpdateImageAsync(
     [AsParameters] ArticleServices services,
-    Guid courseId,
-    IFormFile? image)
+    [FromForm] UpdateImageCommand request)
     {
-        var result = await services.Sender.Send(new UpdateImageCommand(courseId, image));
+        var result = await services.Sender.Send(request);
 
         return result.IsSuccess ? TypedResults.Ok() : result.ToProblemHttpResult();
     }
@@ -94,9 +103,9 @@ public static class CoursesApi
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     public static async Task<Results<Ok, ProblemHttpResult>> DeleteArticleAsync(
         [AsParameters] ArticleServices services,
-        Guid articleId)
+        Guid courseId)
     {
-        var result = await services.Sender.Send(new DeleteArticleCommand(articleId));
+        var result = await services.Sender.Send(new DeleteArticleCommand(courseId));
 
         return result.IsSuccess ? TypedResults.Ok() : result.ToProblemHttpResult();
     }
