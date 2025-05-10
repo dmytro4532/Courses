@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -52,6 +53,7 @@ public partial class InitialCreate : Migration
                 Id = table.Column<Guid>(type: "uuid", nullable: false),
                 Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                 Description = table.Column<string>(type: "character varying(50000)", maxLength: 50000, nullable: false),
+                Image = table.Column<string>(type: "text", nullable: true),
                 CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                 UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                 DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),

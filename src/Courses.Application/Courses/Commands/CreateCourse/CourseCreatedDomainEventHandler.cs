@@ -4,12 +4,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Courses.Application.Courses.Commands.CreateCourse;
 
-internal sealed class ArticleCreatedDomainEventHandler
+internal sealed class CourseCreatedDomainEventHandler
         : IDomainEventHandler<CourseCreatedDomainEvent>
 {
-    private readonly ILogger<ArticleCreatedDomainEventHandler> _logger;
+    private readonly ILogger<CourseCreatedDomainEventHandler> _logger;
 
-    public ArticleCreatedDomainEventHandler(ILogger<ArticleCreatedDomainEventHandler> logger)
+    public CourseCreatedDomainEventHandler(ILogger<CourseCreatedDomainEventHandler> logger)
     {
         _logger = logger;
     }

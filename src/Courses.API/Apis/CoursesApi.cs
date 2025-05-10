@@ -10,19 +10,21 @@ using Courses.Application.Courses.Commands.CreateCourse;
 using Courses.Application.Courses.Commands.DeleteArticle;
 using Courses.Application.Courses.Queries.GetArticle;
 using Courses.Application.Courses.Dto;
+using Courses.Application.Courses.Commands.UpdateImage;
 
 namespace Courses.API.Apis;
 
-public static class ArticleApi
+public static class CoursesApi
 {
-    public static RouteGroupBuilder MapArticlesApi(this IEndpointRouteBuilder app)
+    public static RouteGroupBuilder MapCoursesApi(this IEndpointRouteBuilder app)
     {
-        var api = app.MapGroup("api/Articles").WithTags("Articles");
-
+        var api = app.MapGroup("api/Articles").WithTags("Articles").DisableAntiforgery();
+        
         api.MapGet("/", GetArticlesAsync);
         api.MapGet("{articleId:guid}", GetArticleAsync);
 
-        api.MapPost("/", CreateArticleAsync).RequireAuthorization();
+        api.MapPost("/", CreateCourseAsync).RequireAuthorization();
+        api.MapPost("/{courseId:guid}/image", UpdateImageAsync).RequireAuthorization();
         api.MapPut("/", UpdateArticleAsync).RequireAuthorization();
         api.MapDelete("/{articleId:guid}", DeleteArticleAsync).RequireAuthorization();
 
@@ -52,9 +54,9 @@ public static class ArticleApi
 
     [ProducesResponseType<Ok<CourseResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
-    public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> CreateArticleAsync(
+    public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> CreateCourseAsync(
         [AsParameters] ArticleServices services,
-        CreateCourseCommand request)
+        [FromForm] CreateCourseCommand request)
     {
         var result = await services.Sender.Send(request);
 
@@ -71,6 +73,19 @@ public static class ArticleApi
         var result = await services.Sender.Send(request);
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
+    }
+
+    [ProducesResponseType<Ok>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
+    public static async Task<Results<Ok, ProblemHttpResult>> UpdateImageAsync(
+    [AsParameters] ArticleServices services,
+    Guid courseId,
+    IFormFile? image)
+    {
+        var result = await services.Sender.Send(new UpdateImageCommand(courseId, image));
+
+        return result.IsSuccess ? TypedResults.Ok() : result.ToProblemHttpResult();
     }
 
 

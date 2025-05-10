@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Courses.API.Apis;
 
-public static class UserApi
+public static class UsersApi
 {
     public static RouteGroupBuilder MapUsersApi(this IEndpointRouteBuilder app)
     {

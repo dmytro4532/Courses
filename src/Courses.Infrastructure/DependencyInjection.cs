@@ -1,6 +1,11 @@
-﻿using Courses.Application.Abstractions.Data;
+﻿using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
+using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Services;
+using Courses.Application.Common.Settings;
 using Courses.Application.Users.Identity;
 using Courses.Infrastructure.Auth;
 using Courses.Infrastructure.BackgroundJobs;
@@ -9,6 +14,7 @@ using Courses.Infrastructure.Persistance;
 using Courses.Infrastructure.Persistance.Interceptors;
 using Courses.Infrastructure.Persistance.Outbox;
 using Courses.Infrastructure.Persistance.Repositories;
+using Courses.Infrastructure.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +43,12 @@ public static class DependencyInjection
 
         services.AddOptions<LinkSettings>()
             .BindConfiguration(LinkSettings.SectionName);
+
+        services.AddOptions<S3Settings>()
+            .BindConfiguration(S3Settings.SectionName);
+
+        services.AddOptions<FileSettings>()
+            .BindConfiguration(FileSettings.SectionName);
 
         services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
@@ -67,6 +79,21 @@ public static class DependencyInjection
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders();
 
+        var s3Settings = services.BuildServiceProvider().GetRequiredService<IOptions<S3Settings>>().Value;
+
+        services.AddScoped<IAmazonS3>(
+            sp =>
+            {
+                var config = new AmazonS3Config
+                {
+                    RegionEndpoint = RegionEndpoint.GetBySystemName(s3Settings.Region),
+                    DefaultAWSCredentials = new BasicAWSCredentials(s3Settings.AccessKey, s3Settings.SecretKey),
+
+                };
+
+                return new AmazonS3Client(config);
+            });
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ITokenService, TokenService>();
@@ -79,6 +106,7 @@ public static class DependencyInjection
         services.AddScoped<EmailTokenService>();
 
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IFileStorageService, S3FileStorageService>();
 
         services.AddBackGroundJobs();
 

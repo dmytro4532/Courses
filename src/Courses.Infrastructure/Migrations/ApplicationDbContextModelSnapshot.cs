@@ -110,6 +110,9 @@ namespace Courses.Infrastructure.Migrations
                         .HasMaxLength(50000)
                         .HasColumnType("character varying(50000)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)

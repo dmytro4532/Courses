@@ -16,7 +16,7 @@ internal sealed class CourseConfiguration : IEntityTypeConfiguration<Course>
         builder.Property(course => course.Title)
             .HasMaxLength(Title.MaxLength)
             .HasConversion(
-                username => username.Value,
+                title => title.Value,
                 value => Title.Create(value));
 
         builder.Property(course => course.Description)

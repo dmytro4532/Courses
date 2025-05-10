@@ -9,6 +9,8 @@ public class Course : AggregateRoot
 
     public Description Description { get; private set; }
 
+    public string? Image { get; private set; }
+
     public DateTime CreatedAt { get; private set; }
 
     public DateTime? UpdatedAt { get; private set; }
@@ -19,11 +21,12 @@ public class Course : AggregateRoot
 
     private Course() { }
 
-    private Course(Guid id, Title title, Description description)
+    private Course(Guid id, Title title, Description description, string? image)
         : base(id)
     {
         Title = title;
         Description = description;
+        Image = image;
         CreatedAt = DateTime.UtcNow;
     }
 
@@ -31,6 +34,14 @@ public class Course : AggregateRoot
     {
         Title = title;
         Description = description;
+        UpdatedAt = DateTime.UtcNow;
+
+        AddDomainEvent(new CourseUpdatedDomainEvent(Guid.NewGuid(), Id));
+    }
+
+    public void UpdateImage(string? image)
+    {
+        Image = image;
         UpdatedAt = DateTime.UtcNow;
 
         AddDomainEvent(new CourseUpdatedDomainEvent(Guid.NewGuid(), Id));
@@ -44,12 +55,12 @@ public class Course : AggregateRoot
         AddDomainEvent(new CourseDeletedDomainEvent(Guid.NewGuid(), Id));
     }
 
-    public static Course Create(Guid id, Title title, Description description)
+    public static Course Create(Guid id, Title title, Description description, string? image)
     {
-        var article = new Course(id, title, description);
+        var course = new Course(id, title, description, image);
 
-        article.AddDomainEvent(new CourseCreatedDomainEvent(Guid.NewGuid(), article.Id));
+        course.AddDomainEvent(new CourseCreatedDomainEvent(Guid.NewGuid(), course.Id));
 
-        return article;
+        return course;
     }
 }

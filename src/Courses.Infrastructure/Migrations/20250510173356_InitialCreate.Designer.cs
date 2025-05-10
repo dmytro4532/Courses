@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Courses.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250504153549_InitialCreate")]
+    [Migration("20250510173356_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -112,6 +112,9 @@ namespace Courses.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50000)
                         .HasColumnType("character varying(50000)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
