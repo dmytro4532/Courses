@@ -18,7 +18,7 @@ internal sealed class CreateTopicCommandHandler : IRequestHandler<CreateTopicCom
     private readonly ICourseRepository _courseRepository;
     private readonly IFileStorageService _fileStorageService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly FileSettings _fileSettings;
+
     private readonly Mapper<Topic, TopicResponse> _mapper;
 
     public CreateTopicCommandHandler(
@@ -26,14 +26,12 @@ internal sealed class CreateTopicCommandHandler : IRequestHandler<CreateTopicCom
         ICourseRepository courseRepository,
         IFileStorageService fileStorageService,
         IUnitOfWork unitOfWork,
-        IOptions<FileSettings> fileSettings,
         Mapper<Topic, TopicResponse> mapper)
     {
         _topicRepository = topicRepository;
         _courseRepository = courseRepository;
         _fileStorageService = fileStorageService;
         _unitOfWork = unitOfWork;
-        _fileSettings = fileSettings.Value;
         _mapper = mapper;
     }
 

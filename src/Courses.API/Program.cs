@@ -38,5 +38,7 @@ app.UseHttpsRedirection();
 app.MapCoursesApi();
 app.MapUsersApi();
 app.MapTopicsApi();
+app.MapTestsApi();
+app.MapQuestionsApi();
 
 app.Run();

@@ -31,18 +31,27 @@ internal sealed class UpdateTopicMediaCommandHandler : IRequestHandler<UpdateTop
 
     public async Task<Result<TopicResponse>> Handle(UpdateTopicMediaCommand request, CancellationToken cancellationToken)
     {
-        var topic = await _topicRepository.GetByIdAsync(request.Id, cancellationToken);
+        var topic = await _topicRepository.GetByIdAsync(request.TopicId, cancellationToken);
 
         if (topic is null)
         {
             return new NotFoundError("Topic.NotFound", "The topic was not found.");
         }
 
-        var media = await _fileStorageService.SaveFileAsync(
-            request.Media.OpenReadStream(),
-            request.Media.ContentType);
+        string? newFileName = null;
+        if (request.Media != null)
+        {
+            newFileName = await _fileStorageService.SaveFileAsync(
+                request.Media.OpenReadStream(),
+                request.Media.ContentType);
+        }
 
-        topic.UpdateMedia(media);
+        if (!string.IsNullOrEmpty(topic.Media))
+        {
+            await _fileStorageService.DeleteFileAsync(topic.Media);
+        }
+
+        topic.UpdateMedia(newFileName);
 
         _topicRepository.Update(topic);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

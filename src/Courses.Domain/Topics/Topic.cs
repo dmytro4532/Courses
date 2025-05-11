@@ -1,10 +1,13 @@
 using Courses.Domain.Common;
 using Courses.Domain.Courses;
+using Courses.Domain.Tests;
 
 namespace Courses.Domain.Topics;
 
-public class Topic : Entity
+public class Topic : AggregateRoot
 {
+    private readonly HashSet<Test> _tests = [];
+
     public Title Title { get; private set; }
 
     public Content Content { get; private set; }
@@ -16,6 +19,8 @@ public class Topic : Entity
     public Guid CourseId { get; private set; }
 
     public Course Course { get; private set; }
+
+    public IReadOnlyCollection<Test> Tests => _tests;
 
     private Topic() { }
 
@@ -43,6 +48,16 @@ public class Topic : Entity
     public void UpdateOrder(int order)
     {
         Order = order;
+    }
+
+    public void AddTest(Test test)
+    {
+        _tests.Add(test);
+    }
+
+    public void RemoveTest(Test test)
+    {
+        _tests.Remove(test);
     }
 
     public static Topic Create(Guid id, Title title, Content content, string? media, int order, Guid courseId)

@@ -194,6 +194,72 @@ public partial class InitialCreate : Migration
                     onDelete: ReferentialAction.Cascade);
             });
 
+        migrationBuilder.CreateTable(
+            name: "Topic",
+            columns: table => new
+            {
+                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                Content = table.Column<string>(type: "character varying(10000)", maxLength: 10000, nullable: false),
+                Media = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                Order = table.Column<int>(type: "integer", nullable: false),
+                CourseId = table.Column<Guid>(type: "uuid", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Topic", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_Topic_Course_CourseId",
+                    column: x => x.CourseId,
+                    principalTable: "Course",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "Test",
+            columns: table => new
+            {
+                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                TopicId = table.Column<Guid>(type: "uuid", nullable: false)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Test", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_Test_Topic_TopicId",
+                    column: x => x.TopicId,
+                    principalTable: "Topic",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "Question",
+            columns: table => new
+            {
+                Id = table.Column<Guid>(type: "uuid", nullable: false),
+                Content = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                Order = table.Column<int>(type: "integer", nullable: false),
+                Image = table.Column<string>(type: "text", nullable: true),
+                TestId = table.Column<Guid>(type: "uuid", nullable: false),
+                CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Question", x => x.Id);
+                table.ForeignKey(
+                    name: "FK_Question_Test_TestId",
+                    column: x => x.TestId,
+                    principalTable: "Test",
+                    principalColumn: "Id",
+                    onDelete: ReferentialAction.Cascade);
+            });
+
         migrationBuilder.CreateIndex(
             name: "IX_AspNetRoleClaims_RoleId",
             table: "AspNetRoleClaims",
@@ -238,6 +304,39 @@ public partial class InitialCreate : Migration
             unique: true);
 
         migrationBuilder.CreateIndex(
+            name: "IX_Question_Id",
+            table: "Question",
+            column: "Id",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Question_TestId",
+            table: "Question",
+            column: "TestId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Test_Id",
+            table: "Test",
+            column: "Id",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Test_TopicId",
+            table: "Test",
+            column: "TopicId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Topic_CourseId",
+            table: "Topic",
+            column: "CourseId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_Topic_Id",
+            table: "Topic",
+            column: "Id",
+            unique: true);
+
+        migrationBuilder.CreateIndex(
             name: "IX_User_Id",
             table: "User",
             column: "Id",
@@ -263,10 +362,10 @@ public partial class InitialCreate : Migration
             name: "AspNetUserTokens");
 
         migrationBuilder.DropTable(
-            name: "Course");
+            name: "OutboxMessage");
 
         migrationBuilder.DropTable(
-            name: "OutboxMessage");
+            name: "Question");
 
         migrationBuilder.DropTable(
             name: "User");
@@ -276,5 +375,14 @@ public partial class InitialCreate : Migration
 
         migrationBuilder.DropTable(
             name: "AspNetUsers");
+
+        migrationBuilder.DropTable(
+            name: "Test");
+
+        migrationBuilder.DropTable(
+            name: "Topic");
+
+        migrationBuilder.DropTable(
+            name: "Course");
     }
 }

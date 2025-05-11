@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Courses.Application.Abstractions.Services;
 using Microsoft.AspNetCore.Http;
 
@@ -15,8 +16,8 @@ public class UserContext : IUserContext
     public Guid UserId {
         get
         {
-            var userId = _httpContextAccessor.HttpContext?.User.FindFirst("sub")?.Value;
-
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirst("id")?.Value;
+            
             if (string.IsNullOrEmpty(userId))
                 throw new InvalidOperationException("User Id not found in claims.");
 
@@ -31,7 +32,7 @@ public class UserContext : IUserContext
     {
         get
         {
-            var role = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value;
+            var role = _httpContextAccessor.HttpContext?.User.FindFirst("role")?.Value;
 
             if (string.IsNullOrEmpty(role))
                 throw new InvalidOperationException("User Role not found in claims.");

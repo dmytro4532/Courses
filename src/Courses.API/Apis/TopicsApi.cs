@@ -89,11 +89,9 @@ public static class TopicsApi
     [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
     public static async Task<Results<Ok<TopicResponse>, ProblemHttpResult>> UpdateTopicMediaAsync(
         [AsParameters] TopicServices services,
-        Guid topicId,
-        [FromForm] IFormFile media)
+        [FromForm] UpdateTopicMediaCommand request)
     {
-        var command = new UpdateTopicMediaCommand(topicId, media);
-        var result = await services.Sender.Send(command);
+        var result = await services.Sender.Send(request);
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
     }

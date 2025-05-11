@@ -14,8 +14,10 @@ internal sealed class UserCreatedDomainEventHandler
         _emailService = emailService;
     }
 
-    public async Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
+    public Task Handle(UserCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        await _emailService.SendConfirmaitionEmailAsync(notification.UserId, notification.Email);
+        // TODO: remove this when we have a real email confirmation
+        return Task.CompletedTask;
+        //await _emailService.SendConfirmaitionEmailAsync(notification.UserId, notification.Email);
     }
 }

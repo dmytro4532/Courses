@@ -52,4 +52,12 @@ public static class Ensure
             throw new ArgumentException(message, argumentName);
         }
     }
+    
+    public static void MoreThan(int value, int limit, string message, string argumentName)
+    {
+        if (value <= limit)
+        {
+            throw new ArgumentOutOfRangeException(argumentName, message);
+        }
+    }
 }

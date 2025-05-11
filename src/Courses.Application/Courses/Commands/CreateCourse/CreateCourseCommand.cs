@@ -5,4 +5,9 @@ using Shared.Results;
 
 namespace Courses.Application.Courses.Commands.CreateCourse;
 
-public record CreateCourseCommand(string Title, string Description, IFormFile? Image) : IRequest<Result<CourseResponse>>;
+public class CreateCourseCommand : IRequest<Result<CourseResponse>>
+{
+    public string Title { get; init; } = null!;
+    public string Description { get; init; } = null!;
+    public IFormFile? Image { get; init; }
+}

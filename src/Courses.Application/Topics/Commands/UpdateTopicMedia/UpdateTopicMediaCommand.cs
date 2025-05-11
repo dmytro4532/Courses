@@ -5,6 +5,8 @@ using Shared.Results;
 
 namespace Courses.Application.Topics.Commands.UpdateTopicMedia;
 
-public record UpdateTopicMediaCommand(
-    Guid Id,
-    IFormFile Media) : IRequest<Result<TopicResponse>>; 
+public class UpdateTopicMediaCommand : IRequest<Result<TopicResponse>>
+{
+    public required Guid TopicId { get; init; }
+    public IFormFile? Media { get; init; }
+}

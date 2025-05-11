@@ -50,6 +50,9 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
 
         applicaitonUser.Role = Role.User.ToString();
 
+        // TODO: remove this when we have a real email confirmation
+        applicaitonUser.EmailConfirmed = true;
+
         await _userRepository.AddAsync(user, cancellationToken);
 
         await _identityService.CreateAsync(applicaitonUser, request.Password);

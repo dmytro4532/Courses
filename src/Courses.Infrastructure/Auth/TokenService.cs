@@ -55,8 +55,8 @@ public class TokenService : ITokenService
     {
         return
         [
-            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email!.ToString()),
+            new("id", user.Id.ToString()),
+            new("email", user.Email!.ToString()),
             new("role", user.Role.ToString()),
         ];
     }

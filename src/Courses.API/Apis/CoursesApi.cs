@@ -20,7 +20,7 @@ public static class CoursesApi
 {
     public static RouteGroupBuilder MapCoursesApi(this IEndpointRouteBuilder app)
     {
-        var api = app.MapGroup("api/Courses").WithTags("Courses").DisableAntiforgery();
+        var api = app.MapGroup("api/courses").WithTags("Courses").DisableAntiforgery();
         
         api.MapGet("/", GetArticlesAsync);
         api.MapGet("{courseId:guid}", GetArticleAsync);

@@ -3,7 +3,6 @@ using Courses.Infrastructure.Auth;
 using Courses.Infrastructure.Mail;
 using Courses.Infrastructure.Persistance.Outbox;
 using Courses.Infrastructure.Storage;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Courses.Infrastructure.Extensions.DI;

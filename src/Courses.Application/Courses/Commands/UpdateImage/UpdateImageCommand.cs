@@ -4,4 +4,8 @@ using Shared.Results;
 
 namespace Courses.Application.Courses.Commands.UpdateImage;
 
-public record UpdateImageCommand(Guid CourseId, IFormFile? Image) : IRequest<Result>;
+public class UpdateImageCommand : IRequest<Result>
+{
+    public required Guid CourseId { get; init; }
+    public IFormFile? Image { get; init; }
+}
