@@ -1,10 +1,13 @@
 using Courses.Domain.Common;
 using Courses.Domain.Tests;
+using Courses.Domain.Topics;
 
 namespace Courses.Domain.Questions;
 
 public class Question : AggregateRoot
 {
+    private readonly HashSet<Answer> _answers = [];
+
     public Content Content { get; private set; }
 
     public Order Order { get; private set; }
@@ -18,6 +21,8 @@ public class Question : AggregateRoot
     public DateTime CreatedAt { get; private set; }
     
     public DateTime? UpdatedAt { get; private set; }
+
+    public IReadOnlyCollection<Answer> Answers => _answers;
 
     private Question() { }
 

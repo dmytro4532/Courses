@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Courses.Domain.Questions;
+using System.Text.Json;
 
 namespace Courses.Infrastructure.Persistance.Configurations;
 
@@ -28,5 +29,11 @@ internal sealed class QuestionConfiguration : IEntityTypeConfiguration<Question>
             .WithMany(test => test.Questions)
             .HasForeignKey(question => question.TestId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(q => q.Answers)
+            .HasConversion(
+                v => JsonSerializer.Serialize(v, JsonSerializerOptions.Default),
+                v => JsonSerializer.Deserialize<HashSet<Answer>>(v, JsonSerializerOptions.Default) ?? new())
+            .HasColumnType("jsonb");
     }
-} 
+}
