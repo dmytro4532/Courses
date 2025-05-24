@@ -2,7 +2,7 @@
 using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Users.Dto;
-using Courses.Domain.User;
+using Courses.Domain.Users;
 using Shared.Results;
 using Shared.Results.Errors;
 

@@ -2,11 +2,9 @@ using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Services;
-using Courses.Application.Common.Settings;
 using Courses.Application.Topics.Dto;
 using Courses.Domain.Topics;
 using MediatR;
-using Microsoft.Extensions.Options;
 using Shared.Results;
 using Shared.Results.Errors;
 

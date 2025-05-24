@@ -1,7 +1,6 @@
 using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Abstractions.Services;
 using Courses.Application.Questions.Dto;
 using Courses.Domain.Questions;

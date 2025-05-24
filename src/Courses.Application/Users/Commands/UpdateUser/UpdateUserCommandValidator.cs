@@ -1,4 +1,4 @@
-﻿using Courses.Domain.User;
+﻿using Courses.Domain.Users;
 using FluentValidation;
 
 namespace Courses.Application.Users.Commands.UpdateUser;

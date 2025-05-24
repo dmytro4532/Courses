@@ -1,6 +1,6 @@
 ﻿using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Users.Identity;
-using Courses.Domain.User;
+using Courses.Domain.Users;
 
 namespace Courses.Application.Users.Mappers;
 

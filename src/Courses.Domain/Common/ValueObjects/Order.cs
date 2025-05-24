@@ -1,7 +1,6 @@
-using Courses.Domain.Common;
 using Courses.Domain.Common.Guards;
 
-namespace Courses.Domain.Topics;
+namespace Courses.Domain.Common.ValueObjects;
 
 public class Order : ValueObject
 {
@@ -26,4 +25,4 @@ public class Order : ValueObject
     {
         yield return Value;
     }
-} 
+}

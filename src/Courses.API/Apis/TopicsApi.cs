@@ -2,6 +2,9 @@ using System.Net.Mime;
 using Courses.API.Extensions;
 using Courses.API.Services;
 using Courses.Application.Common.Models;
+using Courses.Application.CompletedTopics.Commands.CompleteTopic;
+using Courses.Application.CompletedTopics.Dto;
+using Courses.Application.CompletedTopics.Queries.GetCompletedTopics;
 using Courses.Application.Topics.Commands.CreateTopic;
 using Courses.Application.Topics.Commands.DeleteTopic;
 using Courses.Application.Topics.Commands.UpdateTopic;
@@ -21,13 +24,18 @@ public static class TopicsApi
     public static RouteGroupBuilder MapTopicsApi(this IEndpointRouteBuilder app)
     {
         var api = app.MapGroup("api/topics").WithTags("Topics").DisableAntiforgery();
-        
+
         api.MapGet("/courses/{courseId:guid}", GetTopicsByCourseAsync);
         api.MapGet("/{topicId:guid}", GetTopicAsync);
+        api.MapGet("/completed", GetCompletedTopicsAsync).RequireAuthorization();
+
+
         api.MapPost("/", CreateTopicAsync).RequireAuthorization();
         api.MapPut("/{topicId:guid}", UpdateTopicAsync).RequireAuthorization();
         api.MapPut("/{topicId:guid}/media", UpdateTopicMediaAsync).RequireAuthorization();
         api.MapDelete("/{topicId:guid}", DeleteTopicAsync).RequireAuthorization();
+
+        api.MapPost("/{topicId:guid}/complete", CompleteTopicAsync).RequireAuthorization();
 
         return api;
     }
@@ -49,6 +57,18 @@ public static class TopicsApi
         Guid topicId)
     {
         var result = await services.Sender.Send(new GetTopicQuery(topicId));
+
+        return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
+    }
+
+    [ProducesResponseType<Ok<IEnumerable<CompletedTopicResponse>>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
+    public static async Task<Results<Ok<IEnumerable<CompletedTopicResponse>>, ProblemHttpResult>> GetCompletedTopicsAsync(
+    [AsParameters] ArticleServices services,
+    [FromQuery] Guid[] topicIds,
+    CancellationToken cancellationToken)
+    {
+        var result = await services.Sender.Send(new GetCompletedTopicsQuery(topicIds), cancellationToken);
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
     }
@@ -107,4 +127,15 @@ public static class TopicsApi
 
         return result.IsSuccess ? TypedResults.Ok() : result.ToProblemHttpResult();
     }
-} 
+
+    [ProducesResponseType<Ok>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
+    public static async Task<Results<Ok, ProblemHttpResult>> CompleteTopicAsync(
+    [AsParameters] ArticleServices services,
+    Guid topicId)
+    {
+        var result = await services.Sender.Send(new CompleteTopicCommand(topicId));
+
+        return result.IsSuccess ? TypedResults.Ok() : result.ToProblemHttpResult();
+    }
+}

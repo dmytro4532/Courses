@@ -1,4 +1,3 @@
-using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Questions.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Http;

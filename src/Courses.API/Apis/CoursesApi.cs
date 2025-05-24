@@ -13,6 +13,7 @@ using Courses.Application.Courses.Dto;
 using Courses.Application.Courses.Commands.UpdateImage;
 using Shared.Results;
 using Shared.Results.Errors;
+using Courses.Application.Courses.Queries.GetCoursesByIds;
 
 namespace Courses.API.Apis;
 
@@ -24,7 +25,8 @@ public static class CoursesApi
         
         api.MapGet("/", GetArticlesAsync);
         api.MapGet("{courseId:guid}", GetArticleAsync);
-
+        api.MapGet("/ids", GetCoursesByIdsAsync);
+        
         api.MapPost("/", CreateCourseAsync).RequireAuthorization();
         api.MapPut("/{courseId:guid}/", UpdateArticleAsync).RequireAuthorization();
         api.MapPost("/{courseId:guid}/image", UpdateImageAsync).RequireAuthorization();
@@ -52,6 +54,19 @@ public static class CoursesApi
         var result = await services.Sender.Send(new GetArticleQuery(courseId));
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
+    }
+
+    [ProducesResponseType<Ok<IEnumerable<CourseResponse>>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
+    public static async Task<Results<Ok<IEnumerable<CourseResponse>>, ProblemHttpResult>> GetCoursesByIdsAsync(
+        [AsParameters] ArticleServices services,
+        [FromQuery] Guid[] courseIds)
+    {
+        var result = await services.Sender.Send(new GetCoursesByIdsQuery(courseIds));
+
+        return result.IsSuccess
+            ? TypedResults.Ok(result.Value)
+            : result.ToProblemHttpResult();
     }
 
     [ProducesResponseType<Ok<CourseResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]

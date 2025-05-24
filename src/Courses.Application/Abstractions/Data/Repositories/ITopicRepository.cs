@@ -6,6 +6,8 @@ public interface ITopicRepository
 {
     Task<IEnumerable<Topic>> GetByCourseIdAsync(Guid courseId, int pageIndex, int pageSize, CancellationToken cancellationToken);
 
+    Task<IEnumerable<Guid>> GetTopicIdsByCourseIdAsync(Guid courseId, CancellationToken cancellationToken);
+
     Task<Topic?> GetByIdAsync(Guid topicId, CancellationToken cancellationToken);
 
     Task<int> CountByCourseIdAsync(Guid courseId, CancellationToken cancellationToken);

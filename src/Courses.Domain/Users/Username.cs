@@ -1,7 +1,7 @@
 ﻿using Courses.Domain.Common.Guards;
 using Courses.Domain.Common;
 
-namespace Courses.Domain.User;
+namespace Courses.Domain.Users;
 
 public class Username : ValueObject
 {

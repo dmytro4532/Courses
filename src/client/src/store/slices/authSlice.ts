@@ -7,6 +7,8 @@ interface AuthState {
   token: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  loginError: string | null;
+  registerError: string | null;
 }
 
 const initialState: AuthState = {
@@ -14,6 +16,8 @@ const initialState: AuthState = {
   token: localStorage.getItem('token'),
   status: 'idle',
   error: null,
+  loginError: null,
+  registerError: null,
 };
 
 export const login = createAsyncThunk(
@@ -88,7 +92,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload as string || 'Login failed';
+        state.loginError = action.payload as string || 'Login failed';
       })
       // Register cases
       .addCase(register.pending, (state) => {
@@ -102,7 +106,7 @@ const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload as string || 'Registration failed';
+        state.registerError = action.payload as string || 'Registration failed';
       })
       // Fetch current user cases
       .addCase(fetchCurrentUser.pending, (state) => {

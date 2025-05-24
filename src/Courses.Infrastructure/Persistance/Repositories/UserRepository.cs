@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Common.Extensions;
-using Courses.Domain.User;
+using Courses.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace Courses.Infrastructure.Persistance.Repositories;

@@ -1,13 +1,11 @@
-﻿using Courses.Application.Abstractions.Data;
-using Courses.Application.Abstractions.Data.Repositories;
+﻿using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Services;
 using Courses.Application.Common.Exceptions;
-using Courses.Application.Users.Commands.ConfirmEmail;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;
 
-namespace Courses.Application.Users.Commands.CreateUser;
+namespace Courses.Application.Users.Commands.ConfirmEmail;
 
 internal sealed class ConfirmEmailHandler : IRequestHandler<ConfirmEmailCommand, Result>
 {

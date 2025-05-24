@@ -12,8 +12,7 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { status, error } = useSelector((state: RootState) => state.auth);
-  
+  const { status, registerError: error } = useSelector((state: RootState) => state.auth);
 
   const from = location.state?.from?.pathname || '/';
 
@@ -92,7 +91,7 @@ const Login = () => {
               </Button>
             </Form.Item>
           </Form>
-          
+
           <div style={{ textAlign: 'center' }}>
             <Text type="secondary">
               Don't have an account? <Link to="/register">Sign up</Link>

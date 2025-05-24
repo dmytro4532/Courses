@@ -1,5 +1,4 @@
 using Courses.Domain.Common;
-using Courses.Domain.Topics;
 using Courses.Domain.Tests;
 
 namespace Courses.Domain.Questions;

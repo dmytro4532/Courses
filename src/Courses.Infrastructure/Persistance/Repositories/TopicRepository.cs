@@ -21,6 +21,14 @@ internal sealed class TopicRepository : ITopicRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IEnumerable<Guid>> GetTopicIdsByCourseIdAsync(Guid courseId, CancellationToken cancellationToken)
+    {
+        return await _context.Set<Topic>()
+            .Where(t => t.CourseId == courseId)
+            .Select(t => t.Id)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Topic?> GetByIdAsync(Guid topicId, CancellationToken cancellationToken)
     {
         return await _context.Set<Topic>()

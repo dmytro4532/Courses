@@ -3,6 +3,7 @@ export interface Topic {
   title: string;
   content: string;
   courseId: string;
+  mediaUrl?: string;
   tests: Test[];
 }
 
@@ -26,7 +27,6 @@ export interface User {
   id: string;
   username: string;
   email: string;
-  role: 'student' | 'teacher' | 'admin';
 }
 
 export interface CourseResponse {
@@ -45,4 +45,4 @@ export interface PagedList<T> {
   hasPreviousPage: boolean;
   hasNextPage: boolean;
   items: T[];
-} 
+}

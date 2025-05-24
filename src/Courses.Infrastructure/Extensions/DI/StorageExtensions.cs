@@ -2,7 +2,6 @@ using Amazon;
 using Amazon.Runtime;
 using Amazon.S3;
 using Courses.Application.Abstractions.Services;
-using Courses.Application.Common.Settings;
 using Courses.Infrastructure.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

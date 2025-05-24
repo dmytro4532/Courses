@@ -1,6 +1,4 @@
-﻿using Courses.Infrastructure.Persistance.Outbox;
-
-namespace Courses.Infrastructure.Mail;
+﻿namespace Courses.Infrastructure.Mail;
 
 public class EmailSettings
 {

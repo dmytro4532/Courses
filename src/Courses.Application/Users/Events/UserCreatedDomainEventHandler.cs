@@ -1,6 +1,6 @@
 ﻿using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Abstractions.Services;
-using Courses.Domain.User.DomainEvents;
+using Courses.Domain.Users.DomainEvents;
 
 namespace Courses.Application.Users.Events;
 

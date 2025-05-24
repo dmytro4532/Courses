@@ -1,6 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Courses.Application.Abstractions.Services;
+﻿using Courses.Application.Abstractions.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace Courses.Infrastructure.Auth;

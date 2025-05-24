@@ -28,6 +28,13 @@ internal sealed class CourseRepository : ICourseRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IEnumerable<Course>> GetCoursesByIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+    {
+        return await _context.Set<Course>()
+            .Where(c => ids.Contains(c.Id))
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<int> CountAsync(CancellationToken cancellationToken)
     {
         return await _context.Set<Course>()

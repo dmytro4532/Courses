@@ -1,7 +1,7 @@
 ﻿using Courses.Domain.Common;
-using Courses.Domain.User.DomainEvents;
+using Courses.Domain.Users.DomainEvents;
 
-namespace Courses.Domain.User;
+namespace Courses.Domain.Users;
 
 public class User : AggregateRoot
 {

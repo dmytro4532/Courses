@@ -2,7 +2,6 @@
 using Amazon.S3;
 using Microsoft.Extensions.Options;
 using Courses.Application.Abstractions.Services;
-using Microsoft.AspNetCore.Http;
 
 namespace Courses.Infrastructure.Storage;
 

@@ -1,5 +1,4 @@
-﻿using Courses.Application.Users.Commands.DeleteUser;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Courses.Application.Courses.Commands.DeleteArticle;
 

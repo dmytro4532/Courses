@@ -3,7 +3,7 @@ using Courses.Application.Abstractions.Services;
 using Courses.Application.Courses.Dto;
 using Courses.Domain.Courses;
 
-namespace Courses.Application.Courses.Mappers;
+namespace Courses.Application.Courses.Mapping;
 
 internal sealed class CourseResponseMapper : Mapper<Course, CourseResponse>
 {

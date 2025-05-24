@@ -1,7 +1,7 @@
-﻿using Courses.Domain.User;
+﻿using Courses.Domain.Users;
 using FluentValidation;
 
-namespace Courses.Application.Users.Commands.CreateUser;
+namespace Courses.Application.Users.Commands.RegisterUser;
 
 internal sealed class RegisterUserCommandValidator
     : AbstractValidator<RegisterUserCommand>

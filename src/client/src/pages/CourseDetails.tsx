@@ -1,36 +1,65 @@
-import { Alert, Card, Space, Typography, Button } from 'antd';
-import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import api from '../api/axios';
+import { Alert, Button, Card, Space, Typography, Progress, Tag } from 'antd';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import CourseHeader from '../components/features/courses/CourseHeader';
-import type { CourseResponse } from '../types';
+import type { AppDispatch, RootState } from '../store';
+import { fetchCourseById } from '../store/slices/courseSlice';
+import {
+  fetchProgressByCourseId,
+  startCourseProgress,
+  completeCourseProgress,
+  removeCourseProgress, // <-- import the new thunk
+} from '../store/slices/progressesSlice';
 
 const { Paragraph } = Typography;
 
 const CourseDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const [course, setCourse] = useState<CourseResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { course, loading, error } = useSelector((state: RootState) => state.course);
+  const { progress, status: progressStatus } = useSelector((state: RootState) => state.progresses);
 
   useEffect(() => {
-    if (!id || course) return;
+    if (id) {
+      dispatch(fetchCourseById(id));
+      dispatch(fetchProgressByCourseId(id));
+    }
+  }, [id, dispatch]);
 
-    setLoading(true);
-    setError(null);
-
-    api.get<CourseResponse>(`/api/courses/${id}`)
-      .then((courseRes) => {
-        setCourse(courseRes.data);
-      })
-      .catch((err) => {
-        setError(err?.response?.data?.details || 'Failed to load course');
-      })
-      .finally(() => {
-        setLoading(false);
+  const handleStartCourse = () => {
+    if (id) {
+      dispatch(startCourseProgress(id)).then(() => {
+        dispatch(fetchProgressByCourseId(id));
       });
-  }, [id, course]);
+    }
+  };
+
+  const handleCompleteCourse = () => {
+    if (id) {
+      dispatch(completeCourseProgress(id)).then(() => {
+        dispatch(fetchProgressByCourseId(id));
+      });
+    }
+  };
+
+  const handleRemoveProgress = () => {
+    if (id && progress) {
+      dispatch(removeCourseProgress(id)).then(() => {
+        dispatch(fetchProgressByCourseId(id));
+      });
+    }
+  };
+
+  let courseStatus: React.ReactNode = <Tag color="default">Not started</Tag>;
+  if (progress) {
+    if (progress.completedAt) {
+      courseStatus = <Tag color="green">Completed</Tag>;
+    } else {
+      courseStatus = <Tag color="blue">Started</Tag>;
+    }
+  }
 
   if (loading) {
     return <LoadingSpinner />;
@@ -48,14 +77,56 @@ const CourseDetails = () => {
           imageUrl={course.imageUrl}
           createdAt={course.createdAt}
         />
-        <Card style={{ textAlign: 'left' }}>
+        <Card style={{ textAlign: 'left', width: '100%', marginTop: 24 }}>
+          <div style={{ marginBottom: 12 }}>
+            <b>Status:</b> {courseStatus}
+          </div>
           <Paragraph style={{ fontSize: 16 }}>{course.description}</Paragraph>
         </Card>
-        <div style={{ marginTop: 24 }}>
-          <Link to={`/courses/${id}/topics`}>
-            <Button type="primary">View Topics</Button>
-          </Link>
-        </div>
+        {progress && (
+          <div style={{ marginTop: 24 }}>
+            <Progress
+              percent={progress.progressPercents}
+              status={progress.progressPercents === 100 ? 'success' : 'active'}
+              format={percent => `${percent}% (${progress.completedTopics}/${progress.totalTopics} topics)`}
+            />
+          </div>
+        )}
+        <Card style={{ marginTop: 24, width: '100%', textAlign: 'left' }}>
+          <Space>
+            {!progress && (
+              <Button
+                type="primary"
+                loading={progressStatus === 'loading'}
+                onClick={handleStartCourse}
+              >
+                Start Course
+              </Button>
+            )
+            }
+            {progress && progress.progressPercents === 100 && !progress.completedAt && (
+              <Button
+                type="primary"
+                loading={progressStatus === 'loading'}
+                onClick={handleCompleteCourse}
+              >
+                Complete Course
+              </Button>
+            )}
+            <Link to={`/courses/${id}/topics`}>
+              <Button type="primary">View Topics</Button>
+            </Link>
+            {progress && (
+              <Button
+                danger
+                loading={progressStatus === 'loading'}
+                onClick={handleRemoveProgress}
+              >
+                Reset Progress
+              </Button>
+            )}
+          </Space>
+        </Card>
       </Space>
     </div>
   );

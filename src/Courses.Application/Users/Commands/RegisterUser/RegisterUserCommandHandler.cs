@@ -4,12 +4,12 @@ using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Services;
 using Courses.Application.Users.Dto;
 using Courses.Application.Users.Identity;
-using Courses.Domain.User;
+using Courses.Domain.Users;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;
 
-namespace Courses.Application.Users.Commands.CreateUser;
+namespace Courses.Application.Users.Commands.RegisterUser;
 
 internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Result<UserResponse>>
 {

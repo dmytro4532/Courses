@@ -1,4 +1,3 @@
-using Courses.Application.Common.Settings;
 using Courses.Infrastructure.BackgroundJobs;
 using Courses.Infrastructure.Persistance.Outbox;
 using Microsoft.Extensions.DependencyInjection;

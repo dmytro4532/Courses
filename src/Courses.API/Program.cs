@@ -3,7 +3,6 @@ using Courses.API.Extensions;
 using Courses.Application;
 using Courses.Infrastructure;
 using Courses.Infrastructure.Extensions.DI;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,5 +39,6 @@ app.MapUsersApi();
 app.MapTopicsApi();
 app.MapTestsApi();
 app.MapQuestionsApi();
+app.MapCoursesProgressesApi();
 
 app.Run();

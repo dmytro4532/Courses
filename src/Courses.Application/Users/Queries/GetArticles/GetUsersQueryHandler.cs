@@ -3,7 +3,7 @@ using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Common.Models;
 using Courses.Application.Users.Dto;
-using Courses.Domain.User;
+using Courses.Domain.Users;
 using Shared.Results;
 
 namespace Courses.Application.Users.Queries.GetArticles;

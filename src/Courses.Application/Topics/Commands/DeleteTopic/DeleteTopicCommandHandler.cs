@@ -1,7 +1,6 @@
 using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Services;
-using Courses.Domain.Topics;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;

@@ -2,7 +2,7 @@
 using Courses.Domain.Common;
 using Courses.Domain.Common.Guards;
 
-namespace Courses.Domain.User;
+namespace Courses.Domain.Users;
 
 public class Email : ValueObject
 {

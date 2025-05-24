@@ -50,7 +50,7 @@ public static class IdentityExtensions
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,
+                ValidIssuer = jwtSettings.Issuer,   
                 ValidAudience = jwtSettings.Audience,
                 IssuerSigningKey = jwtSettings.SigningKey,
             });

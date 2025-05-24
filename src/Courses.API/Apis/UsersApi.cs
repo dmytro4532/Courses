@@ -3,13 +3,14 @@ using Courses.API.Extensions;
 using Courses.API.Services;
 using Courses.Application.Common.Models;
 using Courses.Application.Users.Commands.ConfirmEmail;
-using Courses.Application.Users.Commands.CreateUser;
 using Courses.Application.Users.Commands.DeleteUser;
 using Courses.Application.Users.Commands.LoginUser;
+using Courses.Application.Users.Commands.RegisterUser;
 using Courses.Application.Users.Commands.UpdateUser;
 using Courses.Application.Users.Dto;
 using Courses.Application.Users.Queries.GetArticle;
 using Courses.Application.Users.Queries.GetArticles;
+using Courses.Application.Users.Queries.GetCurrentUser;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,7 @@ public static class UsersApi
 
         api.MapGet("/", GetUsersAsync);
         api.MapGet("{userId:guid}", GetUserAsync);
+        api.MapGet("/me", GetCurrentUserAsync).RequireAuthorization();
 
         api.MapGet("/confirm-email", ConfirmEmailAsync);
         api.MapPost("/register", RegisterUserAsync);
@@ -51,6 +53,16 @@ public static class UsersApi
         Guid userId)
     {
         var result = await services.Sender.Send(new GetUserQuery(userId));
+
+        return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
+    }
+
+    [ProducesResponseType<Ok<UserResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status404NotFound, MediaTypeNames.Application.ProblemJson)]
+    public static async Task<Results<Ok<UserResponse>, ProblemHttpResult>> GetCurrentUserAsync(
+        [AsParameters] UserServices services)
+    {
+        var result = await services.Sender.Send(new GetCurrentUserQuery());
 
         return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
     }

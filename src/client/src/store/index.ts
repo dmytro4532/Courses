@@ -1,6 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import coursesReducer from './slices/coursesSlice';
 import authReducer from './slices/authSlice';
+import completedTopicsReducer from './slices/completedTopicsSlice';
+import courseReducer from './slices/courseSlice';
+import coursesReducer from './slices/coursesSlice';
+import progressesReducer from './slices/progressesSlice';
 import topicsReducer from './slices/topicsSlice';
 
 export const store = configureStore({
@@ -8,6 +11,9 @@ export const store = configureStore({
     courses: coursesReducer,
     auth: authReducer,
     topics: topicsReducer,
+    course: courseReducer,
+    progresses: progressesReducer,
+    completedTopics: completedTopicsReducer,
   },
 });
 

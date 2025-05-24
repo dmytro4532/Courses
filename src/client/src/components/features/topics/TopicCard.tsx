@@ -1,34 +1,52 @@
-import { Card, Image, Typography } from 'antd';
+import { Card, Image, Typography, Button, Tag, Space } from 'antd';
+import type { Topic } from '../../../types';
 
 const { Meta } = Card;
 const { Paragraph } = Typography;
 
 interface TopicCardProps {
-  id: string;
-  title: string;
-  content: string;
-  mediaUrl?: string;
+  topic: Topic;
+  isCompleted?: boolean;
+  canComplete?: boolean;
+  onComplete?: () => void;
 }
 
-
-const TopicCard = ({ id, title, content, mediaUrl }: TopicCardProps) => {
+const TopicCard = ({ topic, isCompleted, canComplete, onComplete }: TopicCardProps) => {
   return (
     <Card
-      key={id}
+      key={topic.id}
       hoverable
-      actions={[
-      ]}
       styles={{ body: { textAlign: 'left' } }}
+      actions={[
+
+      ]}
     >
-      <Meta title={title} />
-      {mediaUrl && (
+      <Meta title={topic.title} />
+      {topic.mediaUrl && (
         <div style={{ display: 'flex', justifyContent: 'center', margin: '16px 0' }}>
-          <Image src={mediaUrl} alt={title} width={'80%'} preview={false} />
+          <Image src={topic.mediaUrl} alt={topic.title} width={'80%'} preview={false} />
         </div>
       )}
-      <Paragraph ellipsis={{ rows: 3 }}>{content}</Paragraph>
+      <Paragraph ellipsis={{ rows: 3 }}>{topic.content}</Paragraph>
+
+      <Space>
+        {
+          isCompleted ? (
+            <Tag color="green" key="completed">Completed</Tag>
+          ) : canComplete ? (
+            <Button
+              key="complete"
+              type="primary"
+              size="small"
+              onClick={onComplete}
+            >
+              Mark as Completed
+            </Button>
+          ) : null
+        }
+      </Space>
     </Card>
   );
 };
 
-export default TopicCard; 
+export default TopicCard;

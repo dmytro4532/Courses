@@ -1,8 +1,4 @@
-﻿using Courses.Infrastructure.Auth;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
-namespace Courses.Infrastructure.Storage;
+﻿namespace Courses.Infrastructure.Storage;
 
 public class S3Settings
 {

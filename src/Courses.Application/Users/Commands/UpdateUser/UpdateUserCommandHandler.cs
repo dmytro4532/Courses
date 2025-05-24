@@ -3,7 +3,7 @@ using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Services;
 using Courses.Application.Users.Dto;
-using Courses.Domain.User;
+using Courses.Domain.Users;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;

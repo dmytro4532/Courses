@@ -1,6 +1,4 @@
-﻿using Courses.Domain.User;
-
-namespace Courses.Application.Abstractions.Services;
+﻿namespace Courses.Application.Abstractions.Services;
 
 public interface IEmailService
 {

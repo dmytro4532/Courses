@@ -11,7 +11,7 @@ const Register = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { status, error } = useSelector((state: RootState) => state.auth);
+  const { status, registerError: error } = useSelector((state: RootState) => state.auth);
 
   const onFinish = async (values: { username: string; email: string; password: string }) => {
     dispatch(register(values))

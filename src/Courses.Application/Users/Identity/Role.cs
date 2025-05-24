@@ -1,4 +1,4 @@
-﻿namespace Courses.Domain.User;
+﻿namespace Courses.Application.Users.Identity;
 
 public enum Role
 {

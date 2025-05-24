@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Courses.Application.Abstractions.Services;
+﻿namespace Courses.Application.Abstractions.Services;
 
 public interface IFileStorageService
 {
