@@ -15,7 +15,7 @@ internal sealed class UpdateArticleCommandValidator
             .NotEmpty()
             .MaximumLength(Title.MaxLength);
 
-        RuleFor(x => x.Content)
+        RuleFor(x => x.Description)
             .NotEmpty()
             .MaximumLength(Description.MaxLength);
     }

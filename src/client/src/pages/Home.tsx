@@ -20,7 +20,7 @@ const Home = () => {
       </Paragraph>
 
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
-        <Col xs={24} sm={12} md={8}>
+        <Col xs={24} sm={12} md={12}>
           <Card title="Browse Courses" hoverable>
             <Paragraph>
               Explore our wide range of courses designed to help you learn and grow.
@@ -28,17 +28,10 @@ const Home = () => {
             <Link to="/courses">View Courses</Link>
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={8}>
+        <Col xs={24} sm={12} md={12}>
           <Card title="Track Progress" hoverable>
             <Paragraph>
               Monitor your learning progress and complete assessments to earn certificates.
-            </Paragraph>
-          </Card>
-        </Col>
-        <Col xs={24} sm={12} md={8}>
-          <Card title="Get Support" hoverable>
-            <Paragraph>
-              Need help? Our support team is here to assist you with any questions.
             </Paragraph>
           </Card>
         </Col>

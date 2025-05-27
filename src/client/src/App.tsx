@@ -1,8 +1,9 @@
 import { Provider } from 'react-redux';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import MainLayout from './components/layout/MainLayout';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import CourseDetails from './pages/CourseDetails';
 import Courses from './pages/Courses';
 import Home from './pages/Home';
@@ -13,6 +14,7 @@ import TestDetails from './pages/TestDetails';
 import { TestAttempt } from './pages/TestAttempt';
 import { TestAttemptReview } from './pages/TestAttemptReview';
 import Topics from './pages/Topics';
+import AdminCourses from './pages/admin/AdminCourses';
 import { store } from './store';
 
 function App() {
@@ -43,6 +45,10 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             } />
+          </Route>
+          <Route path="/admin" element={<AdminRoute />}>
+            <Route index element={<Navigate to="/admin/courses" replace />} />
+            <Route path="courses" element={<AdminCourses />} />
           </Route>
         </Routes>
       </Router>

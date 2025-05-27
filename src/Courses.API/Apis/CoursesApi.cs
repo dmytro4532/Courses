@@ -86,7 +86,7 @@ public static class CoursesApi
     public static async Task<Results<Ok<CourseResponse>, ProblemHttpResult>> UpdateArticleAsync(
         [AsParameters] ArticleServices services,
         Guid courseId,
-        UpdateArticleCommand request)
+        [FromForm] UpdateArticleCommand request)
     {
         if (courseId != request.Id)
         {

@@ -33,7 +33,7 @@ internal sealed class UpdateArticleCommandHandler : IRequestHandler<UpdateArticl
 
         article.Update(
             Title.Create(request.Title),
-            Description.Create(request.Content));
+            Description.Create(request.Description));
         _articleRepository.Update(article);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

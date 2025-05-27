@@ -16,10 +16,8 @@ const Courses = () => {
   const pageSize = 9;
 
   useEffect(() => {
-    if (status === 'idle' || page !== (paged?.pageIndex ?? 0) + 1) {
-      dispatch(fetchCourses({ pageIndex: page - 1, pageSize }));
-    }
-  }, [status, dispatch, page, paged?.pageIndex]);
+    dispatch(fetchCourses({ pageIndex: page - 1, pageSize }));
+  }, [dispatch, page, paged?.pageIndex]);
 
   const courses = paged?.items ?? [];
 
