@@ -12,4 +12,6 @@ public class CreateTopicCommand : IRequest<Result<TopicResponse>>
     public IFormFile? Media { get; init; }
     public required int Order { get; init; }
     public required Guid CourseId { get; init; }
+    
+    public Guid? TestId { get; init; }
 }

@@ -8,5 +8,9 @@ public record UpdateQuestionCommand(
     Guid Id,
     string Content,
     int Order,
-    string? Image
-) : ICommand<Result<QuestionResponse>>; 
+    string? Image,
+    IEnumerable<UpdateAnswerDto> Answers) : ICommand<Result<QuestionResponse>>;
+
+public sealed record UpdateAnswerDto(
+    string Value,
+    bool IsCorrect); 

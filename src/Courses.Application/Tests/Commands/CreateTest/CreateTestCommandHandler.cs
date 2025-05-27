@@ -26,7 +26,7 @@ internal sealed class CreateTestCommandHandler : ICommandHandler<CreateTestComma
 
     public async Task<Result<TestResponse>> Handle(CreateTestCommand request, CancellationToken cancellationToken)
     {
-        var test = Test.Create(Guid.NewGuid(), Title.Create(request.Title), request.TopicId);
+        var test = Test.Create(Guid.NewGuid(), Title.Create(request.Title));
 
         await _testRepository.AddAsync(test, cancellationToken);
 

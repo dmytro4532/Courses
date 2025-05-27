@@ -6,4 +6,5 @@ public record TopicResponse(
     string Content,
     string? MediaUrl,
     int Order,
-    Guid CourseId); 
+    Guid CourseId,
+    Guid? TestId); 

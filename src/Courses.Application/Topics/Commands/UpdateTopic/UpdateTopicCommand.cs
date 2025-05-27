@@ -8,4 +8,5 @@ public record UpdateTopicCommand(
     Guid Id,
     string Title,
     string Content,
-    int Order) : IRequest<Result<TopicResponse>>; 
+    int Order,
+    Guid? TestId) : IRequest<Result<TopicResponse>>; 

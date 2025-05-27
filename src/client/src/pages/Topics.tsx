@@ -8,9 +8,9 @@ import LoadingSpinner from '../components/common/LoadingSpinner';
 import TopicCard from '../components/features/topics/TopicCard';
 import type { AppDispatch, RootState } from '../store';
 import { completeTopic, fetchCompletedTopics } from '../store/slices/completedTopicsSlice';
-import { fetchProgressByCourseId } from '../store/slices/progressesSlice'; // <-- import progress fetch
+import { fetchProgressByCourseId } from '../store/slices/progressesSlice';
 import { fetchTopics } from '../store/slices/topicsSlice';
-import type { CourseResponse } from '../types';
+import type { CourseResponse, Topic } from '../types';
 
 const { Title } = Typography;
 
@@ -45,8 +45,8 @@ const Topics = () => {
   }, [status, dispatch, page, paged?.pageIndex, courseId]);
 
   useEffect(() => {
-    if (paged?.items.length) {
-      dispatch(fetchCompletedTopics(paged?.items.map((t) => t.id) ?? []));
+    if (paged?.items) {
+      dispatch(fetchCompletedTopics(paged.items.map((t) => t.id)));
     }
   }, [dispatch, paged?.items]);
 
@@ -58,11 +58,15 @@ const Topics = () => {
 
   const handleCompleteTopic = (topicId: string) => {
     dispatch(completeTopic(topicId))
-      .then(() =>
-        dispatch(fetchCompletedTopics(paged?.items.map((t) => t.id) ?? [])));
+      .then(() => {
+        if (paged?.items) {
+          dispatch(fetchCompletedTopics(paged.items.map((t) => t.id)));
+        }
+      });
   };
 
   const topics = paged?.items ?? [];
+  const courseStarted = !!progress;
 
   if (courseLoading) {
     return <LoadingSpinner />;
@@ -84,8 +88,6 @@ const Topics = () => {
     return <Empty description="No topics found" style={{ marginTop: 48 }} />;
   }
 
-  const courseStarted = !!progress;
-
   return (
     <div style={{ padding: '24px 0' }}>
       <Title level={2}>{course.title}</Title>
@@ -98,7 +100,7 @@ const Topics = () => {
                 topic={topic}
                 isCompleted={isCompleted}
                 onComplete={() => handleCompleteTopic(topic.id)}
-                canComplete={!isCompleted && courseStarted}
+                courseStarted={courseStarted}
               />
             </Col>
           );

@@ -90,6 +90,44 @@ namespace Courses.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Courses.Domain.AttemptQuestions.AttemptQuestion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TestAttemptId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TestId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("TestAttemptId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("AttemptQuestion");
+                });
+
             modelBuilder.Entity("Courses.Domain.CompletedTopics.CompletedTopic", b =>
                 {
                     b.Property<Guid>("Id")
@@ -219,6 +257,36 @@ namespace Courses.Infrastructure.Migrations
                     b.ToTable("Question");
                 });
 
+            modelBuilder.Entity("Courses.Domain.TestAttempts.TestAttempt", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TestId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("TestAttempt");
+                });
+
             modelBuilder.Entity("Courses.Domain.Tests.Test", b =>
                 {
                     b.Property<Guid>("Id")
@@ -233,9 +301,6 @@ namespace Courses.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<Guid>("TopicId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -243,8 +308,6 @@ namespace Courses.Infrastructure.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
-
-                    b.HasIndex("TopicId");
 
                     b.ToTable("Test");
                 });
@@ -270,6 +333,9 @@ namespace Courses.Infrastructure.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("TestId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -280,6 +346,9 @@ namespace Courses.Infrastructure.Migrations
                     b.HasIndex("CourseId");
 
                     b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("TestId")
                         .IsUnique();
 
                     b.ToTable("Topic");
@@ -481,6 +550,57 @@ namespace Courses.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Courses.Domain.AttemptQuestions.AttemptQuestion", b =>
+                {
+                    b.HasOne("Courses.Domain.TestAttempts.TestAttempt", "TestAttempt")
+                        .WithMany("AttemptQuestions")
+                        .HasForeignKey("TestAttemptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Courses.Domain.Tests.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("Courses.Domain.AttemptQuestions.AttemptQuestionAnswer", "Answers", b1 =>
+                        {
+                            b1.Property<Guid>("AttemptQuestionId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("__synthesizedOrdinal")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid");
+
+                            b1.Property<bool>("IsCorrect")
+                                .HasColumnType("boolean");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)");
+
+                            b1.HasKey("AttemptQuestionId", "__synthesizedOrdinal");
+
+                            b1.ToTable("AttemptQuestion");
+
+                            b1.ToJson("Answers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AttemptQuestionId");
+                        });
+
+                    b.Navigation("Answers");
+
+                    b.Navigation("Test");
+
+                    b.Navigation("TestAttempt");
+                });
+
             modelBuilder.Entity("Courses.Domain.CompletedTopics.CompletedTopic", b =>
                 {
                     b.HasOne("Courses.Domain.Topics.Topic", "Topic")
@@ -527,18 +647,58 @@ namespace Courses.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsMany("Courses.Domain.Questions.Answer", "Answers", b1 =>
+                        {
+                            b1.Property<Guid>("QuestionId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("__synthesizedOrdinal")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid");
+
+                            b1.Property<bool>("IsCorrect")
+                                .HasColumnType("boolean");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)");
+
+                            b1.HasKey("QuestionId", "__synthesizedOrdinal");
+
+                            b1.ToTable("Question");
+
+                            b1.ToJson("Answers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("QuestionId");
+                        });
+
+                    b.Navigation("Answers");
+
                     b.Navigation("Test");
                 });
 
-            modelBuilder.Entity("Courses.Domain.Tests.Test", b =>
+            modelBuilder.Entity("Courses.Domain.TestAttempts.TestAttempt", b =>
                 {
-                    b.HasOne("Courses.Domain.Topics.Topic", "Topic")
-                        .WithMany("Tests")
-                        .HasForeignKey("TopicId")
+                    b.HasOne("Courses.Domain.Tests.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Topic");
+                    b.HasOne("Courses.Domain.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Test");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Courses.Domain.Topics.Topic", b =>
@@ -549,7 +709,14 @@ namespace Courses.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Courses.Domain.Tests.Test", "Test")
+                        .WithOne()
+                        .HasForeignKey("Courses.Domain.Topics.Topic", "TestId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Course");
+
+                    b.Navigation("Test");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -608,14 +775,14 @@ namespace Courses.Infrastructure.Migrations
                     b.Navigation("Topics");
                 });
 
+            modelBuilder.Entity("Courses.Domain.TestAttempts.TestAttempt", b =>
+                {
+                    b.Navigation("AttemptQuestions");
+                });
+
             modelBuilder.Entity("Courses.Domain.Tests.Test", b =>
                 {
                     b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("Courses.Domain.Topics.Topic", b =>
-                {
-                    b.Navigation("Tests");
                 });
 #pragma warning restore 612, 618
         }

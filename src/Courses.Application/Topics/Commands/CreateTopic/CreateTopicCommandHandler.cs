@@ -55,7 +55,8 @@ internal sealed class CreateTopicCommandHandler : IRequestHandler<CreateTopicCom
             Content.Create(request.Content),
             media,
             request.Order,
-            request.CourseId);
+            request.CourseId,
+            request.TestId);
 
         await _topicRepository.AddAsync(topic, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

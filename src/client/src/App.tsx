@@ -1,17 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import './App.css';
 import MainLayout from './components/layout/MainLayout';
 import ProtectedRoute from './components/ProtectedRoute';
-import Home from './pages/Home';
-import Courses from './pages/Courses';
 import CourseDetails from './pages/CourseDetails';
-import Topics from './pages/Topics';
-import TestDetails from './pages/TestDetails';
+import Courses from './pages/Courses';
+import Home from './pages/Home';
 import Login from './pages/Login';
-import Register from './pages/Register';
 import Profile from './pages/Profile';
-import './App.css';
+import Register from './pages/Register';
+import TestDetails from './pages/TestDetails';
+import { TestAttempt } from './pages/TestAttempt';
+import { TestAttemptReview } from './pages/TestAttemptReview';
+import Topics from './pages/Topics';
+import { store } from './store';
 
 function App() {
   return (
@@ -24,6 +26,16 @@ function App() {
             <Route path="/courses/:id" element={<CourseDetails />} />
             <Route path="/courses/:id/topics" element={<Topics />} />
             <Route path="/tests/:testId" element={<TestDetails />} />
+            <Route path="/test-attempts/:attemptId" element={
+              <ProtectedRoute>
+                <TestAttempt />
+              </ProtectedRoute>
+            } />
+            <Route path="/test-attempts/:attemptId/review" element={
+              <ProtectedRoute>
+                <TestAttemptReview />
+              </ProtectedRoute>
+            } />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={

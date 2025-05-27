@@ -51,7 +51,8 @@ public static class DependencyInjection
         services.AddScoped<Mapper<Course, CourseResponse>, CourseResponseMapper>();
         services.AddScoped<Mapper<Topic, TopicResponse>, TopicResponseMapper>();
         services.AddScoped<Mapper<Test, TestResponse>, TestResponseMapper>();
-        services.AddScoped<Mapper<Question, QuestionResponse>, QuestionResponseMapper>();
+        services.AddScoped<Mapper<Question, QuestionResponse>, QuestionMapper>();
+        services.AddScoped<Mapper<Answer, AnswerResponse>, AnswerMapper>();
         services.AddScoped<Mapper<CourseProgress, CourseProgressResponse>, CourseProgressMapper>();
         services.AddScoped<Mapper<CompletedTopic, CompletedTopicResponse>, CompletedTopicResponseMapper>();
 

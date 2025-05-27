@@ -18,10 +18,5 @@ internal sealed class TestConfiguration : IEntityTypeConfiguration<Test>
             .HasConversion(
                 title => title.Value,
                 value => Title.Create(value));
-
-        builder.HasOne(test => test.Topic)
-            .WithMany(topic => topic.Tests)
-            .HasForeignKey(test => test.TopicId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 } 

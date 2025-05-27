@@ -14,19 +14,14 @@ public class Test : AggregateRoot
     
     public DateTime? UpdatedAt { get; private set; }
 
-    public Guid TopicId { get; private set; }
-
-    public Topic Topic { get; private set; }
-
     public IReadOnlyCollection<Question> Questions => _questions;
 
     private Test() { }
 
-    private Test(Guid id, Title title, Guid topicId)
+    private Test(Guid id, Title title)
         : base(id)
     {
         Title = title;
-        TopicId = topicId;
         CreatedAt = DateTime.UtcNow;
     }
 
@@ -48,8 +43,8 @@ public class Test : AggregateRoot
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public static Test Create(Guid id, Title title, Guid topicId)
+    public static Test Create(Guid id, Title title)
     {
-        return new Test(id, title, topicId);
+        return new Test(id, title);
     }
 }

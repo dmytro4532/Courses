@@ -40,5 +40,7 @@ app.MapTopicsApi();
 app.MapTestsApi();
 app.MapQuestionsApi();
 app.MapCoursesProgressesApi();
+app.MapTestAttemptsApi();
+app.MapAttemptQuestionsApi();
 
 app.Run();

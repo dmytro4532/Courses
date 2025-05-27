@@ -5,6 +5,5 @@ using Shared.Results;
 namespace Courses.Application.Tests.Commands.CreateTest;
 
 public record CreateTestCommand(
-    string Title,
-    Guid TopicId
+    string Title
 ) : ICommand<Result<TestResponse>>; 

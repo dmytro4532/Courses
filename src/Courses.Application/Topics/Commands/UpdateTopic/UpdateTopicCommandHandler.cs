@@ -12,15 +12,18 @@ namespace Courses.Application.Topics.Commands.UpdateTopic;
 internal sealed class UpdateTopicCommandHandler : IRequestHandler<UpdateTopicCommand, Result<TopicResponse>>
 {
     private readonly ITopicRepository _topicRepository;
+    private readonly ITestRepository _testRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly Mapper<Topic, TopicResponse> _mapper;
 
     public UpdateTopicCommandHandler(
         ITopicRepository topicRepository,
+        ITestRepository testRepository,
         IUnitOfWork unitOfWork,
         Mapper<Topic, TopicResponse> mapper)
     {
         _topicRepository = topicRepository;
+        _testRepository = testRepository;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
@@ -39,6 +42,23 @@ internal sealed class UpdateTopicCommandHandler : IRequestHandler<UpdateTopicCom
             Content.Create(request.Content));
 
         topic.UpdateOrder(request.Order);
+
+        if (request.TestId != topic.TestId)
+        {
+            if (request.TestId.HasValue)
+            {
+                var test = await _testRepository.GetByIdAsync(request.TestId.Value, cancellationToken);
+                if (test is null)
+                {
+                    return new NotFoundError("Test.NotFound", "The test was not found.");
+                }
+                topic.SetTest(test);
+            }
+            else
+            {
+                topic.RemoveTest();
+            }
+        }
 
         _topicRepository.Update(topic);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

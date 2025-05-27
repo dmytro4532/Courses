@@ -14,7 +14,6 @@ public sealed class QuestionResponseMapper : Mapper<Question, QuestionResponse>
             source.Order.Value,
             source.Image,
             source.TestId,
-            source.CreatedAt,
-            source.UpdatedAt);
+            source.Answers.Select(a => new AnswerResponse(a.Id, a.Value, a.IsCorrect)).ToList());
     }
 } 

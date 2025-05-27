@@ -57,6 +57,11 @@ internal sealed class CreateQuestionCommandHandler : IRequestHandler<CreateQuest
 
         question.UpdateImage(imageFileName);
 
+        foreach (var answer in request.Answers)
+        {
+            question.AddAnswer(Guid.NewGuid(), answer.Value, answer.IsCorrect);
+        }
+
         await _questionRepository.AddAsync(question, cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);

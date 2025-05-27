@@ -34,6 +34,16 @@ internal sealed class TopicConfiguration : IEntityTypeConfiguration<Topic>
         builder.Property(topic => topic.CourseId)
             .IsRequired();
 
+        builder.Property(topic => topic.TestId)
+            .IsRequired(false);
+
+        builder.HasOne(topic => topic.Test)
+            .WithOne()
+            .HasForeignKey<Topic>(topic => topic.TestId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
+
         builder.HasIndex(topic => topic.CourseId);
+        builder.HasIndex(topic => topic.TestId);
     }
 } 

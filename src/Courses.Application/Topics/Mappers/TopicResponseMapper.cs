@@ -22,7 +22,8 @@ internal sealed class TopicResponseMapper : Mapper<Topic, TopicResponse>
             source.Content,
             source.Media is null ? null : _fileStorageService.CreateUrl(source.Media),
             source.Order,
-            source.CourseId
+            source.CourseId,
+            source.TestId
         );
     }
 } 

@@ -5,6 +5,10 @@ import courseReducer from './slices/courseSlice';
 import coursesReducer from './slices/coursesSlice';
 import progressesReducer from './slices/progressesSlice';
 import topicsReducer from './slices/topicsSlice';
+import testAttemptsReducer from './slices/testAttemptsSlice';
+import attemptQuestionsReducer from './slices/attemptQuestionsSlice';
+import testReducer from './slices/testSlice';
+import questionsReducer from './slices/questionsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,7 +18,13 @@ export const store = configureStore({
     course: courseReducer,
     progresses: progressesReducer,
     completedTopics: completedTopicsReducer,
+    testAttempts: testAttemptsReducer,
+    attemptQuestions: attemptQuestionsReducer,
+    test: testReducer,
+    questions: questionsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware(),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

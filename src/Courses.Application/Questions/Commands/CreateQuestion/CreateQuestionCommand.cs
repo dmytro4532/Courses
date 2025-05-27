@@ -11,4 +11,9 @@ public class CreateQuestionCommand : IRequest<Result<QuestionResponse>>
     public IFormFile? Image { get; init; }
     public required int Order { get; init; }
     public required Guid TestId { get; init; }
+    public required IEnumerable<CreateAnswerDto> Answers { get; init; } = [];
 }
+
+public sealed record CreateAnswerDto(
+    string Value,
+    bool IsCorrect);

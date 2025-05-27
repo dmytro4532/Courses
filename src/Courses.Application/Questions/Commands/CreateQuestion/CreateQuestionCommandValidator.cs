@@ -16,5 +16,18 @@ internal sealed class CreateQuestionCommandValidator : AbstractValidator<CreateQ
 
         RuleFor(x => x.TestId)
             .NotEmpty();
+
+        RuleFor(x => x.Answers)
+            .NotEmpty()
+            .WithMessage("At least one answer is required");
+
+        RuleForEach(x => x.Answers)
+            .ChildRules(answer => answer.RuleFor(x => x.Value)
+                .NotEmpty()
+                .MaximumLength(Answer.MaxLength));
+
+        RuleFor(x => x.Answers)
+            .Must(answers => answers.Any(a => a.IsCorrect))
+            .WithMessage("At least one answer must be marked as correct");
     }
 } 

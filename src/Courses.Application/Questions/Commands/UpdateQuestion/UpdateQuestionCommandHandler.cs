@@ -39,6 +39,12 @@ internal sealed class UpdateQuestionCommandHandler : ICommandHandler<UpdateQuest
             Order.Create(request.Order));
         question.UpdateImage(request.Image);
 
+        question.ClearAnswers();
+        foreach (var answer in request.Answers)
+        {
+            question.AddAnswer(Guid.NewGuid(), answer.Value, answer.IsCorrect);
+        }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success(_mapper.Map(question));

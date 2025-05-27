@@ -17,7 +17,9 @@ public static class RepositoryExtensions
         services.AddScoped<IQuestionRepository, QuestionRepository>();
         services.AddScoped<ICourseProgressRepository, CourseProgressRepository>();
         services.AddScoped<ICompletedTopicRepository, CompletedTopicRepository>();
+        services.AddScoped<ITestAttemptRepository, TestAttemptRepository>();
+        services.AddScoped<IAttemptQuestionRepository, AttemptQuestionRepository>();
 
         return services;
     }
-} 
+}

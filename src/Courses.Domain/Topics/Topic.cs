@@ -6,8 +6,6 @@ namespace Courses.Domain.Topics;
 
 public class Topic : AggregateRoot
 {
-    private readonly HashSet<Test> _tests = [];
-
     public Title Title { get; private set; }
 
     public Content Content { get; private set; }
@@ -20,11 +18,13 @@ public class Topic : AggregateRoot
 
     public Course Course { get; private set; }
 
-    public IReadOnlyCollection<Test> Tests => _tests;
+    public Guid? TestId { get; private set; }
+
+    public Test? Test { get; private set; }
 
     private Topic() { }
 
-    private Topic(Guid id, Title title, Content content, string? media, int order, Guid courseId)
+    private Topic(Guid id, Title title, Content content, string? media, int order, Guid courseId, Guid? testId = null)
         : base(id)
     {
         Title = title;
@@ -32,6 +32,7 @@ public class Topic : AggregateRoot
         Media = media;
         Order = order;
         CourseId = courseId;
+        TestId = testId;
     }
 
     public void Update(Title title, Content content)
@@ -50,18 +51,20 @@ public class Topic : AggregateRoot
         Order = order;
     }
 
-    public void AddTest(Test test)
+    public void SetTest(Test test)
     {
-        _tests.Add(test);
+        TestId = test.Id;
+        Test = test;
     }
 
-    public void RemoveTest(Test test)
+    public void RemoveTest()
     {
-        _tests.Remove(test);
+        TestId = null;
+        Test = null;
     }
 
-    public static Topic Create(Guid id, Title title, Content content, string? media, int order, Guid courseId)
+    public static Topic Create(Guid id, Title title, Content content, string? media, int order, Guid courseId, Guid? testId = null)
     {
-        return new Topic(id, title, content, media, order, courseId);
+        return new Topic(id, title, content, media, order, courseId, testId);
     }
 } 

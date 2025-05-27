@@ -1,6 +1,5 @@
 using Courses.Domain.Common;
 using Courses.Domain.Tests;
-using Courses.Domain.Topics;
 
 namespace Courses.Domain.Questions;
 
@@ -45,6 +44,26 @@ public class Question : AggregateRoot
     public void UpdateImage(string? image)
     {
         Image = image;
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public Answer AddAnswer(Guid id, string value, bool isCorrect)
+    {
+        var answer = Answer.Create(id, value, isCorrect, this);
+        _answers.Add(answer);
+        UpdatedAt = DateTime.UtcNow;
+        return answer;
+    }
+
+    public void RemoveAnswer(Answer answer)
+    {
+        _answers.Remove(answer);
+        UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void ClearAnswers()
+    {
+        _answers.Clear();
         UpdatedAt = DateTime.UtcNow;
     }
 

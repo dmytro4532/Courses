@@ -1,47 +1,102 @@
-import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { Typography, Card, Alert, Empty, List } from 'antd';
-import type { RootState } from '../store';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card, Typography, Space, List, Spin, Alert } from 'antd';
+import { useAppDispatch, useAppSelector } from '../hooks/store';
+import { getActiveTestAttempt, createTestAttempt } from '../store/slices/testAttemptsSlice';
+import { fetchTestById } from '../store/slices/testSlice';
+import { fetchQuestionsByTestId } from '../store/slices/questionsSlice';
+import type { Question } from '../types';
 
-const { Title, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 const TestDetails = () => {
-  const { courseId, topicId, testId } = useParams<{ courseId: string; topicId: string; testId: string }>();
-  const { items: courses = [] } = useSelector((state: RootState) => state.courses);
+  const { testId } = useParams<{ testId: string }>();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { test, loading: isTestLoading, error: testError } = useAppSelector(state => state.test);
+  const { activeAttempt, isLoading: isAttemptLoading } = useAppSelector(state => state.testAttempts);
+  const { paged: questions, loading: isQuestionsLoading } = useAppSelector(state => state.questions);
 
-  const course = courses.find((c) => c.id === courseId);
-  const topic = course?.topics.find((t) => t.id === topicId);
-  const test = topic?.tests.find((t) => t.id === testId);
+  useEffect(() => {
+    const loadData = async () => {
+      if (testId) {
+        await dispatch(fetchTestById(testId)).unwrap();
+        await dispatch(fetchQuestionsByTestId({ testId })).unwrap();
+        await dispatch(getActiveTestAttempt(testId));
+      }
+    };
+    loadData();
+  }, [dispatch, testId]);
 
-  if (!course || !topic || !test) {
-    return <Alert type="error" message="Test not found" style={{ marginTop: 48 }} />;
+  if (isTestLoading || isAttemptLoading || isQuestionsLoading) {
+    return <Spin size="large" />;
   }
 
+  if (testError) {
+    return <Alert type="error" message="Failed to load test details" />;
+  }
+
+  if (!test || !questions) {
+    return <Alert type="error" message="Test not found" />;
+  }
+
+  const handleStartAttempt = async () => {
+    try {
+      const result = await dispatch(createTestAttempt(testId!)).unwrap();
+      navigate(`/test-attempts/${result.id}`);
+    } catch (error) {
+      console.error('Failed to create test attempt:', error);
+    }
+  };
+
+  const handleContinueAttempt = () => {
+    if (activeAttempt) {
+      navigate(`/test-attempts/${activeAttempt.id}`);
+    }
+  };
+
   return (
-    <div style={{ padding: '24px 0' }}>
-      <Title level={2}>{test.title}</Title>
-      <Paragraph>{test.description}</Paragraph>
-      <Title level={3} style={{ marginTop: 24 }}>Questions</Title>
-      {test.questions.length === 0 ? (
-        <Empty description="No questions for this test" />
-      ) : (
+    <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      <Card>
+        <Space direction="vertical" style={{ width: '100%' }}>
+          <Title level={2}>{test.title}</Title>
+          <Text>{test.description}</Text>
+          <Space>
+            {activeAttempt ? (
+              <Button type="primary" onClick={handleContinueAttempt}>
+                Continue Attempt
+              </Button>
+            ) : (
+              <Button type="primary" onClick={handleStartAttempt} loading={isAttemptLoading}>
+                Start Test
+              </Button>
+            )}
+          </Space>
+        </Space>
+      </Card>
+
+      <Card title="Questions">
         <List
-          dataSource={test.questions}
-          renderItem={(q, idx) => (
+          dataSource={questions.items}
+          renderItem={(question: Question, index) => (
             <List.Item>
-              <Card title={`Q${idx + 1}: ${q.text}`} style={{ width: '100%' }}>
-                <ol>
-                  {q.options.map((opt, i) => (
-                    <li key={i}>{opt}</li>
-                  ))}
-                </ol>
-              </Card>
+              <Space direction="vertical" style={{ width: '100%' }}>
+                <Text strong>{`${index + 1}. ${question.content}`}</Text>
+                <List
+                  dataSource={question.answers}
+                  renderItem={(answer) => (
+                    <List.Item>
+                      <Text>{answer.value}</Text>
+                    </List.Item>
+                  )}
+                />
+              </Space>
             </List.Item>
           )}
         />
-      )}
-    </div>
+      </Card>
+    </Space>
   );
 };
 
-export default TestDetails; 
+export default TestDetails;

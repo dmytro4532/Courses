@@ -4,7 +4,7 @@ export interface Topic {
   content: string;
   courseId: string;
   mediaUrl?: string;
-  tests: Test[];
+  testId?: string;
 }
 
 export interface Test {
@@ -13,14 +13,22 @@ export interface Test {
   description: string;
   topicId: string;
   questions: Question[];
+  createdAt: string;
+  updatedAt?: string;
 }
 
 export interface Question {
   id: string;
-  text: string;
-  options: string[];
-  correctOptionIndex: number;
+  content: string;
+  order: number;
   testId: string;
+  answers: Answer[];
+}
+
+export interface Answer {
+  id: string;
+  value: string;
+  isCorrect: boolean;
 }
 
 export interface User {
@@ -45,4 +53,28 @@ export interface PagedList<T> {
   hasPreviousPage: boolean;
   hasNextPage: boolean;
   items: T[];
+}
+
+export interface TestAttempt {
+    id: string;
+    testId: string;
+    userId: string;
+    startedAt: string;
+    completedAt?: string;
+    score?: number;
+}
+
+export interface AttemptQuestion {
+    id: string;
+    testAttemptId: string;
+    questionId: string;
+    content: string;
+    order: number;
+    answers: AttemptQuestionAnswer[];
+}
+
+export interface AttemptQuestionAnswer {
+    id: string;
+    isSelected: boolean;
+    value: string;
 }
