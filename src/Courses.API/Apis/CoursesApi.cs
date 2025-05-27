@@ -27,10 +27,10 @@ public static class CoursesApi
         api.MapGet("{courseId:guid}", GetArticleAsync);
         api.MapGet("/ids", GetCoursesByIdsAsync);
         
-        api.MapPost("/", CreateCourseAsync).RequireAuthorization();
-        api.MapPut("/{courseId:guid}/", UpdateArticleAsync).RequireAuthorization();
-        api.MapPost("/{courseId:guid}/image", UpdateImageAsync).RequireAuthorization();
-        api.MapDelete("/{courseId:guid}", DeleteArticleAsync).RequireAuthorization();
+        api.MapPost("/", CreateCourseAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapPut("/{courseId:guid}/", UpdateArticleAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapPost("/{courseId:guid}/image", UpdateImageAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapDelete("/{courseId:guid}", DeleteArticleAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
 
         return api;
     }

@@ -15,6 +15,10 @@ import { TestAttempt } from './pages/TestAttempt';
 import { TestAttemptReview } from './pages/TestAttemptReview';
 import Topics from './pages/Topics';
 import AdminCourses from './pages/admin/AdminCourses';
+import AdminTopics from './pages/admin/AdminTopics';
+import AdminTests from './pages/admin/AdminTests';
+import AdminQuestions from './pages/admin/AdminQuestions';
+import AdminUsers from './pages/admin/AdminUsers';
 import { store } from './store';
 
 function App() {
@@ -49,6 +53,10 @@ function App() {
           <Route path="/admin" element={<AdminRoute />}>
             <Route index element={<Navigate to="/admin/courses" replace />} />
             <Route path="courses" element={<AdminCourses />} />
+            <Route path="topics/:courseId" element={<AdminTopics />} />
+            <Route path="tests" element={<AdminTests />} />
+            <Route path="questions/:testId" element={<AdminQuestions />} />
+            <Route path="users" element={<AdminUsers />} />
           </Route>
         </Routes>
       </Router>

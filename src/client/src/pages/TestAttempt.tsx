@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../hooks/store';
 import { getTestAttempt, completeTestAttempt } from '../store/slices/testAttemptsSlice';
 import { getAttemptQuestions, createAttemptQuestion } from '../store/slices/attemptQuestionsSlice';
 import { fetchTestById } from '../store/slices/testSlice';
-import { fetchQuestionsByTestId } from '../store/slices/questionsSlice';
+import { fetchQuestions } from '../store/slices/questionsSlice';
 import type { Question, AttemptQuestion } from '../types';
 
 const { Title, Text } = Typography;
@@ -20,21 +20,21 @@ export const TestAttempt = () => {
     const { currentAttempt, isLoading: isAttemptLoading } = useAppSelector(state => state.testAttempts);
     const { questions: attemptQuestions } = useAppSelector(state => state.attemptQuestions);
     const { test, loading: isTestLoading } = useAppSelector(state => state.test);
-    const { paged: testQuestions, loading: isTestQuestionsLoading } = useAppSelector(state => state.questions);
+    const { paged: testQuestions, status: questionsStatus } = useAppSelector(state => state.questions);
 
     useEffect(() => {
         const loadData = async () => {
             if (attemptId) {
                 const attempt = await dispatch(getTestAttempt(attemptId)).unwrap();
                 await dispatch(fetchTestById(attempt.testId)).unwrap();
-                await dispatch(fetchQuestionsByTestId({ testId: attempt.testId })).unwrap();
+                await dispatch(fetchQuestions({ testId: attempt.testId })).unwrap();
                 await dispatch(getAttemptQuestions(attemptId));
             }
         };
         loadData();
     }, [dispatch, attemptId]);
 
-    if (isAttemptLoading || isTestLoading || isTestQuestionsLoading) {
+    if (isAttemptLoading || isTestLoading || questionsStatus === 'loading') {
         return <Spin size="large" />;
     }
 

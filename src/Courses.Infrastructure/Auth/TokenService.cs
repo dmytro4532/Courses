@@ -57,7 +57,7 @@ public class TokenService : ITokenService
         [
             new("id", user.Id.ToString()),
             new("email", user.Email!.ToString()),
-            new("role", user.Role.ToString()),
+            new(ClaimTypes.Role, user.Role.ToString()),
         ];
     }
 }

@@ -1,47 +1,52 @@
-import { DeleteOutlined, EditOutlined, PlusOutlined, OrderedListOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Modal, Space, Table } from 'antd';
+import { DeleteOutlined, EditOutlined, PlusOutlined, OrderedListOutlined, CopyOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Modal, Space, Table, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CourseForm } from '../../components/features/courses/CourseForm';
-import { DeleteCourseModal } from '../../components/features/courses/DeleteCourseModal';
-import type { AppDispatch, RootState } from '../../store';
-import { fetchCourses } from '../../store/slices/coursesSlice';
-import type { CourseResponse } from '../../types';
 import { Link } from 'react-router-dom';
+import type { AppDispatch, RootState } from '../../store';
+import { fetchTests } from '../../store/slices/testsSlice';
+import type { Test } from '../../types';
+import { TestForm } from '../../components/features/tests/TestForm';
+import { DeleteTestModal } from '../../components/features/tests/DeleteTestModal';
 
-const AdminCourses = () => {
+const AdminTests = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { paged, status } = useSelector((state: RootState) => state.courses);
+  const { paged, status } = useSelector((state: RootState) => state.tests);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingCourse, setEditingCourse] = useState<CourseResponse | null>(null);
-  const [deletingCourse, setDeletingCourse] = useState<CourseResponse | null>(null);
+  const [editingTest, setEditingTest] = useState<Test | null>(null);
+  const [deletingTest, setDeletingTest] = useState<Test | null>(null);
 
   useEffect(() => {
-    dispatch(fetchCourses({ pageIndex: 0, pageSize: 10 }));
+    dispatch(fetchTests({ pageIndex: 0, pageSize: 10 }));
   }, [dispatch]);
 
   const handleAdd = () => {
-    setEditingCourse(null);
+    setEditingTest(null);
     setIsModalVisible(true);
   };
 
-  const handleEdit = (record: CourseResponse) => {
-    setEditingCourse(record);
+  const handleEdit = (record: Test) => {
+    setEditingTest(record);
     setIsModalVisible(true);
   };
 
-  const handleDelete = (record: CourseResponse) => {
-    setDeletingCourse(record);
+  const handleDelete = (record: Test) => {
+    setDeletingTest(record);
   };
 
   const handleFormSuccess = () => {
     setIsModalVisible(false);
-    dispatch(fetchCourses({ pageIndex: 0, pageSize: 10 }));
+    dispatch(fetchTests({ pageIndex: 0, pageSize: 10 }));
   };
 
   const handleDeleteSuccess = () => {
-    setDeletingCourse(null);
-    dispatch(fetchCourses({ pageIndex: 0, pageSize: 10 }));
+    setDeletingTest(null);
+    dispatch(fetchTests({ pageIndex: 0, pageSize: 10 }));
+  };
+
+  const handleCopyId = (record: Test) => {
+    navigator.clipboard.writeText(record.id);
+    message.success('Test ID copied to clipboard');
   };
 
   const columns = [
@@ -51,36 +56,30 @@ const AdminCourses = () => {
       key: 'title',
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-      ellipsis: true,
-    },
-    {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (date: string) => new Date(date).toLocaleDateString(),
-    },
-    {
       title: 'Actions',
       key: 'actions',
-      render: (_: any, record: CourseResponse) => (
+      render: (_: any, record: Test) => (
         <Space>
-          <Link to={`/courses/${record.id}`} target="_blank" rel="noopener noreferrer">
+          <Link to={`/tests/${record.id}`} target="_blank" rel="noopener noreferrer">
             <Button
               type="text"
               icon={<EyeOutlined />}
-              title="View Course"
+              title="View Test"
             />
           </Link>
-          <Link to={`/admin/topics/${record.id}`}>
+          <Link to={`/admin/questions/${record.id}`}>
             <Button
               type="text"
               icon={<OrderedListOutlined />}
-              title="Manage Topics"
+              title="Manage Questions"
             />
           </Link>
+          <Button
+            type="text"
+            icon={<CopyOutlined />}
+            onClick={() => handleCopyId(record)}
+            title="Copy Test ID"
+          />
           <Button
             type="text"
             icon={<EditOutlined />}
@@ -100,13 +99,13 @@ const AdminCourses = () => {
   return (
     <div>
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0 }}>Courses</h1>
+        <h1 style={{ margin: 0 }}>Tests</h1>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAdd}
         >
-          Add Course
+          Add Test
         </Button>
       </div>
 
@@ -120,32 +119,32 @@ const AdminCourses = () => {
           pageSize: paged?.pageSize ?? 10,
           total: paged?.totalCount ?? 0,
           onChange: (page) => {
-            dispatch(fetchCourses({ pageIndex: page - 1, pageSize: 10 }));
+            dispatch(fetchTests({ pageIndex: page - 1, pageSize: 10 }));
           },
         }}
       />
 
       <Modal
-        title={editingCourse ? 'Edit Course' : 'Add Course'}
+        title={editingTest ? 'Edit Test' : 'Add Test'}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
       >
-        <CourseForm
-          initialValues={editingCourse ?? undefined}
+        <TestForm
+          initialValues={editingTest ?? undefined}
           onSuccess={handleFormSuccess}
           onCancel={() => setIsModalVisible(false)}
           loading={status === 'loading'}
         />
       </Modal>
 
-      <DeleteCourseModal
-        course={deletingCourse}
-        onClose={() => setDeletingCourse(null)}
+      <DeleteTestModal
+        test={deletingTest}
+        onClose={() => setDeletingTest(null)}
         onSuccess={handleDeleteSuccess}
       />
     </div>
   );
 };
 
-export default AdminCourses; 
+export default AdminTests; 

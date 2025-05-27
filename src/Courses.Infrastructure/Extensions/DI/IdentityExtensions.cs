@@ -15,7 +15,8 @@ public static class IdentityExtensions
     public static IServiceCollection AddIdentity(
         this IServiceCollection services)
     {
-        services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+        services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+        {
             options.Tokens.AuthenticatorTokenProvider = "Default";
             options.Password = new PasswordOptions
             {
@@ -50,13 +51,16 @@ public static class IdentityExtensions
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,   
+                ValidIssuer = jwtSettings.Issuer,
                 ValidAudience = jwtSettings.Audience,
                 IssuerSigningKey = jwtSettings.SigningKey,
             });
 
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+            options.AddPolicy("Admin", policy =>
+                policy.RequireClaim("role", "Admin"))
+        );
 
         return services;
     }
-} 
+}

@@ -30,10 +30,10 @@ public static class TopicsApi
         api.MapGet("/completed", GetCompletedTopicsAsync).RequireAuthorization();
 
 
-        api.MapPost("/", CreateTopicAsync).RequireAuthorization();
-        api.MapPut("/{topicId:guid}", UpdateTopicAsync).RequireAuthorization();
-        api.MapPut("/{topicId:guid}/media", UpdateTopicMediaAsync).RequireAuthorization();
-        api.MapDelete("/{topicId:guid}", DeleteTopicAsync).RequireAuthorization();
+        api.MapPost("/", CreateTopicAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapPut("/{topicId:guid}", UpdateTopicAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapPut("/{topicId:guid}/media", UpdateTopicMediaAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapDelete("/{topicId:guid}", DeleteTopicAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
 
         api.MapPost("/{topicId:guid}/complete", CompleteTopicAsync).RequireAuthorization();
 
@@ -90,7 +90,7 @@ public static class TopicsApi
     public static async Task<Results<Ok<TopicResponse>, ProblemHttpResult>> UpdateTopicAsync(
         [AsParameters] TopicServices services,
         Guid topicId,
-        UpdateTopicCommand request)
+        [FromForm] UpdateTopicCommand request)
     {
         if (topicId != request.Id)
         {

@@ -27,10 +27,9 @@ if (app.Environment.IsDevelopment())
 
 app.ApplyMigrations();
 app.EnsureBucketExistsAsync().Wait();
+app.EnsureAdminExistsAsync().Wait();
 
 app.UseCors();
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
@@ -42,5 +41,8 @@ app.MapQuestionsApi();
 app.MapCoursesProgressesApi();
 app.MapTestAttemptsApi();
 app.MapAttemptQuestionsApi();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

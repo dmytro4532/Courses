@@ -52,6 +52,18 @@ export const register = createAsyncThunk(
   }
 );
 
+export const registerAdmin = createAsyncThunk(
+  'auth/registerAdmin',
+  async (userData: { username: string; email: string; password: string }, { rejectWithValue }) => {
+    try {
+      const response = await api.post<{ token: string; }>('/api/users/register-admin', userData);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.detail || 'Admin registration failed');
+    }
+  }
+);
+
 export const fetchCurrentUser = createAsyncThunk(
   'auth/fetchCurrentUser',
   async (_, { rejectWithValue, getState }) => {
@@ -73,6 +85,19 @@ export const fetchCurrentUser = createAsyncThunk(
 export const logout = createAsyncThunk('auth/logout', async () => {
   localStorage.removeItem('token');
 });
+
+export const deleteUser = createAsyncThunk(
+  'auth/deleteUser',
+  async (userId: string, { dispatch, rejectWithValue }) => {
+    try {
+      await api.delete(`/api/users/${userId}`);
+      dispatch(logout());
+      return userId;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.detail || 'Failed to delete user');
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -108,6 +133,20 @@ const authSlice = createSlice({
         state.status = 'failed';
         state.registerError = action.payload as string || 'Registration failed';
       })
+      // Register admin cases
+      .addCase(registerAdmin.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(registerAdmin.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.token = action.payload.token;
+        state.error = null;
+      })
+      .addCase(registerAdmin.rejected, (state, action) => {
+        state.status = 'failed';
+        state.registerError = action.payload as string || 'Admin registration failed';
+      })
       // Fetch current user cases
       .addCase(fetchCurrentUser.pending, (state) => {
         state.status = 'loading';
@@ -127,6 +166,20 @@ const authSlice = createSlice({
         state.token = null;
         state.status = 'idle';
         state.error = null;
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(deleteUser.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.status = 'idle';
+        state.error = null;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as string;
       });
   },
 });

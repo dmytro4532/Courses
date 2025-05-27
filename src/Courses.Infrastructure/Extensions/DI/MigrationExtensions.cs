@@ -1,7 +1,9 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using Courses.Application.Users.Commands.RegisterAdmin;
 using Courses.Infrastructure.Persistance;
 using Courses.Infrastructure.Storage;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +37,24 @@ public static class MigrationExtensions
         catch (BucketAlreadyOwnedByYouException)
         {
             return;
+        }
+    }
+
+    public static async Task EnsureAdminExistsAsync(this IApplicationBuilder app)
+    {
+        using IServiceScope scope = app.ApplicationServices.CreateScope();
+        using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var sender = scope.ServiceProvider.GetRequiredService<ISender>();
+
+        if (!await dbContext.Users.AnyAsync())
+        {
+            var command = new RegisterAdminCommand(
+                Username: "admin",
+                Email: "admin@courses.com",
+                Password: "Admin123!"
+            );
+
+            await sender.Send(command);
         }
     }
 }

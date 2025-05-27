@@ -1,14 +1,16 @@
-import { Alert, Card, Col, Descriptions, Divider, Pagination, Row, Spin, Typography } from 'antd';
+import { Alert, Card, Col, Descriptions, Divider, Modal, Pagination, Row, Spin, Typography, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import type { AppDispatch, RootState } from '../store';
-import { fetchCurrentUser } from '../store/slices/authSlice';
+import { deleteUser, fetchCurrentUser } from '../store/slices/authSlice';
+import { fetchCoursesByIds } from '../store/slices/coursesSlice';
 import { fetchProgresses, type CourseProgress } from '../store/slices/progressesSlice';
 import type { CourseResponse } from '../types';
-import { fetchCoursesByIds } from '../store/slices/coursesSlice';
 
 const { Title, Paragraph } = Typography;
+
+type LoadingStatus = 'idle' | 'loading' | 'succeeded' | 'failed';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const Profile = () => {
 
   const [courses, setCourses] = useState<Record<string, CourseResponse>>({});
   const [page, setPage] = useState(1);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
 
   useEffect(() => {
     if (!token) {
@@ -53,6 +56,14 @@ const Profile = () => {
     }
   }, [coursesByIds]);
 
+  const handleDeleteUser = async () => {
+    if (user?.id) {
+      await dispatch(deleteUser(user.id));
+      setIsDeleteModalVisible(false);
+      navigate('/login');
+    }
+  };
+
   if (!token) {
     return null;
   }
@@ -78,6 +89,11 @@ const Profile = () => {
           <Descriptions bordered column={1}>
             <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
           </Descriptions>
+          <div style={{ marginTop: '24px', textAlign: 'right' }}>
+            <Button type="primary" danger onClick={() => setIsDeleteModalVisible(true)}>
+              Delete Account
+            </Button>
+          </div>
         </Card>
       ) : (
         <Alert
@@ -140,6 +156,28 @@ const Profile = () => {
       ) : (
         <Paragraph type="secondary">You have no course progresses yet.</Paragraph>
       )}
+
+      <Modal
+        title="Delete Account"
+        open={isDeleteModalVisible}
+        onCancel={() => setIsDeleteModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsDeleteModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button 
+            key="delete" 
+            type="primary" 
+            danger 
+            onClick={handleDeleteUser}
+            loading={(status as LoadingStatus) === 'loading'}
+          >
+            Delete Account
+          </Button>
+        ]}
+      >
+        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+      </Modal>
     </div>
   );
 };

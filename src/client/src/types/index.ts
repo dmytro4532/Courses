@@ -5,6 +5,7 @@ export interface Topic {
   courseId: string;
   mediaUrl?: string;
   testId?: string;
+  order: number;
 }
 
 export interface Test {
@@ -21,12 +22,11 @@ export interface Question {
   id: string;
   content: string;
   order: number;
-  testId: string;
   answers: Answer[];
 }
 
 export interface Answer {
-  id: string;
+  id?: string;
   value: string;
   isCorrect: boolean;
 }

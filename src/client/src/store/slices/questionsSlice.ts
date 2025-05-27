@@ -1,26 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { Question, PagedList } from '../../types';
+import type { PagedList, Question } from '../../types';
 import api from '../../api/axios';
 
 interface QuestionsState {
   paged: PagedList<Question> | null;
-  loading: boolean;
+  status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
 }
 
 const initialState: QuestionsState = {
   paged: null,
-  loading: false,
+  status: 'idle',
   error: null,
 };
 
-export const fetchQuestionsByTestId = createAsyncThunk(
-  'questions/fetchByTestId',
-  async (params: { testId: string; pageIndex?: number; pageSize?: number }) => {
+export const fetchQuestions = createAsyncThunk(
+  'questions/fetchQuestions',
+  async (params: { testId: string; pageIndex?: number; pageSize?: number; orderBy?: string; orderDirection?: string }) => {
     const response = await api.get<PagedList<Question>>(`/api/questions/tests/${params.testId}`, {
       params: {
         PageIndex: params.pageIndex ?? 0,
         PageSize: params.pageSize ?? 10,
+        OrderBy: params.orderBy ?? 'Order',
+        OrderDirection: params.orderDirection ?? 'ASC',
       },
     });
     return response.data;
@@ -33,16 +35,15 @@ const questionsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchQuestionsByTestId.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+      .addCase(fetchQuestions.pending, (state) => {
+        state.status = 'loading';
       })
-      .addCase(fetchQuestionsByTestId.fulfilled, (state, action) => {
-        state.loading = false;
+      .addCase(fetchQuestions.fulfilled, (state, action) => {
+        state.status = 'succeeded';
         state.paged = action.payload;
       })
-      .addCase(fetchQuestionsByTestId.rejected, (state, action) => {
-        state.loading = false;
+      .addCase(fetchQuestions.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.error.message || 'Failed to fetch questions';
       });
   },

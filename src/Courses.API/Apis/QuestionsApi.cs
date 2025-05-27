@@ -23,10 +23,10 @@ public static class QuestionsApi
         
         api.MapGet("/tests/{testId:guid}", GetQuestionsByTestAsync);
         api.MapGet("/{questionId:guid}", GetQuestionAsync);
-        api.MapPost("/", CreateQuestionAsync).RequireAuthorization();
-        api.MapPut("/{questionId:guid}", UpdateQuestionAsync).RequireAuthorization();
-        api.MapPut("/{questionId:guid}/image", UpdateQuestionImageAsync).RequireAuthorization();
-        api.MapDelete("/{questionId:guid}", DeleteQuestionAsync).RequireAuthorization();
+        api.MapPost("/", CreateQuestionAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapPut("/{questionId:guid}", UpdateQuestionAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapPut("/{questionId:guid}/image", UpdateQuestionImageAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapDelete("/{questionId:guid}", DeleteQuestionAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
 
         return api;
     }

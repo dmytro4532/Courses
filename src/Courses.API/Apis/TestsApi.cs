@@ -23,9 +23,9 @@ public static class TestsApi
         
         api.MapGet("/", GetTestsAsync);
         api.MapGet("/{testId:guid}", GetTestAsync);
-        api.MapPost("/", CreateTestAsync).RequireAuthorization();
-        api.MapPut("/{testId:guid}", UpdateTestAsync).RequireAuthorization();
-        api.MapDelete("/{testId:guid}", DeleteTestAsync).RequireAuthorization();
+        api.MapPost("/", CreateTestAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapPut("/{testId:guid}", UpdateTestAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
+        api.MapDelete("/{testId:guid}", DeleteTestAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
 
         return api;
     }

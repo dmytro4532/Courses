@@ -5,6 +5,7 @@ using Courses.Application.Common.Models;
 using Courses.Application.Users.Commands.ConfirmEmail;
 using Courses.Application.Users.Commands.DeleteUser;
 using Courses.Application.Users.Commands.LoginUser;
+using Courses.Application.Users.Commands.RegisterAdmin;
 using Courses.Application.Users.Commands.RegisterUser;
 using Courses.Application.Users.Commands.UpdateUser;
 using Courses.Application.Users.Dto;
@@ -28,6 +29,7 @@ public static class UsersApi
 
         api.MapGet("/confirm-email", ConfirmEmailAsync);
         api.MapPost("/register", RegisterUserAsync);
+        api.MapPost("/register-admin", RegisterAdminAsync).RequireAuthorization(policy => policy.RequireRole("Admin"));
         api.MapPost("/login", LoginUserAsync);
 
         api.MapPut("/", UpdateUserAsync).RequireAuthorization();
@@ -72,6 +74,17 @@ public static class UsersApi
     public static async Task<Results<Ok<UserResponse>, ProblemHttpResult>> RegisterUserAsync(
         [AsParameters] UserServices services,
         RegisterUserCommand request)
+    {
+        var result = await services.Sender.Send(request);
+
+        return result.IsSuccess ? TypedResults.Ok(result.Value) : result.ToProblemHttpResult();
+    }
+
+    [ProducesResponseType<Ok<UserResponse>>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType<ProblemHttpResult>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.ProblemJson)]
+    public static async Task<Results<Ok<UserResponse>, ProblemHttpResult>> RegisterAdminAsync(
+        [AsParameters] UserServices services,
+        RegisterAdminCommand request)
     {
         var result = await services.Sender.Send(request);
 

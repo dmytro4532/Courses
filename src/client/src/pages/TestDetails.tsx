@@ -4,7 +4,7 @@ import { Button, Card, Typography, Space, List, Spin, Alert } from 'antd';
 import { useAppDispatch, useAppSelector } from '../hooks/store';
 import { getActiveTestAttempt, createTestAttempt } from '../store/slices/testAttemptsSlice';
 import { fetchTestById } from '../store/slices/testSlice';
-import { fetchQuestionsByTestId } from '../store/slices/questionsSlice';
+import { fetchQuestions } from '../store/slices/questionsSlice';
 import type { Question } from '../types';
 
 const { Title, Text } = Typography;
@@ -15,20 +15,20 @@ const TestDetails = () => {
   const dispatch = useAppDispatch();
   const { test, loading: isTestLoading, error: testError } = useAppSelector(state => state.test);
   const { activeAttempt, isLoading: isAttemptLoading } = useAppSelector(state => state.testAttempts);
-  const { paged: questions, loading: isQuestionsLoading } = useAppSelector(state => state.questions);
+  const { paged: questions, status: questionsStatus } = useAppSelector(state => state.questions);
 
   useEffect(() => {
     const loadData = async () => {
       if (testId) {
         await dispatch(fetchTestById(testId)).unwrap();
-        await dispatch(fetchQuestionsByTestId({ testId })).unwrap();
+        await dispatch(fetchQuestions({ testId })).unwrap();
         await dispatch(getActiveTestAttempt(testId));
       }
     };
     loadData();
   }, [dispatch, testId]);
 
-  if (isTestLoading || isAttemptLoading || isQuestionsLoading) {
+  if (isTestLoading || isAttemptLoading || questionsStatus === 'loading') {
     return <Spin size="large" />;
   }
 

@@ -9,6 +9,7 @@ import testAttemptsReducer from './slices/testAttemptsSlice';
 import attemptQuestionsReducer from './slices/attemptQuestionsSlice';
 import testReducer from './slices/testSlice';
 import questionsReducer from './slices/questionsSlice';
+import testsReducer from './slices/testsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,10 +19,11 @@ export const store = configureStore({
     course: courseReducer,
     progresses: progressesReducer,
     completedTopics: completedTopicsReducer,
+    test: testReducer,
     testAttempts: testAttemptsReducer,
     attemptQuestions: attemptQuestionsReducer,
-    test: testReducer,
     questions: questionsReducer,
+    tests: testsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware(),

@@ -4,9 +4,11 @@ using Shared.Results;
 
 namespace Courses.Application.Topics.Commands.UpdateTopic;
 
-public record UpdateTopicCommand(
-    Guid Id,
-    string Title,
-    string Content,
-    int Order,
-    Guid? TestId) : IRequest<Result<TopicResponse>>; 
+public class UpdateTopicCommand : IRequest<Result<TopicResponse>>
+{
+    public Guid Id { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public int Order { get; set; }
+    public Guid? TestId { get; set; }
+}
