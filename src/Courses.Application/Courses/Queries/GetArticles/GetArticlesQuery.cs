@@ -1,9 +1,9 @@
 ﻿using Courses.Application.Abstractions.Messaging;
-using Courses.Application.Articles.Dto;
 using Courses.Application.Common.Models;
+using Courses.Application.Courses.Dto;
 using Shared.Results;
 
-namespace Courses.Application.Articles.Queries.GetArticles;
+namespace Courses.Application.Courses.Queries.GetArticles;
 
 public record GetArticlesQuery(
     int PageIndex = 0,

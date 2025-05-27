@@ -1,4 +1,6 @@
-﻿namespace Courses.Domain.Common.Guards;
+﻿using System.Text.RegularExpressions;
+
+namespace Courses.Domain.Common.Guards;
 
 public static class Ensure
 {
@@ -40,6 +42,22 @@ public static class Ensure
         if (value.Length > maxLength)
         {
             throw new ArgumentException(message, argumentName);
+        }
+    }
+
+    public static void Matches(string value, Regex regex, string message, string argumentName)
+    {
+        if (!regex.IsMatch(value))
+        {
+            throw new ArgumentException(message, argumentName);
+        }
+    }
+    
+    public static void MoreThan(int value, int limit, string message, string argumentName)
+    {
+        if (value <= limit)
+        {
+            throw new ArgumentOutOfRangeException(argumentName, message);
         }
     }
 }

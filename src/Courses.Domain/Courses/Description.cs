@@ -1,7 +1,7 @@
 ﻿using Courses.Domain.Common;
 using Courses.Domain.Common.Guards;
 
-namespace Courses.Domain.Articles;
+namespace Courses.Domain.Courses;
 
 public class Description : ValueObject
 {

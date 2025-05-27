@@ -26,11 +26,23 @@ if (app.Environment.IsDevelopment())
 }
 
 app.ApplyMigrations();
+app.EnsureBucketExistsAsync().Wait();
+app.EnsureAdminExistsAsync().Wait();
 
 app.UseCors();
 
 app.UseHttpsRedirection();
 
-app.MapArticlesApi();
+app.MapCoursesApi();
+app.MapUsersApi();
+app.MapTopicsApi();
+app.MapTestsApi();
+app.MapQuestionsApi();
+app.MapCoursesProgressesApi();
+app.MapTestAttemptsApi();
+app.MapAttemptQuestionsApi();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

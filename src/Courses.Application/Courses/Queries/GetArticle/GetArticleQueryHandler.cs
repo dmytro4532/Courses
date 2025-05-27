@@ -1,12 +1,12 @@
 ﻿using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
 using Courses.Application.Abstractions.Messaging;
-using Courses.Application.Articles.Dto;
-using Courses.Domain.Articles;
+using Courses.Application.Courses.Dto;
+using Courses.Domain.Courses;
 using Shared.Results;
 using Shared.Results.Errors;
 
-namespace Courses.Application.Articles.Queries.GetArticle;
+namespace Courses.Application.Courses.Queries.GetArticle;
 
 internal sealed class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, Result<CourseResponse>>
 {

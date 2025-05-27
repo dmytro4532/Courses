@@ -1,9 +1,8 @@
 ﻿using Courses.Application.Abstractions.Messaging;
-using Courses.Application.Articles.Commands.CreateArticle;
-using Courses.Domain.Articles.DomainEvents;
+using Courses.Domain.Courses.DomainEvents;
 using Microsoft.Extensions.Logging;
 
-namespace Courses.Application.Articles.Commands.UpdateArticle;
+namespace Courses.Application.Courses.Commands.UpdateArticle;
 
 internal sealed class ArticleUpdatedDomainEventHandler
         : IDomainEventHandler<CourseUpdatedDomainEvent>

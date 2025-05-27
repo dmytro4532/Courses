@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Courses.Application.Articles.Commands.DeleteArticle;
+namespace Courses.Application.Courses.Commands.DeleteArticle;
 
 internal sealed class DeleteArticleCommandValidator
     : AbstractValidator<DeleteArticleCommand>

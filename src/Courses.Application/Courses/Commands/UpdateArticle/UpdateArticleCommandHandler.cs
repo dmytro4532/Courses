@@ -1,13 +1,13 @@
 using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Mapping;
-using Courses.Application.Articles.Dto;
-using Courses.Domain.Articles;
+using Courses.Application.Courses.Dto;
+using Courses.Domain.Courses;
 using MediatR;
 using Shared.Results;
 using Shared.Results.Errors;
 
-namespace Courses.Application.Articles.Commands.UpdateArticle;
+namespace Courses.Application.Courses.Commands.UpdateArticle;
 
 internal sealed class UpdateArticleCommandHandler : IRequestHandler<UpdateArticleCommand, Result<CourseResponse>>
 {
@@ -33,7 +33,7 @@ internal sealed class UpdateArticleCommandHandler : IRequestHandler<UpdateArticl
 
         article.Update(
             Title.Create(request.Title),
-            Description.Create(request.Content));
+            Description.Create(request.Description));
         _articleRepository.Update(article);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

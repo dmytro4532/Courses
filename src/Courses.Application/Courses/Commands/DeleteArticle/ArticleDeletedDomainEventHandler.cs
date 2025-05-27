@@ -1,11 +1,8 @@
-﻿using Courses.Application.Abstractions.Data.Repositories;
-using Courses.Application.Abstractions.Messaging;
-using Courses.Application.Articles.Commands.CreateArticle;
-using Courses.Application.Common.EventBus;
-using Courses.Domain.Articles.DomainEvents;
+﻿using Courses.Application.Abstractions.Messaging;
+using Courses.Domain.Courses.DomainEvents;
 using Microsoft.Extensions.Logging;
 
-namespace Courses.Application.Articles.Commands.DeleteArticle;
+namespace Courses.Application.Courses.Commands.DeleteArticle;
 
 internal sealed class ArticleDeletedDomainEventHandler
         : IDomainEventHandler<CourseDeletedDomainEvent>
