@@ -1,4 +1,5 @@
-import { Modal, message } from 'antd';
+import { Modal } from 'antd';
+import { enqueueSnackbar } from 'notistack';
 import api from '../../../api/axios';
 import type { CourseResponse } from '../../../types';
 
@@ -14,10 +15,10 @@ export const DeleteCourseModal = ({ course, onClose, onSuccess }: DeleteCourseMo
 
     try {
       await api.delete(`/api/courses/${course.id}`);
-      message.success('Course deleted successfully');
+      enqueueSnackbar('Course deleted successfully', { variant: 'success', autoHideDuration: 3000 });
       onSuccess();
     } catch (error) {
-      message.error('Failed to delete course');
+      enqueueSnackbar('Failed to delete course', { variant: 'error', autoHideDuration: 3000 });
       console.error('Error deleting course:', error);
     }
   };

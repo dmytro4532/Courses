@@ -1,4 +1,5 @@
-import { Form, Input, Button, Space, message } from 'antd';
+import { Form, Input, Button, Space } from 'antd';
+import { enqueueSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
 import type { Test } from '../../../types';
 import api from '../../../api/axios';
@@ -35,10 +36,17 @@ export const TestForm = ({ initialValues, onSuccess, onCancel, loading }: TestFo
         await api.post('/api/tests', values);
       }
 
-      message.success(`Test ${initialValues ? 'updated' : 'created'} successfully`);
+      enqueueSnackbar(`Test ${initialValues ? 'updated' : 'created'} successfully`, { variant: 'success', autoHideDuration: 3000 });
+      form.resetFields();
       onSuccess();
     } catch (error: any) {
-      message.error(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} test`);
+      if (error.response?.data?.errors) {
+        const validationErrors = error.response.data.errors;
+        const errorMessages = validationErrors.map((err: any) => `${err.description}`).join('\n');
+        enqueueSnackbar(errorMessages, { variant: 'error', autoHideDuration: 5000 });
+      } else {
+        enqueueSnackbar(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} test`, { variant: 'error', autoHideDuration: 3000 });
+      }
     } finally {
       setSubmitting(false);
     }

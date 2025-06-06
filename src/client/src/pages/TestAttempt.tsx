@@ -7,6 +7,7 @@ import { getAttemptQuestions, createAttemptQuestion } from '../store/slices/atte
 import { fetchTestById } from '../store/slices/testSlice';
 import { fetchQuestions } from '../store/slices/questionsSlice';
 import type { Question, AttemptQuestion } from '../types';
+import { enqueueSnackbar } from 'notistack';
 
 const { Title, Text } = Typography;
 
@@ -59,8 +60,10 @@ export const TestAttempt = () => {
     const handleComplete = async () => {
         try {
             await dispatch(completeTestAttempt(attemptId!)).unwrap();
+            enqueueSnackbar('Test completed successfully', { variant: 'success', autoHideDuration: 3000 });
             navigate(`/test-attempts/${attemptId}/review`);
         } catch (error) {
+            enqueueSnackbar('Failed to complete test', { variant: 'error', autoHideDuration: 3000 });
             console.error('Failed to complete test:', error);
         }
     };

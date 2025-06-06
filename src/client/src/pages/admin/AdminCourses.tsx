@@ -8,6 +8,7 @@ import type { AppDispatch, RootState } from '../../store';
 import { fetchCourses } from '../../store/slices/coursesSlice';
 import type { CourseResponse } from '../../types';
 import { Link } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
 
 const AdminCourses = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -35,11 +36,13 @@ const AdminCourses = () => {
   };
 
   const handleFormSuccess = () => {
+    setEditingCourse(null);
     setIsModalVisible(false);
     dispatch(fetchCourses({ pageIndex: 0, pageSize: 10 }));
   };
 
   const handleDeleteSuccess = () => {
+    setEditingCourse(null);
     setDeletingCourse(null);
     dispatch(fetchCourses({ pageIndex: 0, pageSize: 10 }));
   };

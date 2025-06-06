@@ -84,6 +84,8 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
       }
 
       message.success(`Topic ${initialValues ? 'updated' : 'created'} successfully`);
+      form.resetFields();
+      setFileList([]);
       onSuccess();
     } catch (error: any) {
       message.error(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} topic`);

@@ -1,4 +1,5 @@
-import { Modal, message } from 'antd';
+import { Modal } from 'antd';
+import { enqueueSnackbar } from 'notistack';
 import api from '../../../api/axios';
 import type { Question } from '../../../types';
 
@@ -14,10 +15,10 @@ export const DeleteQuestionModal = ({ question, onClose, onSuccess }: DeleteQues
 
     try {
       await api.delete(`/api/questions/${question.id}`);
-      message.success('Question deleted successfully');
+      enqueueSnackbar('Question deleted successfully', { variant: 'success', autoHideDuration: 3000 });
       onSuccess();
     } catch (error: any) {
-      message.error(error?.response?.data?.details || 'Failed to delete question');
+      enqueueSnackbar(error?.response?.data?.details || 'Failed to delete question', { variant: 'error', autoHideDuration: 3000 });
     }
   };
 

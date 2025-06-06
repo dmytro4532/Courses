@@ -1,9 +1,10 @@
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Alert, Button, Card, Form, Input, Typography, Space } from 'antd';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import type { AppDispatch, RootState } from '../store';
-import { register } from '../store/slices/authSlice';
+import { register, clearErrors } from '../store/slices/authSlice';
 
 const { Title, Text } = Typography;
 
@@ -12,6 +13,10 @@ const Register = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { status, registerError: error } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    dispatch(clearErrors());
+  }, [dispatch]);
 
   const onFinish = async (values: { username: string; email: string; password: string }) => {
     dispatch(register(values))

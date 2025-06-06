@@ -1,5 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Form, Input, Upload, Button, Space, message } from 'antd';
+import { Form, Input, Upload, Button, Space } from 'antd';
+import { enqueueSnackbar } from 'notistack';
 import type { UploadFile } from 'antd/es/upload/interface';
 import { useState } from 'react';
 import type { CourseResponse } from '../../../types';
@@ -45,7 +46,6 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
                 formData.append('id', initialValues.id);
                 response = await api.put(`/api/courses/${initialValues.id}`, formData);
 
-
                 const imageFormData = new FormData();
                 if (fileList[0]?.originFileObj) {
                     imageFormData.append('image', fileList[0].originFileObj as File);
@@ -63,10 +63,18 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
                 }
             }
 
-            message.success(`Course ${initialValues ? 'updated' : 'created'} successfully`);
+            enqueueSnackbar(`Course ${initialValues ? 'updated' : 'created'} successfully`, { variant: 'success', autoHideDuration: 3000 });
+            form.resetFields();
+            setFileList([]);
             onSuccess();
-        } catch (error) {
-            message.error('Failed to save course');
+        } catch (error: any) {
+            if (error.response?.data?.errors) {
+                const validationErrors = error.response.data.errors;
+                const errorMessages = validationErrors.map((err: any) => `${err.description}`).join('\n');
+                enqueueSnackbar(errorMessages, { variant: 'error', autoHideDuration: 5000 });
+            } else {
+                enqueueSnackbar('Failed to save course', { variant: 'error', autoHideDuration: 3000 });
+            }
             console.error('Error saving course:', error);
         } finally {
             setSubmitting(false);
@@ -77,7 +85,7 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
         beforeUpload: (file: File) => {
             const isImage = file.type.startsWith('image/');
             if (!isImage) {
-                message.error('You can only upload image files!');
+                enqueueSnackbar('You can only upload image files!', { variant: 'error', autoHideDuration: 3000 });
                 return false;
             }
             return false;

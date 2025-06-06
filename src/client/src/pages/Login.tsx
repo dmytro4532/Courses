@@ -1,9 +1,10 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Alert, Button, Card, Form, Input, Typography, Space } from 'antd';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import type { AppDispatch, RootState } from '../store';
-import { login } from '../store/slices/authSlice';
+import { login, clearErrors } from '../store/slices/authSlice';
 
 const { Title, Text } = Typography;
 
@@ -12,7 +13,11 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
-  const { status, registerError: error } = useSelector((state: RootState) => state.auth);
+  const { status, loginError: error } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    dispatch(clearErrors());
+  }, [dispatch]);
 
   const from = location.state?.from?.pathname || '/';
 

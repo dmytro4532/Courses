@@ -102,7 +102,13 @@ export const deleteUser = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    clearErrors: (state) => {
+      state.error = null;
+      state.loginError = null;
+      state.registerError = null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       // Login cases
@@ -184,4 +190,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { clearErrors } = authSlice.actions;
 export default authSlice.reducer; 

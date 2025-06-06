@@ -1,4 +1,5 @@
-import { Modal, message } from 'antd';
+import { Modal } from 'antd';
+import { enqueueSnackbar } from 'notistack';
 import api from '../../../api/axios';
 import type { Test } from '../../../types';
 
@@ -14,10 +15,10 @@ export const DeleteTestModal = ({ test, onClose, onSuccess }: DeleteTestModalPro
 
     try {
       await api.delete(`/api/tests/${test.id}`);
-      message.success('Test deleted successfully');
+      enqueueSnackbar('Test deleted successfully', { variant: 'success', autoHideDuration: 3000 });
       onSuccess();
     } catch (error: any) {
-      message.error(error?.response?.data?.details || 'Failed to delete test');
+      enqueueSnackbar(error?.response?.data?.details || 'Failed to delete test', { variant: 'error', autoHideDuration: 3000 });
     }
   };
 

@@ -1,7 +1,8 @@
-import { Button, Form, Input, InputNumber, Space, Switch, message } from 'antd';
+import { Button, Form, Input, InputNumber, Space, Switch, Checkbox } from 'antd';
 import { useEffect, useState } from 'react';
 import api from '../../../api/axios';
 import type { Question } from '../../../types';
+import { enqueueSnackbar } from 'notistack';
 
 interface QuestionFormProps {
   testId: string;
@@ -52,10 +53,17 @@ export const QuestionForm = ({ testId, initialValues, onSuccess, onCancel, loadi
         await api.post(`/api/questions`, questionData);
       }
 
-      message.success(`Question ${initialValues ? 'updated' : 'created'} successfully`);
+      enqueueSnackbar(`Question ${initialValues ? 'updated' : 'created'}`, { variant: 'success', autoHideDuration: 3000 });
+      form.resetFields();
       onSuccess();
     } catch (error: any) {
-      message.error(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} question`);
+      if (error.response?.data?.errors) {
+        const validationErrors = error.response.data.errors;
+        const errorMessages = validationErrors.map((err: any) => `${err.description}`).join('\n');
+        enqueueSnackbar(errorMessages, { variant: 'error', autoHideDuration: 5000 });
+      } else {
+        enqueueSnackbar(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} question`, { variant: 'error', autoHideDuration: 3000 });
+      }
     } finally {
       setSubmitting(false);
     }

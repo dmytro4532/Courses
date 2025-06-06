@@ -20,10 +20,12 @@ import AdminTests from './pages/admin/AdminTests';
 import AdminQuestions from './pages/admin/AdminQuestions';
 import AdminUsers from './pages/admin/AdminUsers';
 import { store } from './store';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   return (
     <Provider store={store}>
+      <SnackbarProvider />
       <Router>
         <Routes>
           <Route element={<MainLayout />}>
