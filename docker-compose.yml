@@ -16,7 +16,7 @@ services:
       - "5001:5001"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ./cert:/https:ro
+      - ${USERPROFILE}\.aspnet\https:/https:ro
     depends_on:
      - courses.db
     networks:

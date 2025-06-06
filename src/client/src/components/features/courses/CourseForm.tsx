@@ -57,6 +57,7 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
 
                 if (fileList[0]?.originFileObj && response.data?.id) {
                     const imageFormData = new FormData();
+                    imageFormData.append('courseId', response.data?.id);
                     imageFormData.append('image', fileList[0].originFileObj as File);
                     await api.post(`/api/courses/${response.data.id}/image`, imageFormData);
                 }
