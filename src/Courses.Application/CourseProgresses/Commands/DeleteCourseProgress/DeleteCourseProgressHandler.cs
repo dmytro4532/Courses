@@ -37,7 +37,7 @@ public class DeleteCourseProgressHandler : IRequestHandler<DeleteCourseProgressC
             .GetByUserIdAndCourseIdAsync(userId, command.CourseId, cancellationToken);
 
         if (courseProgress is null)
-            return new Error("CourseProgress.NotFound", "Course not started.");
+            return new Error("CourseProgress.NotFound", "Курс не розпочато.");
 
         var topicIds = await _topicRepository.GetTopicIdsByCourseIdAsync(command.CourseId, cancellationToken);
 

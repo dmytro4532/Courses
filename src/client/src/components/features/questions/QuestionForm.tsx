@@ -1,4 +1,4 @@
-import { Button, Form, Input, InputNumber, Space, Switch, Checkbox } from 'antd';
+import { Button, Form, Input, InputNumber, Space, Switch } from 'antd';
 import { useEffect, useState } from 'react';
 import api from '../../../api/axios';
 import type { Question } from '../../../types';
@@ -53,7 +53,7 @@ export const QuestionForm = ({ testId, initialValues, onSuccess, onCancel, loadi
         await api.post(`/api/questions`, questionData);
       }
 
-      enqueueSnackbar(`Question ${initialValues ? 'updated' : 'created'}`, { variant: 'success', autoHideDuration: 3000 });
+      enqueueSnackbar(`Питання ${initialValues ? 'оновлено' : 'створено'}`, { variant: 'success', autoHideDuration: 3000 });
       form.resetFields();
       onSuccess();
     } catch (error: any) {
@@ -62,7 +62,7 @@ export const QuestionForm = ({ testId, initialValues, onSuccess, onCancel, loadi
         const errorMessages = validationErrors.map((err: any) => `${err.description}`).join('\n');
         enqueueSnackbar(errorMessages, { variant: 'error', autoHideDuration: 5000 });
       } else {
-        enqueueSnackbar(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} question`, { variant: 'error', autoHideDuration: 3000 });
+        enqueueSnackbar(error?.response?.data?.details || `Не вдалося ${initialValues ? 'оновити' : 'створити'} питання`, { variant: 'error', autoHideDuration: 3000 });
       }
     } finally {
       setSubmitting(false);
@@ -95,16 +95,16 @@ export const QuestionForm = ({ testId, initialValues, onSuccess, onCancel, loadi
     >
       <Form.Item
         name="content"
-        label="Question Text"
-        rules={[{ required: true, message: 'Please enter the question text' }]}
+        label="Текст питання"
+        rules={[{ required: true, message: 'Будь ласка, введіть текст питання' }]}
       >
         <Input.TextArea rows={4} />
       </Form.Item>
 
       <Form.Item
         name="order"
-        label="Order"
-        rules={[{ required: true, message: 'Please enter the question order' }]}
+        label="Порядок"
+        rules={[{ required: true, message: 'Будь ласка, введіть порядок питання' }]}
       >
         <InputNumber min={0} />
       </Form.Item>
@@ -119,9 +119,9 @@ export const QuestionForm = ({ testId, initialValues, onSuccess, onCancel, loadi
                   key="answer"
                   name={[field.name, 'value']}
                   style={{ flex: 1, margin: 0 }}
-                  rules={[{ required: true, message: 'Please enter answer text' }]}
+                  rules={[{ required: true, message: 'Будь ласка, введіть текст відповіді' }]}
                 >
-                  <Input placeholder={`Answer ${field.name + 1}`} />
+                  <Input placeholder={`Відповідь ${field.name + 1}`} />
                 </Form.Item>
                 <Form.Item
                   {...field}
@@ -145,10 +145,10 @@ export const QuestionForm = ({ testId, initialValues, onSuccess, onCancel, loadi
             htmlType="submit"
             loading={submitting || loading}
           >
-            {initialValues ? 'Update' : 'Create'}
+            {initialValues ? 'Оновити' : 'Створити'}
           </Button>
           <Button onClick={handleCancel}>
-            Cancel
+            Скасувати
           </Button>
         </Space>
       </Form.Item>

@@ -39,7 +39,7 @@ internal sealed class CreateTopicCommandHandler : IRequestHandler<CreateTopicCom
 
         if (course is null)
         {
-            return new NotFoundError("Course.NotFound", "The course was not found.");
+            return new NotFoundError("Course.NotFound", "Курс не знайдено.");
         }
 
         string? media = null;

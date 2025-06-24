@@ -29,11 +29,11 @@ internal sealed class DeleteUserCommandHandler : IRequestHandler<DeleteUserComma
 
         if (user is null)
         {
-            return new NotFoundError("User.NotFound", "User not found.");
+            return new NotFoundError("User.NotFound", "Користувача не знайдено.");
         }
 
         var identityUser = await _identityService.GetByEmailAsync(user.Email)
-            ?? throw new InconsistentDataException($"Identity with email '{user.Email}' not found");
+            ?? throw new InconsistentDataException($"Identity з електронною поштою '{user.Email}' не знайдено");
 
         user.Delete();
         _userRepository.Remove(user);

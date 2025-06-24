@@ -33,7 +33,7 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
       ? [
           {
             uid: '-1',
-            name: 'Current Media',
+            name: 'Поточний медіафайл',
             status: 'done',
             url: initialValues.mediaUrl,
           },
@@ -83,12 +83,12 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
         }
       }
 
-      message.success(`Topic ${initialValues ? 'updated' : 'created'} successfully`);
+      message.success(`Тему ${initialValues ? 'оновлено' : 'створено'} успішно`);
       form.resetFields();
       setFileList([]);
       onSuccess();
     } catch (error: any) {
-      message.error(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} topic`);
+      message.error(error?.response?.data?.details || `Не вдалося ${initialValues ? 'оновити' : 'створити'} тему`);
     } finally {
       setSubmitting(false);
     }
@@ -103,7 +103,7 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
     beforeUpload: (file: File) => {
       const isMedia = file.type.startsWith('image/') || file.type.startsWith('video/');
       if (!isMedia) {
-        message.error('You can only upload image or video files!');
+        message.error('Ви можете завантажувати лише файли зображень!');
         return false;
       }
       return false;
@@ -128,27 +128,27 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
     >
       <Form.Item
         name="title"
-        label="Title"
-        rules={[{ required: true, message: 'Please enter the topic title' }]}
+        label="Назва"
+        rules={[{ required: true, message: 'Будь ласка, введіть назву теми' }]}
       >
         <Input />
       </Form.Item>
 
       <Form.Item
         name="content"
-        label="Content"
-        rules={[{ required: true, message: 'Please enter the topic content' }]}
+        label="Зміст"
+        rules={[{ required: true, message: 'Будь ласка, введіть зміст теми' }]}
       >
         <Input.TextArea rows={4} />
       </Form.Item>
 
       <Form.Item
         name="testId"
-        label="Test"
+        label="Тест"
       >
         <Select
           allowClear
-          placeholder="Select a test"
+          placeholder="Виберіть тест"
           options={testsPaged?.items.map((test: Test) => ({
             label: test.title,
             value: test.id,
@@ -158,13 +158,13 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
 
       <Form.Item
         name="order"
-        label="Order"
-        rules={[{ required: true, message: 'Please enter the topic order' }]}
+        label="Порядок"
+        rules={[{ required: true, message: 'Будь ласка, введіть порядок теми' }]}
       >
         <InputNumber min={0} />
       </Form.Item>
 
-      <Form.Item label="Media">
+      <Form.Item label="Медіа">
         <Upload
           {...uploadProps}
           maxCount={1}
@@ -173,7 +173,7 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
           {fileList.length === 0 && (
             <div>
               <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
+              <div style={{ marginTop: 8 }}>Завантажити</div>
             </div>
           )}
         </Upload>
@@ -186,10 +186,10 @@ export const TopicForm = ({ courseId, initialValues, onSuccess, onCancel, loadin
             htmlType="submit"
             loading={submitting || loading}
           >
-            {initialValues ? 'Update' : 'Create'}
+            {initialValues ? 'Оновити' : 'Створити'}
           </Button>
           <Button onClick={handleCancel}>
-            Cancel
+            Скасувати
           </Button>
         </Space>
       </Form.Item>

@@ -21,7 +21,7 @@ internal sealed class CreateTopicCommandValidator : AbstractValidator<CreateTopi
         RuleFor(x => x.Media)
             .Must(media =>
                 media is null || media.HasAllowedExtension(fileSettings.Value.AllowedImageExtensions))
-            .WithMessage($"Media must have allowed extension ({string.Join(' ', fileSettings.Value.AllowedImageExtensions)})");
+            .WithMessage($"Медіа повинно мати дозволене розширення ({string.Join(' ', fileSettings.Value.AllowedImageExtensions)})");
 
         RuleFor(x => x.Order)
             .GreaterThan(0);

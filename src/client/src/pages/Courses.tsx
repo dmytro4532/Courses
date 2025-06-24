@@ -26,16 +26,16 @@ const Courses = () => {
   }
 
   if (status === 'failed') {
-    return <ErrorMessage message={error || 'Failed to load courses'} />;
+    return <ErrorMessage message={error || 'Не вдалося завантажити курси'} />;
   }
 
   if (!Array.isArray(courses) || courses.length === 0) {
-    return <Empty description="No courses found" style={{ marginTop: 48 }} />;
+    return <Empty description="Курсів не знайдено" style={{ marginTop: 48 }} />;
   }
 
   return (
     <div style={{ padding: '24px 0' }}>
-      <Title level={2}>Available Courses</Title>
+      <Title level={2}>Доступні курси</Title>
       <Row gutter={[16, 16]}>
         {courses.map((course) => (
           <Col xs={24} sm={12} md={8} key={course.id}>

@@ -36,7 +36,7 @@ export const TestForm = ({ initialValues, onSuccess, onCancel, loading }: TestFo
         await api.post('/api/tests', values);
       }
 
-      enqueueSnackbar(`Test ${initialValues ? 'updated' : 'created'} successfully`, { variant: 'success', autoHideDuration: 3000 });
+      enqueueSnackbar(`Тест ${initialValues ? 'оновлено' : 'створено'} успішно`, { variant: 'success', autoHideDuration: 3000 });
       form.resetFields();
       onSuccess();
     } catch (error: any) {
@@ -45,7 +45,7 @@ export const TestForm = ({ initialValues, onSuccess, onCancel, loading }: TestFo
         const errorMessages = validationErrors.map((err: any) => `${err.description}`).join('\n');
         enqueueSnackbar(errorMessages, { variant: 'error', autoHideDuration: 5000 });
       } else {
-        enqueueSnackbar(error?.response?.data?.details || `Failed to ${initialValues ? 'update' : 'create'} test`, { variant: 'error', autoHideDuration: 3000 });
+        enqueueSnackbar(error?.response?.data?.details || `Не вдалося ${initialValues ? 'оновити' : 'створити'} тест`, { variant: 'error', autoHideDuration: 3000 });
       }
     } finally {
       setSubmitting(false);
@@ -66,8 +66,8 @@ export const TestForm = ({ initialValues, onSuccess, onCancel, loading }: TestFo
     >
       <Form.Item
         name="title"
-        label="Title"
-        rules={[{ required: true, message: 'Please enter the test title' }]}
+        label="Назва"
+        rules={[{ required: true, message: 'Будь ласка, введіть назву тесту' }]}
       >
         <Input />
       </Form.Item>
@@ -79,10 +79,10 @@ export const TestForm = ({ initialValues, onSuccess, onCancel, loading }: TestFo
             htmlType="submit"
             loading={submitting || loading}
           >
-            {initialValues ? 'Update' : 'Create'}
+            {initialValues ? 'Оновити' : 'Створити'}
           </Button>
           <Button onClick={handleCancel}>
-            Cancel
+            Скасувати
           </Button>
         </Space>
       </Form.Item>

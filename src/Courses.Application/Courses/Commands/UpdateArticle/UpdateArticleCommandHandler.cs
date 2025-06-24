@@ -28,7 +28,7 @@ internal sealed class UpdateArticleCommandHandler : IRequestHandler<UpdateArticl
 
         if (article is null)
         {
-            return new NotFoundError("Article.NotFound", "The article was not found.");
+            return new NotFoundError("Article.NotFound", "Курс не знайдено.");
         }
 
         article.Update(

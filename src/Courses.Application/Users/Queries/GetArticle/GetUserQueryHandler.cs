@@ -25,7 +25,7 @@ internal sealed class GetUserQueryHandler : IQueryHandler<GetUserQuery, Result<U
 
         if (user is null)
         {
-            return new NotFoundError("User.NotFound", "User not found.");
+            return new NotFoundError("User.NotFound", "Користувача не знайдено.");
         }
 
         return _mapper.Map(user);

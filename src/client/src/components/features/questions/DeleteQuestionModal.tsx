@@ -15,27 +15,27 @@ export const DeleteQuestionModal = ({ question, onClose, onSuccess }: DeleteQues
 
     try {
       await api.delete(`/api/questions/${question.id}`);
-      enqueueSnackbar('Question deleted successfully', { variant: 'success', autoHideDuration: 3000 });
+      enqueueSnackbar('Питання успішно видалено', { variant: 'success', autoHideDuration: 3000 });
       onSuccess();
     } catch (error: any) {
-      enqueueSnackbar(error?.response?.data?.details || 'Failed to delete question', { variant: 'error', autoHideDuration: 3000 });
+      enqueueSnackbar(error?.response?.data?.details || 'Не вдалося видалити питання', { variant: 'error', autoHideDuration: 3000 });
     }
   };
 
   return (
     <Modal
-      title="Delete Question"
+      title="Видалити питання"
       open={!!question}
       onCancel={onClose}
       onOk={handleDelete}
-      okText="Delete"
+      okText="Видалити"
       okButtonProps={{
         danger: true,
       }}
-      cancelText="Cancel"
+      cancelText="Скасувати"
     >
-      <p>Are you sure you want to delete this question?</p>
-      <p>This action cannot be undone.</p>
+      <p>Ви впевнені, що хочете видалити це питання?</p>
+      <p>Цю дію неможливо скасувати.</p>
     </Modal>
   );
 }; 

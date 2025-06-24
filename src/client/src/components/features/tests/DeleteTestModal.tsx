@@ -15,27 +15,27 @@ export const DeleteTestModal = ({ test, onClose, onSuccess }: DeleteTestModalPro
 
     try {
       await api.delete(`/api/tests/${test.id}`);
-      enqueueSnackbar('Test deleted successfully', { variant: 'success', autoHideDuration: 3000 });
+      enqueueSnackbar('Тест успішно видалено', { variant: 'success', autoHideDuration: 3000 });
       onSuccess();
     } catch (error: any) {
-      enqueueSnackbar(error?.response?.data?.details || 'Failed to delete test', { variant: 'error', autoHideDuration: 3000 });
+      enqueueSnackbar(error?.response?.data?.details || 'Не вдалося видалити тест', { variant: 'error', autoHideDuration: 3000 });
     }
   };
 
   return (
     <Modal
-      title="Delete Test"
+      title="Видалити тест"
       open={!!test}
       onCancel={onClose}
       onOk={handleDelete}
-      okText="Delete"
+      okText="Видалити"
       okButtonProps={{
         danger: true,
       }}
-      cancelText="Cancel"
+      cancelText="Скасувати"
     >
-      <p>Are you sure you want to delete the test "{test?.title}"?</p>
-      <p>This action cannot be undone.</p>
+      <p>Ви впевнені, що хочете видалити тест "{test?.title}"?</p>
+      <p>Цю дію неможливо скасувати.</p>
     </Modal>
   );
 }; 

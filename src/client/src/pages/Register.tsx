@@ -29,10 +29,10 @@ const Register = () => {
       <Card>
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <Title level={2} style={{ textAlign: 'center', marginBottom: 0 }}>
-            Create Account
+            Створити аккаунт
           </Title>
           <Text type="secondary" style={{ textAlign: 'center', display: 'block' }}>
-            Sign up to get started
+            Зареєструйтесь, щоб почати
           </Text>
 
           {error && (
@@ -55,13 +55,13 @@ const Register = () => {
             <Form.Item
               name="username"
               rules={[
-                { required: true, message: 'Please enter your username' },
-                { min: 3, message: 'Username must be at least 3 characters' }
+                { required: true, message: 'Будь ласка, введіть своє ім\'я користувача' },
+                { min: 3, message: 'Ім\'я користувача повинно містити щонайменше 3 символи' }
               ]}
             >
               <Input
                 prefix={<UserOutlined />}
-                placeholder="Username"
+                placeholder="Ім'я користувача"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -70,13 +70,13 @@ const Register = () => {
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: 'Please enter your email' },
-                { type: 'email', message: 'Please enter a valid email' }
+                { required: true, message: 'Будь ласка, введіть свою електронну адресу' },
+                { type: 'email', message: 'Будь ласка, введіть дійсну електронну адресу' }
               ]}
             >
               <Input
                 prefix={<MailOutlined />}
-                placeholder="Email"
+                placeholder="Електронна пошта"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -85,13 +85,13 @@ const Register = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: 'Please enter your password' },
-                { min: 6, message: 'Password must be at least 6 characters' }
+                { required: true, message: 'Будь ласка, введіть свій пароль' },
+                { min: 6, message: 'Пароль повинен містити щонайменше 6 символів' }
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Password"
+                placeholder="Пароль"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -101,20 +101,20 @@ const Register = () => {
               name="confirmPassword"
               dependencies={['password']}
               rules={[
-                { required: true, message: 'Please confirm your password' },
+                { required: true, message: 'Будь ласка, підтвердіть свій пароль' },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(new Error('The two passwords do not match'));
+                    return Promise.reject(new Error('Два паролі не збігаються'));
                   },
                 }),
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Confirm Password"
+                placeholder="Підтвердіть пароль"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -128,14 +128,14 @@ const Register = () => {
                 block
                 loading={status === 'loading'}
               >
-                {status === 'loading' ? 'Creating account...' : 'Create Account'}
+                {status === 'loading' ? 'Створення облікового запису...' : 'Створити аккаунт'}
               </Button>
             </Form.Item>
           </Form>
 
           <div style={{ textAlign: 'center' }}>
             <Text type="secondary">
-              Already have an account? <Link to="/login">Sign in</Link>
+              Вже є аккаунт? <Link to="/login">Увійти</Link>
             </Text>
           </div>
         </Space>

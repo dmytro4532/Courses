@@ -25,7 +25,7 @@ internal sealed class GetArticleQueryHandler : IQueryHandler<GetArticleQuery, Re
 
         if (article is null)
         {
-            return new NotFoundError("Article.NotFound", "Article was not found.");
+            return new NotFoundError("Article.NotFound", "Курс не знайдено.");
         }
 
         return _mapper.Map(article);

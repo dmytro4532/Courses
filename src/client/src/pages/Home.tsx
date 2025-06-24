@@ -10,28 +10,28 @@ const Home = () => {
 
   return (
     <div>
-      <Title level={2}>Welcome to Courses Platform</Title>
+      <Title level={2}>Ласкаво просимо на платформу курсів</Title>
       <Paragraph>
         {user ? (
-          `Welcome back, ${user.username}!`
+          `З поверненням, ${user.username}!`
         ) : (
-          'Please login to access your courses.'
+          'Будь ласка, увійдіть, щоб отримати доступ до своїх курсів.'
         )}
       </Paragraph>
 
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
         <Col xs={24} sm={12} md={12}>
-          <Card title="Browse Courses" hoverable>
+          <Card title="Переглянути курси" hoverable>
             <Paragraph>
-              Explore our wide range of courses designed to help you learn and grow.
+              Ознайомтеся з нашим широким асортиментом курсів, розроблених, щоб допомогти вам вчитися та розвиватися.
             </Paragraph>
-            <Link to="/courses">View Courses</Link>
+            <Link to="/courses">Переглянути курси</Link>
           </Card>
         </Col>
         <Col xs={24} sm={12} md={12}>
-          <Card title="Track Progress" hoverable>
+          <Card title="Відстежуйте прогрес" hoverable>
             <Paragraph>
-              Monitor your learning progress and complete assessments to earn certificates.
+              Слідкуйте за своїм навчальним прогресом і виконуйте завдання, щоб отримати сертифікати.
             </Paragraph>
           </Card>
         </Col>

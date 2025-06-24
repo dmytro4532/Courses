@@ -31,7 +31,7 @@ export const login = createAsyncThunk(
       
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.detail || 'Login failed');
+      return rejectWithValue(error.response?.data?.detail || 'Помилка входу');
     }
   }
 );
@@ -47,7 +47,7 @@ export const register = createAsyncThunk(
       
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.detail || 'Registration failed');
+      return rejectWithValue(error.response?.data?.detail || 'Помилка реєстрації');
     }
   }
 );
@@ -59,7 +59,7 @@ export const registerAdmin = createAsyncThunk(
       const response = await api.post<{ token: string; }>('/api/users/register-admin', userData);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.detail || 'Admin registration failed');
+      return rejectWithValue(error.response?.data?.detail || 'Не вдалося зареєструвати адміністратора');
     }
   }
 );
@@ -71,13 +71,13 @@ export const fetchCurrentUser = createAsyncThunk(
       const { auth } = getState() as { auth: AuthState };
       
       if (!auth.token) {
-        return rejectWithValue('No authentication token found');
+        return rejectWithValue('Токен автентифікації не знайдено');
       }
       
       const response = await api.get<User>('/api/users/me');
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to fetch user data');
+      return rejectWithValue(error.response?.data?.detail || 'Не вдалося отримати дані користувача');
     }
   }
 );
@@ -94,7 +94,7 @@ export const deleteUser = createAsyncThunk(
       dispatch(logout());
       return userId;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.detail || 'Failed to delete user');
+      return rejectWithValue(error.response?.data?.detail || 'Не вдалося видалити користувача');
     }
   }
 );
@@ -123,7 +123,7 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
-        state.loginError = action.payload as string || 'Login failed';
+        state.loginError = action.payload as string || 'Помилка входу';
       })
       // Register cases
       .addCase(register.pending, (state) => {
@@ -137,7 +137,7 @@ const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';
-        state.registerError = action.payload as string || 'Registration failed';
+        state.registerError = action.payload as string || 'Помилка реєстрації';
       })
       // Register admin cases
       .addCase(registerAdmin.pending, (state) => {
@@ -151,7 +151,7 @@ const authSlice = createSlice({
       })
       .addCase(registerAdmin.rejected, (state, action) => {
         state.status = 'failed';
-        state.registerError = action.payload as string || 'Admin registration failed';
+        state.registerError = action.payload as string || 'Не вдалося зареєструвати адміністратора';
       })
       // Fetch current user cases
       .addCase(fetchCurrentUser.pending, (state) => {

@@ -46,17 +46,17 @@ const AdminTests = () => {
 
   const handleCopyId = (record: Test) => {
     navigator.clipboard.writeText(record.id);
-    message.success('Test ID copied to clipboard');
+    message.success('ID тесту скопійовано в буфер обміну');
   };
 
   const columns = [
     {
-      title: 'Title',
+      title: 'Назва',
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'Actions',
+      title: 'Дії',
       key: 'actions',
       render: (_: any, record: Test) => (
         <Space>
@@ -64,21 +64,21 @@ const AdminTests = () => {
             <Button
               type="text"
               icon={<EyeOutlined />}
-              title="View Test"
+              title="Переглянути тест"
             />
           </Link>
           <Link to={`/admin/questions/${record.id}`}>
             <Button
               type="text"
               icon={<OrderedListOutlined />}
-              title="Manage Questions"
+              title="Керувати питаннями"
             />
           </Link>
           <Button
             type="text"
             icon={<CopyOutlined />}
             onClick={() => handleCopyId(record)}
-            title="Copy Test ID"
+            title="Копіювати ID тесту"
           />
           <Button
             type="text"
@@ -99,13 +99,13 @@ const AdminTests = () => {
   return (
     <div>
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0 }}>Tests</h1>
+        <h1 style={{ margin: 0 }}>Тести</h1>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAdd}
         >
-          Add Test
+          Додати тест
         </Button>
       </div>
 
@@ -125,7 +125,7 @@ const AdminTests = () => {
       />
 
       <Modal
-        title={editingTest ? 'Edit Test' : 'Add Test'}
+        title={editingTest ? 'Редагувати тест' : 'Додати тест'}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}

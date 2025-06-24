@@ -24,10 +24,10 @@ const AdminUsers = () => {
       <Card>
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <Title level={2} style={{ textAlign: 'center', marginBottom: 0 }}>
-            Create Admin Account
+            Створити обліковий запис адміністратора
           </Title>
           <Text type="secondary" style={{ textAlign: 'center', display: 'block' }}>
-            Create a new administrator account
+            Створити новий обліковий запис адміністратора
           </Text>
 
           {error && (
@@ -50,13 +50,13 @@ const AdminUsers = () => {
             <Form.Item
               name="username"
               rules={[
-                { required: true, message: 'Please enter username' },
-                { min: 3, message: 'Username must be at least 3 characters' }
+                { required: true, message: 'Будь ласка, введіть ім\'я користувача' },
+                { min: 3, message: 'Ім\'я користувача повинно містити щонайменше 3 символи' }
               ]}
             >
               <Input
                 prefix={<UserOutlined />}
-                placeholder="Username"
+                placeholder="Ім'я користувача"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -65,13 +65,13 @@ const AdminUsers = () => {
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: 'Please enter email' },
-                { type: 'email', message: 'Please enter a valid email' }
+                { required: true, message: 'Будь ласка, введіть електронну адресу' },
+                { type: 'email', message: 'Будь ласка, введіть дійсну електронну адресу' }
               ]}
             >
               <Input
                 prefix={<MailOutlined />}
-                placeholder="Email"
+                placeholder="Електронна пошта"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -80,13 +80,13 @@ const AdminUsers = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: 'Please enter password' },
-                { min: 6, message: 'Password must be at least 6 characters' }
+                { required: true, message: 'Будь ласка, введіть пароль' },
+                { min: 6, message: 'Пароль повинен містити щонайменше 6 символів' }
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Password"
+                placeholder="Пароль"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -96,20 +96,20 @@ const AdminUsers = () => {
               name="confirmPassword"
               dependencies={['password']}
               rules={[
-                { required: true, message: 'Please confirm password' },
+                { required: true, message: 'Будь ласка, підтвердіть пароль' },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
                     if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject(new Error('The two passwords do not match'));
+                    return Promise.reject(new Error('Два паролі не збігаються'));
                   },
                 }),
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Confirm Password"
+                placeholder="Підтвердіть пароль"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -123,7 +123,7 @@ const AdminUsers = () => {
                 block
                 loading={status === 'loading'}
               >
-                {status === 'loading' ? 'Creating admin account...' : 'Create Admin Account'}
+                {status === 'loading' ? 'Створення облікового запису адміністратора...' : 'Створити обліковий запис адміністратора'}
               </Button>
             </Form.Item>
           </Form>

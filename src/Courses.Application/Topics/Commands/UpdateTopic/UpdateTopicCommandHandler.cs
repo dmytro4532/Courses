@@ -34,7 +34,7 @@ internal sealed class UpdateTopicCommandHandler : IRequestHandler<UpdateTopicCom
 
         if (topic is null)
         {
-            return new NotFoundError("Topic.NotFound", "The topic was not found.");
+            return new NotFoundError("Topic.NotFound", "Тему не знайдено.");
         }
 
         topic.Update(
@@ -50,7 +50,7 @@ internal sealed class UpdateTopicCommandHandler : IRequestHandler<UpdateTopicCom
                 var test = await _testRepository.GetByIdAsync(request.TestId.Value, cancellationToken);
                 if (test is null)
                 {
-                    return new NotFoundError("Test.NotFound", "The test was not found.");
+                    return new NotFoundError("Test.NotFound", "Тест не знайдено.");
                 }
                 topic.SetTest(test);
             }

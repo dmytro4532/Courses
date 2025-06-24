@@ -38,7 +38,7 @@ internal sealed class RegisterAdminCommandHandler : IRequestHandler<RegisterAdmi
 
         if (userByEmail is not null)
         {
-            return new Error("User.EmailAlreadyExists", "Email already used.");
+            return new Error("User.EmailAlreadyExists", "Електронна пошта вже використовується.");
         }
 
         var user = User.Create(

@@ -25,7 +25,7 @@ internal sealed class GetTestQueryHandler : IQueryHandler<GetTestQuery, Result<T
 
         if (test is null)
         {
-            return new NotFoundError("Test.NotFound", "The test was not found.");
+            return new NotFoundError("Test.NotFound", "Тест не знайдено.");
         }
 
         return _mapper.Map(test);

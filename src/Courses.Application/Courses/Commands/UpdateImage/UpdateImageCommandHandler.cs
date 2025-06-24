@@ -28,7 +28,7 @@ internal sealed class UpdateImageCommandHandler : IRequestHandler<UpdateImageCom
         var course = await _courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
         if (course is null)
         {
-            return new NotFoundError("Course.NotFound", "Course not found.");
+            return new NotFoundError("Course.NotFound", "Курс не знайдено.");
         }
 
         string? newFileName = null;

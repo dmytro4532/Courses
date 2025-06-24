@@ -32,10 +32,10 @@ const Login = () => {
       <Card>
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <Title level={2} style={{ textAlign: 'center', marginBottom: 0 }}>
-            Welcome Back
+            З поверненням
           </Title>
           <Text type="secondary" style={{ textAlign: 'center', display: 'block' }}>
-            Please sign in to continue
+            Будь ласка, увійдіть, щоб продовжити
           </Text>
 
           {error && (
@@ -58,13 +58,13 @@ const Login = () => {
             <Form.Item
               name="email"
               rules={[
-                { required: true, message: 'Please enter your email' },
+                { required: true, message: 'Будь ласка, введіть свою електронну адресу' },
                 { type: 'email' }
               ]}
             >
               <Input
                 prefix={<UserOutlined />}
-                placeholder="Email"
+                placeholder="Електронна пошта"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -73,12 +73,12 @@ const Login = () => {
             <Form.Item
               name="password"
               rules={[
-                { required: true, message: 'Please enter your password' },
+                { required: true, message: 'Будь ласка, введіть свій пароль' },
               ]}
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Password"
+                placeholder="Пароль"
                 size="large"
                 disabled={status === 'loading'}
               />
@@ -92,14 +92,14 @@ const Login = () => {
                 block
                 loading={status === 'loading'}
               >
-                {status === 'loading' ? 'Signing in...' : 'Sign in'}
+                {status === 'loading' ? 'Вхід...' : 'Увійти'}
               </Button>
             </Form.Item>
           </Form>
 
           <div style={{ textAlign: 'center' }}>
             <Text type="secondary">
-              Don't have an account? <Link to="/register">Sign up</Link>
+              Не маєте облікового запису? <Link to="/register">Зареєструватися</Link>
             </Text>
           </div>
         </Space>

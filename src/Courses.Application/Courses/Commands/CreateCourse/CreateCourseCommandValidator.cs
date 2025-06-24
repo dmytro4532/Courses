@@ -23,6 +23,6 @@ internal sealed class CreateCourseCommandValidator
         RuleFor(x => x.Image)
             .Must(image =>
             image is null || image.HasAllowedExtension(fileSettings.Value.AllowedImageExtensions))
-            .WithMessage($"Image must have allowed extension ({string.Join(' ', fileSettings.Value.AllowedImageExtensions)})");
+            .WithMessage($"Зображення повинно мати дозволене розширення ({string.Join(' ', fileSettings.Value.AllowedImageExtensions)})");
     }
 }

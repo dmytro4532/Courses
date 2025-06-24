@@ -37,18 +37,18 @@ public class CompleteTopicCommandHandler : IRequestHandler<CompleteTopicCommand,
         var topic = await _topicRepository.GetByIdAsync(command.TopicId, cancellationToken);
 
         if (topic is null)
-            return new Error("Topic.NotFound", "Topic not found.");
+            return new Error("Topic.NotFound", "Тему не знайдено.");
 
         var courseProgress = await _courseProgressRepository.GetByUserIdAndCourseIdAsync(userId, topic.CourseId, cancellationToken);
 
         if (courseProgress is null)
-            return new Error("CourseProgress.NotStarted", "Course is not started.");
+            return new Error("CourseProgress.NotStarted", "Курс не розпочато.");
 
         var completedTopic = await _completedTopicRepository
             .GetByUserIdAndTopicIdAsync(userId, command.TopicId, cancellationToken);
 
         if (completedTopic is not null)
-            return new Error("CompletedTopic.AlreadyCompleted", "Topic already completed");
+            return new Error("CompletedTopic.AlreadyCompleted", "Тему вже завершено");
 
         var newCompletedTopic = CompletedTopic.Create(
             Guid.NewGuid(),

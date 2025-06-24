@@ -36,10 +36,10 @@ public class CompleteCourseCommandHandler : IRequestHandler<CompleteCourseComman
             .GetByUserIdAndCourseIdAsync(userId, command.CourseId, cancellationToken);
 
         if (courseProgress is null)
-            return new Error("CourseProgress.NotFound", "Course not started.");
+            return new Error("CourseProgress.NotFound", "Курс не розпочато.");
 
         if (courseProgress.Completed)
-            return new Error("CourseProgress.AlreadyCompleted", "Course already completed");
+            return new Error("CourseProgress.AlreadyCompleted", "Курс вже завершено");
 
         var topicIds = await _topicRepository.GetTopicIdsByCourseIdAsync(command.CourseId, cancellationToken);
 
@@ -47,7 +47,7 @@ public class CompleteCourseCommandHandler : IRequestHandler<CompleteCourseComman
         var completedTopicIds = completedTopics.Select(ct => ct.TopicId).ToHashSet();
 
         if (topicIds.Any() && !topicIds.All(id => completedTopicIds.Contains(id)))
-            return new Error("CourseProgress.TopicsNotCompleted", "Not all topics are completed.");
+            return new Error("CourseProgress.TopicsNotCompleted", "Не всі теми завершено.");
 
         courseProgress.MarkCompleted();
         _courseProgressRepository.Update(courseProgress);

@@ -28,7 +28,7 @@ internal sealed class UpdateImageCommandHandler : ICommandHandler<UpdateImageCom
         var question = await _questionRepository.GetByIdAsync(request.QuestionId, cancellationToken);
         if (question is null)
         {
-            return new NotFoundError("Question.NotFound", "Question not found.");
+            return new NotFoundError("Question.NotFound", "Запитання не знайдено.");
         }
 
         string? newFileName = null;

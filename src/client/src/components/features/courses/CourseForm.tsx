@@ -25,7 +25,7 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
             ? [
                 {
                     uid: '-1',
-                    name: 'Current Image',
+                    name: 'Поточне зображення',
                     status: 'done',
                     url: initialValues.imageUrl,
                 },
@@ -63,7 +63,7 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
                 }
             }
 
-            enqueueSnackbar(`Course ${initialValues ? 'updated' : 'created'} successfully`, { variant: 'success', autoHideDuration: 3000 });
+            enqueueSnackbar(`Курс ${initialValues ? 'оновлено' : 'створено'} успішно`, { variant: 'success', autoHideDuration: 3000 });
             form.resetFields();
             setFileList([]);
             onSuccess();
@@ -73,7 +73,7 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
                 const errorMessages = validationErrors.map((err: any) => `${err.description}`).join('\n');
                 enqueueSnackbar(errorMessages, { variant: 'error', autoHideDuration: 5000 });
             } else {
-                enqueueSnackbar('Failed to save course', { variant: 'error', autoHideDuration: 3000 });
+                enqueueSnackbar('Не вдалося зберегти курс', { variant: 'error', autoHideDuration: 3000 });
             }
             console.error('Error saving course:', error);
         } finally {
@@ -85,7 +85,7 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
         beforeUpload: (file: File) => {
             const isImage = file.type.startsWith('image/');
             if (!isImage) {
-                enqueueSnackbar('You can only upload image files!', { variant: 'error', autoHideDuration: 3000 });
+                enqueueSnackbar('Ви можете завантажувати лише файли зображень!', { variant: 'error', autoHideDuration: 3000 });
                 return false;
             }
             return false;
@@ -105,21 +105,21 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
         >
             <Form.Item
                 name="title"
-                label="Title"
-                rules={[{ required: true, message: 'Please input the title!' }]}
+                label="Назва"
+                rules={[{ required: true, message: 'Будь ласка, введіть назву!' }]}
             >
                 <Input />
             </Form.Item>
 
             <Form.Item
                 name="description"
-                label="Description"
-                rules={[{ required: true, message: 'Please input the description!' }]}
+                label="Опис"
+                rules={[{ required: true, message: 'Будь ласка, введіть опис!' }]}
             >
                 <Input.TextArea rows={4} />
             </Form.Item>
 
-            <Form.Item label="Image">
+            <Form.Item label="Зображення">
                 <Upload
                     {...uploadProps}
                     maxCount={1}
@@ -128,7 +128,7 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
                     {fileList.length === 0 && (
                         <div>
                             <PlusOutlined />
-                            <div style={{ marginTop: 8 }}>Upload</div>
+                            <div style={{ marginTop: 8 }}>Завантажити</div>
                         </div>
                     )}
                 </Upload>
@@ -141,10 +141,10 @@ export const CourseForm = ({ initialValues, onSuccess, onCancel, loading }: Cour
                         htmlType="submit"
                         loading={submitting || loading}
                     >
-                        {initialValues ? 'Update' : 'Create'}
+                        {initialValues ? 'Оновити' : 'Створити'}
                     </Button>
                     <Button onClick={onCancel}>
-                        Cancel
+                        Скасувати
                     </Button>
                 </Space>
             </Form.Item>

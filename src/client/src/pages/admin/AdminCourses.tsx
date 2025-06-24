@@ -8,7 +8,6 @@ import type { AppDispatch, RootState } from '../../store';
 import { fetchCourses } from '../../store/slices/coursesSlice';
 import type { CourseResponse } from '../../types';
 import { Link } from 'react-router-dom';
-import { enqueueSnackbar } from 'notistack';
 
 const AdminCourses = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -49,24 +48,24 @@ const AdminCourses = () => {
 
   const columns = [
     {
-      title: 'Title',
+      title: 'Назва',
       dataIndex: 'title',
       key: 'title',
     },
     {
-      title: 'Description',
+      title: 'Опис',
       dataIndex: 'description',
       key: 'description',
       ellipsis: true,
     },
     {
-      title: 'Created At',
+      title: 'Створено',
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (date: string) => new Date(date).toLocaleDateString(),
     },
     {
-      title: 'Actions',
+      title: 'Дії',
       key: 'actions',
       render: (_: any, record: CourseResponse) => (
         <Space>
@@ -74,14 +73,14 @@ const AdminCourses = () => {
             <Button
               type="text"
               icon={<EyeOutlined />}
-              title="View Course"
+              title="Переглянути курс"
             />
           </Link>
           <Link to={`/admin/topics/${record.id}`}>
             <Button
               type="text"
               icon={<OrderedListOutlined />}
-              title="Manage Topics"
+              title="Керувати темами"
             />
           </Link>
           <Button
@@ -103,13 +102,13 @@ const AdminCourses = () => {
   return (
     <div>
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0 }}>Courses</h1>
+        <h1 style={{ margin: 0 }}>Курси</h1>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAdd}
         >
-          Add Course
+          Додати курс
         </Button>
       </div>
 
@@ -129,7 +128,7 @@ const AdminCourses = () => {
       />
 
       <Modal
-        title={editingCourse ? 'Edit Course' : 'Add Course'}
+        title={editingCourse ? 'Редагувати курс' : 'Додати курс'}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}

@@ -31,7 +31,7 @@ internal sealed class UpdateUserCommandHandler : IRequestHandler<UpdateUserComma
 
         if (user is null)
         {
-            return new NotFoundError("User.NotFound", "User not found.");
+            return new NotFoundError("User.NotFound", "Користувача не знайдено.");
         }
 
         user.Update(

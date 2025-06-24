@@ -38,7 +38,7 @@ internal sealed class CreateQuestionCommandHandler : IRequestHandler<CreateQuest
 
         if (test is null)
         {
-            return Result.Failure<QuestionResponse>(new NotFoundError("Test.NotFound", "Test not found"));
+            return Result.Failure<QuestionResponse>(new NotFoundError("Test.NotFound", "Тест не знайдено"));
         }
 
         string? imageFileName = null;

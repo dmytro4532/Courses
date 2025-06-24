@@ -23,12 +23,12 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
 
         if (identityUser is null)
         {
-            return new Error("User.WrongEmailOrPassword", "Wrong email or password.");
+            return new Error("User.WrongEmailOrPassword", "Неправильна електронна пошта або пароль.");
         }
 
         if (!identityUser.EmailConfirmed)
         {
-            return new Error("User.EmailNotConfirmed", "Confirm your email to log in.");
+            return new Error("User.EmailNotConfirmed", "Підтвердьте свою електронну пошту, щоб увійти.");
         }
 
         var loginResult = await _identityService.LoginAsync(
@@ -37,7 +37,7 @@ internal sealed class LoginUserCommandHandler : IRequestHandler<LoginUserCommand
 
         if (loginResult.IsFailure)
         {
-            return new Error("User.WrongEmailOrPassword", "Wrong email or password.");
+            return new Error("User.WrongEmailOrPassword", "Неправильна електронна пошта або пароль.");
         }
 
         var token = _tokenService.GenerateAccessToken(identityUser);

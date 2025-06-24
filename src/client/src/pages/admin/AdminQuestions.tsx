@@ -53,26 +53,26 @@ const AdminQuestions = () => {
 
   const columns = [
     {
-      title: 'Order',
+      title: 'Порядок',
       dataIndex: 'order',
       key: 'order',
       sorter: true,
       width: 100,
     },
     {
-      title: 'Question',
+      title: 'Питання',
       dataIndex: 'content',
       key: 'content',
     },
     {
-      title: 'Correct Answers',
+      title: 'Правильні відповіді',
       key: 'correctAnswers',
       render: (_: any, record: Question) => 
         record.answers.filter(a => a.isCorrect).length,
       width: 150,
     },
     {
-      title: 'Actions',
+      title: 'Дії',
       key: 'actions',
       render: (_: any, record: Question) => (
         <Space>
@@ -95,13 +95,13 @@ const AdminQuestions = () => {
   return (
     <div>
       <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1 style={{ margin: 0 }}>Questions</h1>
+        <h1 style={{ margin: 0 }}>Питання</h1>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           onClick={handleAdd}
         >
-          Add Question
+          Додати питання
         </Button>
       </div>
 
@@ -123,7 +123,7 @@ const AdminQuestions = () => {
       />
 
       <Modal
-        title={editingQuestion ? 'Edit Question' : 'Add Question'}
+        title={editingQuestion ? 'Редагувати питання' : 'Додати питання'}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}

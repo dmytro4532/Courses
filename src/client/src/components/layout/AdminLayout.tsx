@@ -23,22 +23,22 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
     {
       key: '1',
       icon: <BookOutlined />,
-      label: <Link to="/admin/courses">Courses</Link>,
+      label: <Link to="/admin/courses">Курси</Link>,
     },
     {
       key: '2',
       icon: <FileTextOutlined />,
-      label: <Link to="/admin/tests">Tests</Link>,
+      label: <Link to="/admin/tests">Тести</Link>,
     },
     {
       key: '3',
       icon: <UserOutlined />,
-      label: <Link to="/admin/users">Users</Link>,
+      label: <Link to="/admin/users">Користувачі</Link>,
     },
     {
       key: '4',
       icon: <LinkOutlined />,
-      label: <Link to="/" target="_blank" rel="noopener noreferrer">View Website</Link>,
+      label: <Link to="/" target="_blank" rel="noopener noreferrer">Переглянути сайт</Link>,
     },
   ];
 
@@ -62,7 +62,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           borderBottom: '1px solid #f0f0f0',
           color: 'black'
         }}>
-          Admin Panel
+          Адмін панель
         </div>
         <Menu
           mode="inline"
