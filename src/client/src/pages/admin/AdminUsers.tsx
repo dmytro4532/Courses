@@ -123,7 +123,7 @@ const AdminUsers = () => {
                 block
                 loading={status === 'loading'}
               >
-                {status === 'loading' ? 'Створення облікового запису адміністратора...' : 'Створити обліковий запис адміністратора'}
+                {status === 'loading' ? 'Створення...' : 'Створити'}
               </Button>
             </Form.Item>
           </Form>
