@@ -35,12 +35,12 @@ internal sealed class CompleteTestAttemptCommandHandler : ICommandHandler<Comple
 
         if (testAttempt is null)
         {
-            return Result.Failure(new NotFoundError("TestAttempt.NotFound", "Test attempt not found."));
+            return Result.Failure(new NotFoundError("TestAttempt.NotFound", "Спроба тесту не знайдена."));
         }
 
         if (testAttempt.UserId != _userContext.UserId)
         {
-            return Result.Failure(new PermissonDeniedError("TestAttempt.PermissionDenied", "You don't have permission to complete this test attempt."));
+            return Result.Failure(new PermissonDeniedError("TestAttempt.PermissionDenied", "У вас немає дозволу на завершення цієї спроби тесту."));
         }
 
         var questions = await _attemptQuestionRepository.GetByTestAttemptIdAsync(request.TestAttemptId, 0, int.MaxValue, cancellationToken);
@@ -49,13 +49,13 @@ internal sealed class CompleteTestAttemptCommandHandler : ICommandHandler<Comple
 
         if (totalAttemptQuestions == 0)
         {
-            return Result.Failure(new Error("TestAttempt.NoQuestions", "Cannot complete test attempt with no questions."));
+            return Result.Failure(new Error("TestAttempt.NoQuestions", "Неможливо завершити спробу тесту без питань."));
         }
 
         if (totalAttemptQuestions != totalTestQuestions)
         {
             return Result.Failure(new Error("TestAttempt.IncompleteQuestions", 
-                $"The test attempt has {totalAttemptQuestions} questions but the test has {totalTestQuestions} questions."));
+                $"Спроба тесту містить {totalAttemptQuestions} питань, але тест містить {totalTestQuestions} питань."));
         }
 
         var correctAnswers = questions.Sum(q => q.Answers.Count(a => a.IsCorrect && a.IsSelected));

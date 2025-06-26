@@ -31,13 +31,13 @@ internal sealed class UpdateAttemptQuestionCommandHandler : IRequestHandler<Upda
 
         if (attemptQuestion is null)
         {
-            return Result.Failure<AttemptQuestionResponse>(new NotFoundError("AttemptQuestion.NotFound", "Attempt question not found."));
+            return Result.Failure<AttemptQuestionResponse>(new NotFoundError("AttemptQuestion.NotFound", "Спроба запитання не знайдена."));
         }
 
         var testAttempt = attemptQuestion.TestAttempt;
         if (testAttempt.UserId != _userContext.UserId)
         {
-            return Result.Failure<AttemptQuestionResponse>(new PermissonDeniedError("AttemptQuestion.PermissionDenied", "You don't have permission to update this attempt question."));
+            return Result.Failure<AttemptQuestionResponse>(new PermissonDeniedError("AttemptQuestion.PermissionDenied", "У вас немає дозволу на оновлення цього запитання."));
         }
 
         attemptQuestion.ClearAnswers();

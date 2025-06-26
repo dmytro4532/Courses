@@ -7,6 +7,7 @@ import { getAttemptQuestions, createAttemptQuestion } from '../store/slices/atte
 import { fetchTestById } from '../store/slices/testSlice';
 import { fetchQuestions } from '../store/slices/questionsSlice';
 import type { Question, AttemptQuestion } from '../types';
+import { enqueueSnackbar } from 'notistack';
 
 const { Title, Text } = Typography;
 
@@ -39,7 +40,7 @@ export const TestAttempt = () => {
     }
 
     if (!currentAttempt || !test || !testQuestions) {
-        return <Alert type="error" message="Test attempt not found" />;
+        return <Alert type="error" message="Спробу тесту не знайдено" />;
     }
 
     const handleAnswerChange = async (question: Question, answerIds: string[]) => {
@@ -52,16 +53,17 @@ export const TestAttempt = () => {
                 selectedAnswerIds: answerIds,
             })).unwrap();
         } catch (error) {
-            console.error('Failed to save answer:', error);
+            console.error('Не вдалося зберегти відповідь:', error);
         }
     };
 
     const handleComplete = async () => {
         try {
             await dispatch(completeTestAttempt(attemptId!)).unwrap();
+            enqueueSnackbar('Тест успішно завершено', { variant: 'success', autoHideDuration: 3000 });
             navigate(`/test-attempts/${attemptId}/review`);
         } catch (error) {
-            console.error('Failed to complete test:', error);
+            enqueueSnackbar('Не вдалося завершити тест', { variant: 'error', autoHideDuration: 3000 });
         }
     };
 
@@ -91,7 +93,7 @@ export const TestAttempt = () => {
                     </Space>
                 </Card>
 
-                <Card title="Questions">
+                <Card title="Питання">
                     <List
                         dataSource={testQuestions.items}
                         renderItem={(question) => {
@@ -120,19 +122,19 @@ export const TestAttempt = () => {
                 </Card>
 
                 <Button type="primary" onClick={() => setIsConfirmModalOpen(true)}>
-                    Complete Test
+                    Завершити тест
                 </Button>
             </Space>
 
             <Modal
-                title="Complete Test"
+                title="Завершити тест"
                 open={isConfirmModalOpen}
                 onOk={handleComplete}
                 onCancel={() => setIsConfirmModalOpen(false)}
-                okText="Yes"
-                cancelText="No"
+                okText="Так"
+                cancelText="Ні"
             >
-                Are you sure you want to complete this test? You won't be able to change your answers after completion.
+                Ви впевнені, що хочете завершити цей тест? Ви не зможете змінити свої відповіді після завершення.
             </Modal>
         </>
     );

@@ -31,7 +31,7 @@ internal sealed class UpdateQuestionCommandHandler : ICommandHandler<UpdateQuest
 
         if (question is null)
         {
-            return Result.Failure<QuestionResponse>(new NotFoundError("Question.NotFound", "Question not found"));
+            return Result.Failure<QuestionResponse>(new NotFoundError("Question.NotFound", "Запитання не знайдено"));
         }
 
         question.Update(

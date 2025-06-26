@@ -10,7 +10,7 @@ interface ErrorMessageProps {
 const ErrorMessage = ({ message, level = 3 }: ErrorMessageProps) => {
   return (
     <div style={{ textAlign: 'center', padding: '50px' }}>
-      <Title level={level}>Error: {message}</Title>
+      <Title level={level}>Помилка: {message}</Title>
     </div>
   );
 };

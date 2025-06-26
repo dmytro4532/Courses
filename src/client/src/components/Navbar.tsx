@@ -30,41 +30,41 @@ const Navbar = () => {
   const authenticatedItems = [
     {
       key: '1',
-      label: <Link to="/">Home</Link>,
+      label: <Link to="/">Головна</Link>,
     },
     {
       key: '2',
-      label: <Link to="/courses">Courses</Link>,
+      label: <Link to="/courses">Курси</Link>,
     },
     {
       key: '3',
-      label: <Link to="/profile">Profile</Link>,
+      label: <Link to="/profile">Профіль</Link>,
       icon: <UserOutlined />,
     },
     {
       key: '4',
-      label: <span onClick={handleLogout}>Logout</span>,
+      label: <span onClick={handleLogout}>Вийти</span>,
     },
   ];
 
   const unauthenticatedItems = [
     {
       key: '1',
-      label: <Link to="/">Home</Link>,
+      label: <Link to="/">Головна</Link>,
     },
     {
       key: '2',
-      label: <Link to="/courses">Courses</Link>,
+      label: <Link to="/courses">Курси</Link>,
     },
     {
       key: '4',
-      label: <Link to="/login">Login</Link>,
+      label: <Link to="/login">Увійти</Link>,
     },
   ];
 
   return (
     <Header style={{ position: 'fixed', zIndex: 1, width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-      <div className="logo" style={{ color: '#fff', fontWeight: 700, fontSize: 22, letterSpacing: 1 }}>Courses</div>
+      <div className="logo" style={{ color: '#fff', fontWeight: 700, fontSize: 22, letterSpacing: 1 }}>Курси</div>
       <Menu
         theme="dark"
         mode="horizontal"

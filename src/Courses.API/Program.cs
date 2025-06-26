@@ -31,8 +31,6 @@ app.EnsureAdminExistsAsync().Wait();
 
 app.UseCors();
 
-app.UseHttpsRedirection();
-
 app.MapCoursesApi();
 app.MapUsersApi();
 app.MapTopicsApi();

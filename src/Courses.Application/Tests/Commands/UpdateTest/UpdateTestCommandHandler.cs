@@ -31,7 +31,7 @@ internal sealed class UpdateTestCommandHandler : ICommandHandler<UpdateTestComma
 
         if (test is null)
         {
-            return Result.Failure<TestResponse>(new NotFoundError("Test.NotFound", "Test not found"));
+            return Result.Failure<TestResponse>(new NotFoundError("Test.NotFound", "Тест не знайдено"));
         }
 
         test.Update(Title.Create(request.Title));

@@ -19,7 +19,7 @@ internal sealed class UpdateQuestionCommandValidator : AbstractValidator<UpdateQ
 
         RuleFor(x => x.Answers)
             .NotEmpty()
-            .WithMessage("At least one answer is required");
+            .WithMessage("Потрібна принаймні одна відповідь");
 
         RuleForEach(x => x.Answers)
             .ChildRules(answer => answer.RuleFor(x => x.Value)
@@ -28,6 +28,6 @@ internal sealed class UpdateQuestionCommandValidator : AbstractValidator<UpdateQ
 
         RuleFor(x => x.Answers)
             .Must(answers => answers.Any(a => a.IsCorrect))
-            .WithMessage("At least one answer must be marked as correct");
+            .WithMessage("Принаймні одна відповідь повинна бути позначена як правильна");
     }
 } 

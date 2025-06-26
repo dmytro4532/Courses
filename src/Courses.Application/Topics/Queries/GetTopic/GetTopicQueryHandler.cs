@@ -25,7 +25,7 @@ internal sealed class GetTopicQueryHandler : IQueryHandler<GetTopicQuery, Result
 
         if (topic is null)
         {
-            return new NotFoundError("Topic.NotFound", "The topic was not found.");
+            return new NotFoundError("Topic.NotFound", "Тему не знайдено.");
         }
 
         return _mapper.Map(topic);

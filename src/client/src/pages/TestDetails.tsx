@@ -33,11 +33,11 @@ const TestDetails = () => {
   }
 
   if (testError) {
-    return <Alert type="error" message="Failed to load test details" />;
+    return <Alert type="error" message="Не вдалося завантажити деталі тесту" />;
   }
 
   if (!test || !questions) {
-    return <Alert type="error" message="Test not found" />;
+    return <Alert type="error" message="Тест не знайдено" />;
   }
 
   const handleStartAttempt = async () => {
@@ -64,18 +64,18 @@ const TestDetails = () => {
           <Space>
             {activeAttempt ? (
               <Button type="primary" onClick={handleContinueAttempt}>
-                Continue Attempt
+                Продовжити спробу
               </Button>
             ) : (
               <Button type="primary" onClick={handleStartAttempt} loading={isAttemptLoading}>
-                Start Test
+                Почати тест
               </Button>
             )}
           </Space>
         </Space>
       </Card>
 
-      <Card title="Questions">
+      <Card title="Питання">
         <List
           dataSource={questions.items}
           renderItem={(question: Question, index) => (

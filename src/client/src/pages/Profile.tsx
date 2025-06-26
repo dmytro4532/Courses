@@ -78,7 +78,7 @@ const Profile = () => {
 
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '24px' }}>
-      <Title level={2}>My Profile</Title>
+      <Title level={2}>Мій профіль</Title>
       {user ? (
         <Card>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
@@ -87,24 +87,24 @@ const Profile = () => {
             </div>
           </div>
           <Descriptions bordered column={1}>
-            <Descriptions.Item label="Email">{user.email}</Descriptions.Item>
+            <Descriptions.Item label="Електронна пошта">{user.email}</Descriptions.Item>
           </Descriptions>
           <div style={{ marginTop: '24px', textAlign: 'right' }}>
             <Button type="primary" danger onClick={() => setIsDeleteModalVisible(true)}>
-              Delete Account
+              Видалити акаунт
             </Button>
           </div>
         </Card>
       ) : (
         <Alert
-          message="User information not available"
-          description="There was a problem loading your profile information. Please try again later."
+          message="Інформація про користувача недоступна"
+          description="Виникла проблема із завантаженням інформації вашого профілю. Будь ласка, спробуйте ще раз пізніше."
           type="warning"
           showIcon
         />
       )}
 
-      <Divider style={{ margin: '32px 0 16px 0' }}>Your Courses</Divider>
+      <Divider style={{ margin: '32px 0 16px 0' }}>Ваші курси</Divider>
       {paged?.items?.length ? (
         <>
           <Row gutter={[16, 16]}>
@@ -124,18 +124,18 @@ const Profile = () => {
                     }}
                   >
                     <div style={{ fontWeight: 500, fontSize: 16, marginBottom: 8 }}>
-                      {course ? course.title : 'Loading...'}
+                      {course ? course.title : 'Завантаження...'}
                     </div>
                     <div style={{ marginBottom: 12 }}>
                       {progress.completedAt ? (
-                        <span style={{ color: 'green', fontWeight: 500 }}>Completed</span>
+                        <span style={{ color: 'green', fontWeight: 500 }}>Завершено</span>
                       ) : (
-                        <span style={{ color: 'blue', fontWeight: 500 }}>In Progress</span>
+                        <span style={{ color: 'blue', fontWeight: 500 }}>В процесі</span>
                       )}
                     </div>
                     <div>
                       <Link to={`/courses/${progress.courseId}`}>
-                        <span style={{ fontWeight: 500 }}>Go to course</span>
+                        <span style={{ fontWeight: 500 }}>Перейти до курсу</span>
                       </Link>
                     </div>
                   </Card>
@@ -154,16 +154,16 @@ const Profile = () => {
           </div>
         </>
       ) : (
-        <Paragraph type="secondary">You have no course progresses yet.</Paragraph>
+        <Paragraph type="secondary">У вас ще немає жодних успіхів у курсах.</Paragraph>
       )}
 
       <Modal
-        title="Delete Account"
+        title="Видалити акаунт"
         open={isDeleteModalVisible}
         onCancel={() => setIsDeleteModalVisible(false)}
         footer={[
           <Button key="cancel" onClick={() => setIsDeleteModalVisible(false)}>
-            Cancel
+            Скасувати
           </Button>,
           <Button 
             key="delete" 
@@ -172,11 +172,11 @@ const Profile = () => {
             onClick={handleDeleteUser}
             loading={(status as LoadingStatus) === 'loading'}
           >
-            Delete Account
+            Видалити акаунт
           </Button>
         ]}
       >
-        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+        <p>Ви впевнені, що хочете видалити свій акаунт? Цю дію неможливо буде скасувати.</p>
       </Modal>
     </div>
   );

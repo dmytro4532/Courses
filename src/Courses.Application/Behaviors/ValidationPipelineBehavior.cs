@@ -53,7 +53,7 @@ internal sealed class ValidationPipelineBehavior<TRequest, TResponse>
     private static TResult CreateValidationResult<TResult>(Error[] errors)
         where TResult : Result
     {
-        var error = new Error("ValidationError", "One or more validation errors occured.");
+        var error = new Error("ValidationError", "Виникла одна або декілька помилок валідації.");
 
         if (typeof(TResult) == typeof(Result))
         {

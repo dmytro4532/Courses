@@ -38,24 +38,24 @@ internal sealed class CreateAttemptQuestionCommandHandler : IRequestHandler<Crea
 
         if (testAttempt is null)
         {
-            return Result.Failure<AttemptQuestionResponse>(new NotFoundError("TestAttempt.NotFound", "Test attempt not found."));
+            return Result.Failure<AttemptQuestionResponse>(new NotFoundError("TestAttempt.NotFound", "Спроба тесту не знайдена."));
         }
 
         if (testAttempt.UserId != _userContext.UserId)
         {
-            return Result.Failure<AttemptQuestionResponse>(new PermissonDeniedError("TestAttempt.PermissionDenied", "You don't have permission to add questions to this test attempt."));
+            return Result.Failure<AttemptQuestionResponse>(new PermissonDeniedError("TestAttempt.PermissionDenied", "У вас немає дозволу додавати запитання до цієї спроби тесту."));
         }
 
         var question = await _questionRepository.GetByIdAsync(request.QuestionId, cancellationToken);
 
         if (question is null)
         {
-            return Result.Failure<AttemptQuestionResponse>(new NotFoundError("Question.NotFound", "Question not found."));
+            return Result.Failure<AttemptQuestionResponse>(new NotFoundError("Question.NotFound", "Запитання не знайдено."));
         }
 
         if (question.TestId != testAttempt.TestId)
         {
-            return Result.Failure<AttemptQuestionResponse>(new Error("AttemptQuestion.InvalidQuestion", "The question does not belong to the test."));
+            return Result.Failure<AttemptQuestionResponse>(new Error("AttemptQuestion.InvalidQuestion", "Запитання не належить до тесту."));
         }
 
         var existingAttemptQuestion = await _attemptQuestionRepository.GetByTestAttemptIdAndQuestionIdAsync(request.TestAttemptId, request.QuestionId, cancellationToken);

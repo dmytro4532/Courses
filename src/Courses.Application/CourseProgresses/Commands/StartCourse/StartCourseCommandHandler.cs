@@ -31,7 +31,7 @@ public class StartCourseCommandHandler : IRequestHandler<StartCourseCommand, Res
             .GetByUserIdAndCourseIdAsync(userId, command.CourseId, cancellationToken);
 
         if (courseProgress is not null)
-            return new Error("CourseProgress.AlreadyStarted", "Course already started");
+            return new Error("CourseProgress.AlreadyStarted", "Курс вже розпочато");
 
         var newProgress = CourseProgress.Create(
             Guid.NewGuid(),

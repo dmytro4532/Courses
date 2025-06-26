@@ -36,7 +36,7 @@ public class GetCourseProgressQueryHandler : IRequestHandler<GetCourseProgressQu
         var userId = _userContext.UserId;
         var progress = await _courseProgressRepository.GetByUserIdAndCourseIdAsync(userId, query.CourseId, cancellationToken);
         if (progress is null)
-            return new NotFoundError("CourseProgress.NotFound", "Course progress not found.");
+            return new NotFoundError("CourseProgress.NotFound", "Прогрес курсу не знайдено.");
 
         var topicIds = await _topicRepository.GetTopicIdsByCourseIdAsync(progress.CourseId, cancellationToken);
 

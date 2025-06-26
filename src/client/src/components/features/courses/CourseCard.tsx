@@ -21,7 +21,7 @@ const CourseCard = ({ id, title, description, imageUrl, createdAt }: CourseCardP
       hoverable
       cover={<img alt={title} src={imageUrl || placeholder} style={{ height: 180, objectFit: 'cover' }} />}
       actions={[
-        <Link to={`/courses/${id}`}>View Details</Link>
+        <Link to={`/courses/${id}`}>Переглянути деталі</Link>
       ]}
       styles={{ body: { textAlign: 'left' } }}
     >

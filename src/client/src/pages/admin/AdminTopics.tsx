@@ -31,7 +31,7 @@ const AdminTopics = () => {
         setCourseError(null);
         api.get<CourseResponse>(`/api/courses/${courseId}`)
             .then((res) => setCourse(res.data))
-            .catch((err) => setCourseError(err?.response?.data?.details || 'Failed to load course'))
+            .catch((err) => setCourseError(err?.response?.data?.details || 'Не вдалося завантажити курс'))
             .finally(() => setCourseLoading(false));
     }, [courseId]);
 
@@ -71,23 +71,23 @@ const AdminTopics = () => {
 
     const columns = [
         {
-            title: 'Title',
+            title: 'Назва',
             dataIndex: 'title',
             key: 'title',
         },
         {
-            title: 'Content',
+            title: 'Зміст',
             dataIndex: 'content',
             key: 'content',
             ellipsis: true,
         },
         {
-            title: 'Order',
+            title: 'Порядок',
             dataIndex: 'order',
             key: 'order',
         },
         {
-            title: 'Actions',
+            title: 'Дії',
             key: 'actions',
             render: (_: any, record: Topic) => (
                 <Space>
@@ -112,22 +112,22 @@ const AdminTopics = () => {
     }
 
     if (courseError || !course) {
-        return <ErrorMessage message={courseError || 'Course not found'} />;
+        return <ErrorMessage message={courseError || 'Курс не знайдено'} />;
     }
 
     return (
         <div>
             <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Space direction="vertical" size={0}>
-                    <Link to="/admin/courses">← Back to Courses</Link>
-                    <Title level={2} style={{ margin: 0 }}>Topics - {course.title}</Title>
+                    <Link to="/admin/courses">← Назад до курсів</Link>
+                    <Title level={2} style={{ margin: 0 }}>Теми - {course.title}</Title>
                 </Space>
                 <Button
                     type="primary"
                     icon={<PlusOutlined />}
                     onClick={handleAdd}
                 >
-                    Add Topic
+                    Додати тему
                 </Button>
             </div>
 
@@ -149,7 +149,7 @@ const AdminTopics = () => {
             />
 
             <Modal
-                title={editingTopic ? 'Edit Topic' : 'Add Topic'}
+                title={editingTopic ? 'Редагувати тему' : 'Додати тему'}
                 open={isModalVisible}
                 onCancel={() => setIsModalVisible(false)}
                 footer={null}

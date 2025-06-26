@@ -49,7 +49,7 @@ const TopicCard = ({ topic, isCompleted, onComplete, courseStarted }: TopicCardP
   const renderTestInfo = () => {
     if (!topic.testId) return null;
     if (testLoading || !test) {
-      return <Text type="secondary">Loading test information...</Text>;
+      return <Text type="secondary">Завантаження інформації про тест...</Text>;
     }
     const attemptCount = testAttempts.length;
     const hasPassed = bestScore >= 70;
@@ -64,30 +64,30 @@ const TopicCard = ({ topic, isCompleted, onComplete, courseStarted }: TopicCardP
           <br />
           {attemptCount > 0 ? (
             <>
-              <Text>Attempts: {attemptCount}</Text>
+              <Text>Спроби: {attemptCount}</Text>
               <br />
-              <Text>Best Score: {bestScore}%</Text>
+              <Text>Найкращий результат: {bestScore}%</Text>
               <br />
               {hasPassed ? (
-                <Tag color="success">Passed</Tag>
+                <Tag color="success">Пройдено</Tag>
               ) : (
-                <Tag color="warning">Not Passed</Tag>
+                <Tag color="warning">Не пройдено</Tag>
               )}
             </>
           ) : (
-            <Text type="secondary">No attempts yet</Text>
+            <Text type="secondary">Спроб ще немає</Text>
           )}
         </div>
         <div style={{ marginTop: 8 }}>
           {hasIncompleteAttempt ? (
             <Space direction="vertical">
-              <Text type="warning">You have an incomplete attempt.</Text>
+              <Text type="warning">У вас є незавершена спроба.</Text>
               <Link to={`attempt/${incompleteAttempt?.id}`}>
-                Continue Attempt
+                Продовжити спробу
               </Link>
             </Space>
           ) : (
-            <Link to={`/tests/${topic.testId}`}>Take Test</Link>
+            <Link to={`/tests/${topic.testId}`}>Пройти тест</Link>
           )}
         </div>
       </>
@@ -109,11 +109,11 @@ const TopicCard = ({ topic, isCompleted, onComplete, courseStarted }: TopicCardP
       <Paragraph style={{ margin: '16px 0' }}>{topic.content}</Paragraph>
       <Space>
         {isCompleted && (
-          <Tag color="success">Completed</Tag>
+          <Tag color="success">Завершено</Tag>
         )}
         {canComplete() && !isCompleted && (
           <Button type="primary" onClick={onComplete}>
-            Complete
+            Завершити
           </Button>
         )}
       </Space>

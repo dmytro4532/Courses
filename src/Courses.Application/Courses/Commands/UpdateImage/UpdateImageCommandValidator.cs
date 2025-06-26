@@ -12,11 +12,11 @@ internal sealed class UpdateImageCommandValidator
     {
         RuleFor(x => x.CourseId)
             .NotEmpty()
-            .WithMessage("CourseId is required.");
+            .WithMessage("Ідентифікатор курсу є обов'язковим.");
 
         RuleFor(x => x.Image)
             .Must(image =>
                 image is null || image.HasAllowedExtension(fileSettings.Value.AllowedImageExtensions))
-            .WithMessage($"Image must have an allowed extension ({string.Join(", ", fileSettings.Value.AllowedImageExtensions)})");
+            .WithMessage($"Зображення повинно мати дозволене розширення ({string.Join(", ", fileSettings.Value.AllowedImageExtensions)})");
     }
 }

@@ -29,10 +29,10 @@ internal sealed class TestAttemptRepository : ITestAttemptRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<TestAttempt>> GetByTestIdAsync(Guid testId, int pageIndex, int pageSize, string orderBy, string orderDirection, CancellationToken cancellationToken)
+    public async Task<IEnumerable<TestAttempt>> GetByTestIdAndUserIdAsync(Guid testId, Guid userId, int pageIndex, int pageSize, string orderBy, string orderDirection, CancellationToken cancellationToken)
     {
         return await _context.Set<TestAttempt>()
-            .Where(ta => ta.TestId == testId)
+            .Where(ta => ta.TestId == testId && ta.UserId == userId)
             .GetOrderedQuery(GetOrderByExpression(orderBy), orderDirection)
             .Skip(pageSize * pageIndex)
             .Take(pageSize)
@@ -45,10 +45,10 @@ internal sealed class TestAttemptRepository : ITestAttemptRepository
             .CountAsync(ta => ta.UserId == userId, cancellationToken);
     }
 
-    public async Task<int> CountByTestIdAsync(Guid testId, CancellationToken cancellationToken)
+    public async Task<int> CountByTestIdAndUserIdAsync(Guid testId, Guid userId, CancellationToken cancellationToken)
     {
         return await _context.Set<TestAttempt>()
-            .CountAsync(ta => ta.TestId == testId, cancellationToken);
+            .CountAsync(ta => ta.TestId == testId && ta.UserId == userId, cancellationToken);
     }
 
     public async Task AddAsync(TestAttempt testAttempt, CancellationToken cancellationToken)

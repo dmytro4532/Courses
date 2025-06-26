@@ -52,12 +52,12 @@ const CourseDetails = () => {
     }
   };
 
-  let courseStatus: React.ReactNode = <Tag color="default">Not started</Tag>;
+  let courseStatus: React.ReactNode = <Tag color="default">Не розпочато</Tag>;
   if (progress) {
     if (progress.completedAt) {
-      courseStatus = <Tag color="green">Completed</Tag>;
+      courseStatus = <Tag color="green">Завершено</Tag>;
     } else {
-      courseStatus = <Tag color="blue">Started</Tag>;
+      courseStatus = <Tag color="blue">Розпочато</Tag>;
     }
   }
 
@@ -66,7 +66,7 @@ const CourseDetails = () => {
   }
 
   if (error || !course) {
-    return <Alert type="error" message={error || 'Course not found'} style={{ marginTop: 48 }} />;
+    return <Alert type="error" message={error || 'Курс не знайдено'} style={{ marginTop: 48 }} />;
   }
 
   return (
@@ -79,7 +79,7 @@ const CourseDetails = () => {
         />
         <Card style={{ textAlign: 'left', width: '100%', marginTop: 24 }}>
           <div style={{ marginBottom: 12 }}>
-            <b>Status:</b> {courseStatus}
+            <b>Статус:</b> {courseStatus}
           </div>
           <Paragraph style={{ fontSize: 16 }}>{course.description}</Paragraph>
         </Card>
@@ -88,7 +88,7 @@ const CourseDetails = () => {
             <Progress
               percent={progress.progressPercents}
               status={progress.progressPercents === 100 ? 'success' : 'active'}
-              format={percent => `${percent}% (${progress.completedTopics}/${progress.totalTopics} topics)`}
+              format={percent => `${percent}% (${progress.completedTopics}/${progress.totalTopics} тем)`}
             />
           </div>
         )}
@@ -100,7 +100,7 @@ const CourseDetails = () => {
                 loading={progressStatus === 'loading'}
                 onClick={handleStartCourse}
               >
-                Start Course
+                Почати курс
               </Button>
             )
             }
@@ -110,11 +110,11 @@ const CourseDetails = () => {
                 loading={progressStatus === 'loading'}
                 onClick={handleCompleteCourse}
               >
-                Complete Course
+                Завершити курс
               </Button>
             )}
             <Link to={`/courses/${id}/topics`}>
-              <Button type="primary">View Topics</Button>
+              <Button type="primary">Переглянути теми</Button>
             </Link>
             {progress && (
               <Button
@@ -122,7 +122,7 @@ const CourseDetails = () => {
                 loading={progressStatus === 'loading'}
                 onClick={handleRemoveProgress}
               >
-                Reset Progress
+                Скинути прогрес
               </Button>
             )}
           </Space>

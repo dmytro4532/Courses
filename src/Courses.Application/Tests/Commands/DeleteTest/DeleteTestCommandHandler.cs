@@ -25,7 +25,7 @@ internal sealed class DeleteTestCommandHandler : ICommandHandler<DeleteTestComma
 
         if (test is null)
         {
-            return Result.Failure(new NotFoundError("Test.NotFound", "Test not found"));
+            return Result.Failure(new NotFoundError("Test.NotFound", "Тест не знайдено"));
         }
 
         _testRepository.Remove(test);

@@ -1,4 +1,5 @@
-import { Modal, message } from 'antd';
+import { Modal } from 'antd';
+import { enqueueSnackbar } from 'notistack';
 import api from '../../../api/axios';
 import type { Topic } from '../../../types';
 
@@ -14,27 +15,27 @@ export const DeleteTopicModal = ({ topic, onClose, onSuccess }: DeleteTopicModal
 
     try {
       await api.delete(`/api/topics/${topic.id}`);
-      message.success('Topic deleted successfully');
+      enqueueSnackbar('Тему успішно видалено', { variant: 'success', autoHideDuration: 3000 });
       onSuccess();
     } catch (error: any) {
-      message.error(error?.response?.data?.details || 'Failed to delete topic');
+      enqueueSnackbar(error?.response?.data?.details || 'Не вдалося видалити тему', { variant: 'error', autoHideDuration: 3000 });
     }
   };
 
   return (
     <Modal
-      title="Delete Topic"
+      title="Видалити тему"
       open={!!topic}
       onCancel={onClose}
       onOk={handleDelete}
-      okText="Delete"
+      okText="Видалити"
       okButtonProps={{
         danger: true,
       }}
-      cancelText="Cancel"
+      cancelText="Скасувати"
     >
-      <p>Are you sure you want to delete the topic "{topic?.title}"?</p>
-      <p>This action cannot be undone.</p>
+      <p>Ви впевнені, що хочете видалити тему "{topic?.title}"?</p>
+      <p>Цю дію неможливо скасувати.</p>
     </Modal>
   );
 }; 

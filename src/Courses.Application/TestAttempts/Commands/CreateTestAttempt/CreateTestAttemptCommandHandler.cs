@@ -34,7 +34,7 @@ internal sealed class CreateTestAttemptCommandHandler : IRequestHandler<CreateTe
 
         if (test is null)
         {
-            return Result.Failure<TestAttemptResponse>(new NotFoundError("Test not found.", "Test not found."));
+            return Result.Failure<TestAttemptResponse>(new NotFoundError("Test not found.", "Тест не знайдено."));
         }
 
         var testAttempt = TestAttempt.Create(Guid.NewGuid(), request.TestId, _userContext.UserId);

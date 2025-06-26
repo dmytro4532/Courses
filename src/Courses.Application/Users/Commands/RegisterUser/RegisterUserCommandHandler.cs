@@ -38,7 +38,7 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
 
         if (userByEmail is not null)
         {
-            return new Error("User.EmailAlreadyExists", "Email already used.");
+            return new Error("User.EmailAlreadyExists", "Електронна пошта вже використовується.");
         }
 
         var user = User.Create(
@@ -49,9 +49,6 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
         var applicaitonUser = _applicationUserMapper.Map(user);
 
         applicaitonUser.Role = Role.User.ToString();
-
-        // TODO: remove this when we have a real email confirmation
-        applicaitonUser.EmailConfirmed = true;
 
         await _userRepository.AddAsync(user, cancellationToken);
 

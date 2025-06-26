@@ -34,7 +34,7 @@ const Topics = () => {
     setCourseError(null);
     api.get<CourseResponse>(`/api/courses/${courseId}`)
       .then((res) => setCourse(res.data))
-      .catch((err) => setCourseError(err?.response?.data?.details || 'Failed to load course'))
+      .catch((err) => setCourseError(err?.response?.data?.details || 'Не вдалося завантажити курс'))
       .finally(() => setCourseLoading(false));
   }, [courseId]);
 
@@ -73,7 +73,7 @@ const Topics = () => {
   }
 
   if (courseError || !course) {
-    return <ErrorMessage message={courseError || 'Course not found'} />;
+    return <ErrorMessage message={courseError || 'Курс не знайдено'} />;
   }
 
   if (status === 'loading') {
@@ -81,11 +81,11 @@ const Topics = () => {
   }
 
   if (status === 'failed') {
-    return <ErrorMessage message={error || 'Failed to load topics'} />;
+    return <ErrorMessage message={error || 'Не вдалося завантажити теми'} />;
   }
 
   if (!Array.isArray(topics) || topics.length === 0) {
-    return <Empty description="No topics found" style={{ marginTop: 48 }} />;
+    return <Empty description="Тем не знайдено" style={{ marginTop: 48 }} />;
   }
 
   return (

@@ -29,7 +29,7 @@ internal sealed class DeleteArticleCommandHandler : IRequestHandler<DeleteArticl
 
         if (course is null)
         {
-            return new NotFoundError("Course.NotFound", "Article was not found.");
+            return new NotFoundError("Course.NotFound", "Курс не знайдено.");
         }
 
         if (!string.IsNullOrEmpty(course.Image))

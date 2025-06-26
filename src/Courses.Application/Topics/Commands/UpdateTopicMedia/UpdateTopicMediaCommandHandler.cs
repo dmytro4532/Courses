@@ -35,7 +35,7 @@ internal sealed class UpdateTopicMediaCommandHandler : IRequestHandler<UpdateTop
 
         if (topic is null)
         {
-            return new NotFoundError("Topic.NotFound", "The topic was not found.");
+            return new NotFoundError("Topic.NotFound", "Тему не знайдено.");
         }
 
         string? newFileName = null;

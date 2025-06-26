@@ -37,19 +37,19 @@ export const TestAttemptReview = () => {
     }
 
     if (!currentAttempt || !test || !testQuestions) {
-        return <Alert type="error" message="Test attempt not found" />;
+        return <Alert type="error" message="Спробу тесту не знайдено" />;
     }
 
     return (
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
             <Card>
                 <Space direction="vertical" style={{ width: '100%' }}>
-                    <Title level={2}>{test.title} - Review</Title>
-                    <Text>Score: {currentAttempt.score}%</Text>
+                    <Title level={2}>{test.title} - Огляд</Title>
+                    <Text>Оцінка: {currentAttempt.score}%</Text>
                 </Space>
             </Card>
 
-            <Card title="Questions">
+            <Card title="Питання">
                 <List
                     dataSource={testQuestions.items}
                     renderItem={(question: Question) => {
@@ -68,11 +68,11 @@ export const TestAttemptReview = () => {
                                         <Text strong>{question.content}</Text>
                                         {isCorrect ? (
                                             <Tag icon={<CheckCircleOutlined />} color="success">
-                                                Correct
+                                                Правильно
                                             </Tag>
                                         ) : (
                                             <Tag icon={<CloseCircleOutlined />} color="error">
-                                                Incorrect
+                                                Неправильно
                                             </Tag>
                                         )}
                                     </Space>
@@ -94,7 +94,7 @@ export const TestAttemptReview = () => {
                                                 <List.Item>
                                                     <Tag color={color}>
                                                         {answer.value}
-                                                        {isCorrectAnswer && ' (Correct)'}
+                                                        {isCorrectAnswer && ' (Правильно)'}
                                                     </Tag>
                                                 </List.Item>
                                             );

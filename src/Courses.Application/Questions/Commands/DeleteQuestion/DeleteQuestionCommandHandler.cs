@@ -25,7 +25,7 @@ internal sealed class DeleteQuestionCommandHandler : ICommandHandler<DeleteQuest
 
         if (question is null)
         {
-            return Result.Failure(new NotFoundError("Question.NotFound", "Question not found"));
+            return Result.Failure(new NotFoundError("Question.NotFound", "Запитання не знайдено"));
         }
 
         _questionRepository.Remove(question);

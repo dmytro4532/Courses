@@ -1,4 +1,5 @@
-import { Modal, message } from 'antd';
+import { Modal } from 'antd';
+import { enqueueSnackbar } from 'notistack';
 import api from '../../../api/axios';
 import type { CourseResponse } from '../../../types';
 
@@ -14,28 +15,27 @@ export const DeleteCourseModal = ({ course, onClose, onSuccess }: DeleteCourseMo
 
     try {
       await api.delete(`/api/courses/${course.id}`);
-      message.success('Course deleted successfully');
+      enqueueSnackbar('Курс успішно видалено', { variant: 'success', autoHideDuration: 3000 });
       onSuccess();
     } catch (error) {
-      message.error('Failed to delete course');
-      console.error('Error deleting course:', error);
+      enqueueSnackbar('Не вдалося видалити курс', { variant: 'error', autoHideDuration: 3000 });
     }
   };
 
   return (
     <Modal
-      title="Delete Course"
+      title="Видалити курс"
       open={!!course}
       onCancel={onClose}
       onOk={handleDelete}
-      okText="Delete"
+      okText="Видалити"
       okButtonProps={{
         danger: true,
       }}
-      cancelText="Cancel"
+      cancelText="Скасувати"
     >
-      <p>Are you sure you want to delete the course "{course?.title}"?</p>
-      <p>This action cannot be undone.</p>
+      <p>Ви впевнені, що хочете видалити курс "{course?.title}"?</p>
+      <p>Цю дію неможливо скасувати.</p>
     </Modal>
   );
 }; 
