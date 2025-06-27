@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom';
 import { Button, Card, Typography, Space, List, Spin, Alert } from 'antd';
 import { useAppDispatch, useAppSelector } from '../hooks/store';
 import { getActiveTestAttempt, createTestAttempt } from '../store/slices/testAttemptsSlice';
@@ -11,16 +11,19 @@ const { Title, Text } = Typography;
 
 const TestDetails = () => {
   const { testId } = useParams<{ testId: string }>();
+  const [searchParams] = useSearchParams();
+  const courseId = searchParams.get('courseId');
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { test, loading: isTestLoading, error: testError } = useAppSelector(state => state.test);
+  const { test, isTestLoading, testError } = useAppSelector(state =>
+    ({ test: state.test.tests.find(t => t.id === testId), isTestLoading: state.test.loading, testError: state.test.error}));
   const { activeAttempt, isLoading: isAttemptLoading } = useAppSelector(state => state.testAttempts);
   const { paged: questions, status: questionsStatus } = useAppSelector(state => state.questions);
 
   useEffect(() => {
     const loadData = async () => {
       if (testId) {
-        await dispatch(fetchTestById(testId)).unwrap();
+        await dispatch(fetchTestById({ testId: testId })).unwrap();
         await dispatch(fetchQuestions({ testId })).unwrap();
         await dispatch(getActiveTestAttempt(testId));
       }
@@ -43,7 +46,7 @@ const TestDetails = () => {
   const handleStartAttempt = async () => {
     try {
       const result = await dispatch(createTestAttempt(testId!)).unwrap();
-      navigate(`/test-attempts/${result.id}`);
+      navigate(`/test-attempts/${result.id}${courseId ? `?courseId=${courseId}` : ''}`);
     } catch (error) {
       console.error('Failed to create test attempt:', error);
     }
@@ -51,12 +54,17 @@ const TestDetails = () => {
 
   const handleContinueAttempt = () => {
     if (activeAttempt) {
-      navigate(`/test-attempts/${activeAttempt.id}`);
+      navigate(`/test-attempts/${activeAttempt.id}${courseId ? `?courseId=${courseId}` : ''}`);
     }
   };
 
   return (
     <Space direction="vertical" size="large" style={{ width: '100%' }}>
+      {courseId && (
+        <Link to={`/courses/${courseId}/topics`} style={{ marginTop: 16, display: 'inline-block' }}>
+          ← Назад до курсу
+        </Link>
+      )}
       <Card>
         <Space direction="vertical" style={{ width: '100%' }}>
           <Title level={2}>{test.title}</Title>

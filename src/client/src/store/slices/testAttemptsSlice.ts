@@ -81,10 +81,10 @@ export const fetchTestAttemptsByTest = createAsyncThunk(
         try {
             const response = await api.get<PagedList<TestAttempt>>(`/api/testattempts/test/${testId}`, {
                 params: {
-                  PageIndex: 0,
-                  PageSize: 10,
-                  OrderBy: 'Id',
-                  OrderDirection: 'ASC',
+                    PageIndex: 0,
+                    PageSize: 100,
+                    OrderBy: 'Id',
+                    OrderDirection: 'ASC',
                 },
             });
             return response.data;
@@ -100,6 +100,16 @@ const testAttemptsSlice = createSlice({
     reducers: {
         clearCurrentAttempt: (state) => {
             state.currentAttempt = null;
+        },
+        clearAttempts: (state) => {
+            state.attempts = {
+                pageIndex: 0,
+                pageSize: 10,
+                totalCount: 0,
+                hasPreviousPage: false,
+                hasNextPage: false,
+                items: [],
+            };
         },
     },
     extraReducers: (builder) => {
@@ -164,7 +174,7 @@ const testAttemptsSlice = createSlice({
             })
             .addCase(fetchTestAttemptsByTest.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.attempts = action.payload;
+                state.attempts.items = [...state.attempts.items, ...action.payload.items];
             })
             .addCase(fetchTestAttemptsByTest.rejected, (state, action) => {
                 state.isLoading = false;
@@ -173,5 +183,5 @@ const testAttemptsSlice = createSlice({
     },
 });
 
-export const { clearCurrentAttempt } = testAttemptsSlice.actions;
+export const { clearCurrentAttempt, clearAttempts } = testAttemptsSlice.actions;
 export default testAttemptsSlice.reducer; 

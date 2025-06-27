@@ -4,20 +4,23 @@ import api from '../../api/axios';
 
 interface TestState {
   test: Test | null;
+  tests: Test[];
   loading: boolean;
   error: string | null;
 }
 
 const initialState: TestState = {
   test: null,
+  tests: [],
   loading: false,
   error: null,
 };
 
 export const fetchTestById = createAsyncThunk(
   'test/fetchById',
-  async (testId: string) => {
+  async ({ testId, topicId }: { testId: string; topicId?: string }) => {
     const response = await api.get<Test>(`/api/tests/${testId}`);
+    response.data.topicId = topicId;
     return response.data;
   }
 );
@@ -63,7 +66,7 @@ const testSlice = createSlice({
       })
       .addCase(fetchTestById.fulfilled, (state, action) => {
         state.loading = false;
-        state.test = action.payload;
+        state.tests = [...state.tests, action.payload];
       })
       .addCase(fetchTestById.rejected, (state, action) => {
         state.loading = false;

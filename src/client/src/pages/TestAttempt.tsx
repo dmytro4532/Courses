@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom';
 import { Button, Card, Typography, Space, List, Spin, Alert, Checkbox, Modal } from 'antd';
 import { useAppDispatch, useAppSelector } from '../hooks/store';
 import { getTestAttempt, completeTestAttempt } from '../store/slices/testAttemptsSlice';
@@ -13,21 +13,24 @@ const { Title, Text } = Typography;
 
 export const TestAttempt = () => {
     const { attemptId } = useParams<{ attemptId: string }>();
+    const [searchParams] = useSearchParams();
+    const courseId = searchParams.get('courseId');
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [selectedAnswers, setSelectedAnswers] = useState<Record<string, string[]>>({});
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-    
+
     const { currentAttempt, isLoading: isAttemptLoading } = useAppSelector(state => state.testAttempts);
     const { questions: attemptQuestions } = useAppSelector(state => state.attemptQuestions);
-    const { test, loading: isTestLoading } = useAppSelector(state => state.test);
+    const { test, isTestLoading } = useAppSelector(state =>
+        ({ test: state.test.tests.find(t => t.id === currentAttempt?.testId), isTestLoading: state.test.loading }));
     const { paged: testQuestions, status: questionsStatus } = useAppSelector(state => state.questions);
 
     useEffect(() => {
         const loadData = async () => {
             if (attemptId) {
                 const attempt = await dispatch(getTestAttempt(attemptId)).unwrap();
-                await dispatch(fetchTestById(attempt.testId)).unwrap();
+                await dispatch(fetchTestById({ testId: attempt.testId })).unwrap();
                 await dispatch(fetchQuestions({ testId: attempt.testId })).unwrap();
                 await dispatch(getAttemptQuestions(attemptId));
             }
@@ -61,7 +64,7 @@ export const TestAttempt = () => {
         try {
             await dispatch(completeTestAttempt(attemptId!)).unwrap();
             enqueueSnackbar('Тест успішно завершено', { variant: 'success', autoHideDuration: 3000 });
-            navigate(`/test-attempts/${attemptId}/review`);
+            navigate(`/test-attempts/${attemptId}/review${courseId ? `?courseId=${courseId}` : ''}`);
         } catch (error) {
             enqueueSnackbar('Не вдалося завершити тест', { variant: 'error', autoHideDuration: 3000 });
         }
@@ -86,6 +89,11 @@ export const TestAttempt = () => {
     return (
         <>
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
+                {courseId && (
+                    <Link to={`/courses/${courseId}/topics`} style={{ marginTop: 16, display: 'inline-block' }}>
+                        ← Назад до курсу
+                    </Link>
+                )}
                 <Card>
                     <Space direction="vertical" style={{ width: '100%' }}>
                         <Title level={2}>{test.title}</Title>

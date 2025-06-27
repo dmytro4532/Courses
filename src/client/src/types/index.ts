@@ -12,7 +12,7 @@ export interface Test {
   id: string;
   title: string;
   description: string;
-  topicId: string;
+  topicId?: string;
   questions: Question[];
   createdAt: string;
   updatedAt?: string;

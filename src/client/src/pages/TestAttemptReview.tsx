@@ -1,7 +1,7 @@
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Alert, Card, List, Space, Spin, Tag, Typography } from 'antd';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../hooks/store';
 import { getAttemptQuestions } from '../store/slices/attemptQuestionsSlice';
 import { fetchQuestions } from '../store/slices/questionsSlice';
@@ -13,18 +13,21 @@ const { Title, Text } = Typography;
 
 export const TestAttemptReview = () => {
     const { attemptId } = useParams<{ attemptId: string }>();
+    const [searchParams] = useSearchParams();
+    const courseId = searchParams.get('courseId');
     const dispatch = useAppDispatch();
-    
+
     const { currentAttempt, isLoading: isAttemptLoading } = useAppSelector(state => state.testAttempts);
     const { questions: attemptQuestions } = useAppSelector(state => state.attemptQuestions);
-    const { test, loading: isTestLoading } = useAppSelector(state => state.test);
+    const { test, isTestLoading } = useAppSelector(state =>
+        ({ test: state.test.tests.find(t => t.id === currentAttempt?.testId), isTestLoading: state.test.loading }));
     const { paged: testQuestions, status: questionsStatus } = useAppSelector(state => state.questions);
 
     useEffect(() => {
         const loadData = async () => {
             if (attemptId) {
                 const attempt = await dispatch(getTestAttempt(attemptId)).unwrap();
-                await dispatch(fetchTestById(attempt.testId)).unwrap();
+                await dispatch(fetchTestById({ testId: attempt.testId })).unwrap();
                 await dispatch(fetchQuestions({ testId: attempt.testId })).unwrap();
                 await dispatch(getAttemptQuestions(attemptId));
             }
@@ -42,6 +45,11 @@ export const TestAttemptReview = () => {
 
     return (
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            {courseId && (
+                <Link to={`/courses/${courseId}/topics`} style={{ marginTop: 16, display: 'inline-block' }}>
+                    ← Назад до курсу
+                </Link>
+            )}
             <Card>
                 <Space direction="vertical" style={{ width: '100%' }}>
                     <Title level={2}>{test.title} - Огляд</Title>
@@ -56,9 +64,9 @@ export const TestAttemptReview = () => {
                         const attemptQuestion = attemptQuestions.items.find((aq: AttemptQuestion) => aq.questionId === question.id);
                         const selectedAnswers = attemptQuestion?.answers.filter(a => a.isSelected) ?? [];
                         const correctAnswers = question.answers.filter(a => a.isCorrect);
-                        const isCorrect = selectedAnswers.every(sa => 
+                        const isCorrect = selectedAnswers.every(sa =>
                             correctAnswers.some(ca => ca.id === sa.id)) &&
-                            correctAnswers.every(ca => 
+                            correctAnswers.every(ca =>
                                 selectedAnswers.some(sa => sa.id === ca.id));
 
                         return (

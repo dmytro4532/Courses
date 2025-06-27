@@ -1,7 +1,7 @@
 import { Col, Empty, Pagination, Row, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import api from '../api/axios';
 import ErrorMessage from '../components/common/ErrorMessage';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -10,7 +10,7 @@ import type { AppDispatch, RootState } from '../store';
 import { completeTopic, fetchCompletedTopics } from '../store/slices/completedTopicsSlice';
 import { fetchProgressByCourseId } from '../store/slices/progressesSlice';
 import { fetchTopics } from '../store/slices/topicsSlice';
-import type { CourseResponse, Topic } from '../types';
+import type { CourseResponse } from '../types';
 
 const { Title } = Typography;
 
@@ -90,6 +90,9 @@ const Topics = () => {
 
   return (
     <div style={{ padding: '24px 0' }}>
+      <Link to={`/courses/${courseId}`} style={{ marginTop: 16, display: 'inline-block' }}>
+        ← Назад до курсу
+      </Link>
       <Title level={2}>{course.title}</Title>
       <Row gutter={[16, 16]}>
         {topics.map((topic) => {
