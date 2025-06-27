@@ -2,6 +2,7 @@ using Courses.Application.Abstractions.Data;
 using Courses.Application.Abstractions.Data.Repositories;
 using Courses.Application.Abstractions.Messaging;
 using Courses.Application.Abstractions.Services;
+using Courses.Domain.AttemptQuestions;
 using Shared.Results;
 using Shared.Results.Errors;
 
@@ -54,12 +55,28 @@ internal sealed class CompleteTestAttemptCommandHandler : ICommandHandler<Comple
 
         if (totalAttemptQuestions != totalTestQuestions)
         {
-            return Result.Failure(new Error("TestAttempt.IncompleteQuestions", 
+            return Result.Failure(new Error("TestAttempt.IncompleteQuestions",
                 $"Спроба тесту містить {totalAttemptQuestions} питань, але тест містить {totalTestQuestions} питань."));
         }
 
-        var correctAnswers = questions.Sum(q => q.Answers.Count(a => a.IsCorrect && a.IsSelected));
-        var score = (int)Math.Round((double)correctAnswers / totalTestQuestions * 100);
+        int correctQuestions = 0;
+
+        foreach (AttemptQuestion q in questions)
+        {
+            bool rightAnswer = true;
+            foreach (AttemptQuestionAnswer a in q.Answers)
+            {
+                if (a.IsCorrect && !a.IsSelected || !a.IsCorrect && a.IsSelected)
+                {
+                    rightAnswer = false;
+                    break;
+                }
+            }
+
+            if (rightAnswer)
+                correctQuestions++;
+        }
+        var score = (int)Math.Round((double)correctQuestions / totalTestQuestions * 100);
 
         testAttempt.Complete(score);
 
@@ -68,4 +85,4 @@ internal sealed class CompleteTestAttemptCommandHandler : ICommandHandler<Comple
 
         return Result.Success();
     }
-} 
+}
